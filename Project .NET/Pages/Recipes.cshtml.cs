@@ -18,7 +18,7 @@ namespace Project_.NET.Pages.Shared
         }
         public void OnGet()
         {
-            var RPQuerry = (from Recipes in _cont.RecipesBd orderby Recipes.date descending select Recipes);
+            var RPQuerry = (from Recipes in _cont.Recipes orderby Recipes.date descending select Recipes);
             RP = RPQuerry.ToList();
         }
     }

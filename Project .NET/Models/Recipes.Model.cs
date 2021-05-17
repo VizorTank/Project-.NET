@@ -36,16 +36,6 @@ namespace Project_.NET.Models
         }
         public Recipes()
         { }
-     //  public Recipes()
-     //   {
-     //       User_Id = 0;
-     //       Name = null;
-     //       Ings = null;
-     //       Desc = null;
-     //       up_vote = 0;
-     //       down_vote = 0;
-     //       date = DateTime.Now.ToString();
-     //
-     //   }
+
     }
 }
