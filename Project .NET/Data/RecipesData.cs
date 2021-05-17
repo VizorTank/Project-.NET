@@ -10,6 +10,6 @@ namespace Project_.NET.Data
     public class RecipesData : DbContext
     {
         public RecipesData(DbContextOptions<RecipesData> options) : base(options) { }
-        public DbSet<Recipes> RecipesBd { get; set; }
+        public DbSet<Recipes> Recipes { get; set; }
     }
 }

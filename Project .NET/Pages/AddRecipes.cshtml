@@ -8,18 +8,23 @@
 
 <div class="text-center">
     <form method="post">
+        <small <span asp-validation-for="alfa" class="text-danger"></span> <br /></small>
         <label asp-for="alfa">Uzytkownik</label><br />
         <input asp-for="alfa" /><br />
+        <small <span asp-validation-for="beta" class="text-danger"></span> <br /></small>
         <label asp-for="beta">Nazwa Dania</label><br />
         <input asp-for="beta" /><br />
+        <small <span asp-validation-for="gama" class="text-danger"></span> <br /></small>
         <label asp-for="gama">Potrzebne Składniki</label><br />
         <input asp-for="gama" /><br />
-        <label asp-for="delta">Opis Przygotowania</label><br />
+
+        <small <span asp-validation-for="delta" class="text-danger"></span></small> <br />
+        <label asp-for="delta" >Opis Przygotowania</label><br />
         <input asp-for="delta" /><br />
         <button type="submit" class="btn btn-primary">Zatwierdź</button><br />
-        <span asp-validation-for="alfa" class="text-danger"></span>
-        <span asp-validation-for="beta" class="text-danger"></span>
-        <span asp-validation-for="gama" class="text-danger"></span>
-        <span asp-validation-for="delta" class="text-danger"></span>
-    </form>
+
+
+
+    </form> 
+
 </div>

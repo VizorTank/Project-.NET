@@ -16,12 +16,12 @@ namespace Project_.NET.Pages
         [BindProperty]
         public int alfa { get; set; }
 
-        [BindProperty,MaxLength(50, ErrorMessage = "Miej ni¿ 50 znaków")]
+        [BindProperty,Required(ErrorMessage = "Pole Nazwa jest wymagane "),MaxLength(50, ErrorMessage = "Miej ni¿ 50 znaków")]
         public string beta { get; set; }
-        [BindProperty, MaxLength(255, ErrorMessage = "Miej ni¿ 255 znaków")]
+        [BindProperty, Required(ErrorMessage = "Pole Sk³adniki jest wymagane "), MaxLength(255, ErrorMessage = "Miej ni¿ 255 znaków")]
         public string gama { get; set; }
 
-        [BindProperty, MaxLength(255, ErrorMessage = "Miej ni¿ 255 znaków")]
+        [BindProperty, Required(ErrorMessage = "Pole Opis Przygotowania jest wymagane "), MaxLength(255, ErrorMessage = "Miej ni¿ 255 znaków")]
         public string delta { get; set; }
         public void OnGet()
         {
@@ -36,7 +36,7 @@ namespace Project_.NET.Pages
             if(ModelState.IsValid)
             {
                 Recipes rece = new Recipes(alfa, beta, gama, delta);
-                _cont.RecipesBd.Add(rece);
+                _cont.Recipes.Add(rece);
                 _cont.SaveChanges();
             }
         }
