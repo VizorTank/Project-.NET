@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-Project_.NET-9C1A5655-0001-4CEF-87D6-8F7D728EB746</UserSecretsId>
     <RootNamespace>Project_.NET</RootNamespace>
+    <StartupObject>Project_.NET.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
