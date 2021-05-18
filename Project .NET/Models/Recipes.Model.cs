@@ -23,12 +23,15 @@ namespace Project_.NET.Models
 
         public string date { get; set; }
 
-        public Recipes(int _User_Id, string _Name, string _Ings, string _Desc )
+        public string Img { get; set; }
+
+        public Recipes(int _User_Id, string _Name, string _Ings, string _Desc, string _Img )
         {
             User_Id = _User_Id;
             Name = _Name;
             Ings = _Ings;
             Desc = _Desc;
+            Img = _Img;
             up_vote = 0;
             down_vote = 0;
             date = DateTime.Now.ToString();

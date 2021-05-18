@@ -23,6 +23,7 @@ namespace Project_.NET.Pages
 
         [BindProperty, Required(ErrorMessage = "Pole Opis Przygotowania jest wymagane "), MaxLength(255, ErrorMessage = "Miej ni¿ 255 znaków")]
         public string AddDesc { get; set; }
+        public string AddImg { get; set; }
         public void OnGet()
         {
             
@@ -35,7 +36,7 @@ namespace Project_.NET.Pages
         {
             if(ModelState.IsValid)
             {
-                Recipes rece = new Recipes(AddUser_id, AddName, AddIngs, AddDesc);
+                Recipes rece = new Recipes(AddUser_id, AddName, AddIngs, AddDesc, AddImg);
                 _cont.Recipes.Add(rece);
                 _cont.SaveChanges();
             }
