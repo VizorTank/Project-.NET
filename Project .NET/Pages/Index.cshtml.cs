@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Project_.NET.Models;
 namespace Project_.NET.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-
+        public Receipe Receipe { get; set; }
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
