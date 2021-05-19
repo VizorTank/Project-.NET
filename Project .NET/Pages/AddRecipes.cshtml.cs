@@ -8,12 +8,14 @@ using System.ComponentModel.DataAnnotations;
 using Project_.NET.Data;
 using Project_.NET.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Project_.NET.Pages
 {
+    [Authorize]
     public class AddRecipesModel : PageModel
     {
-        private readonly RecipesData _cont;
+        private readonly RecipesContext _cont;
         private readonly UserManager<IdentityUser> _userManager;
         [BindProperty]
         public int AddUser_id { get; set; }
@@ -25,19 +27,21 @@ namespace Project_.NET.Pages
 
         [BindProperty, Required(ErrorMessage = "Pole Opis Przygotowania jest wymagane "), MaxLength(255, ErrorMessage = "Miej ni¿ 255 znaków")]
         public string AddDesc { get; set; }
+        public string AddImg { get; set; }
         public void OnGet()
         {
             
         }
-        public AddRecipesModel(RecipesData cont, UserManager<IdentityUser> userManager)
+        public AddRecipesModel(RecipesContext cont, UserManager<IdentityUser> userManager)
         {
             _cont = cont;
+            _userManager = userManager;
         }
         public void OnPost()
         {
             if(ModelState.IsValid)
             {
-                Recipes rece = new Recipes(GetUserId(), AddName, AddIngs, AddDesc);
+                Recipes rece = new Recipes(GetUserId(), AddName, AddIngs, AddDesc, AddImg);
                 _cont.Recipes.Add(rece);
                 _cont.SaveChanges();
             }

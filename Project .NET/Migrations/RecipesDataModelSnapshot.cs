@@ -7,7 +7,7 @@ using Project_.NET.Data;
 
 namespace Project_.NET.Migrations
 {
-    [DbContext(typeof(RecipesData))]
+    [DbContext(typeof(RecipesContext))]
     partial class RecipesDataModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -28,14 +28,17 @@ namespace Project_.NET.Migrations
                     b.Property<string>("Desc")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Ings")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("User_Id")
-                        .HasColumnType("int");
+                    b.Property<string>("User_Id")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("date")
                         .HasColumnType("nvarchar(max)");

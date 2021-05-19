@@ -9,8 +9,8 @@ using Project_.NET.Data;
 namespace Project_.NET.Migrations
 {
     [DbContext(typeof(RecipesContext))]
-    [Migration("20210516194318_Recipes")]
-    partial class Recipes
+    [Migration("20210518085939_recipes2")]
+    partial class recipes2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,9 @@ namespace Project_.NET.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Desc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Img")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Ings")

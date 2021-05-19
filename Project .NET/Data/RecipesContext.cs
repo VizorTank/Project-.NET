@@ -7,9 +7,9 @@ using Project_.NET.Models;
 
 namespace Project_.NET.Data
 {
-    public class RecipesData : DbContext
+    public class RecipesContext : DbContext
     {
-        public RecipesData(DbContextOptions<RecipesData> options) : base(options) { }
+        public RecipesContext(DbContextOptions<RecipesContext> options) : base(options) { }
         public DbSet<Recipes> Recipes { get; set; }
     }
 }
