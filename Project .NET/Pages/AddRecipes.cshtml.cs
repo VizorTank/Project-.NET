@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Project_.NET.Data;
 using Project_.NET.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Project_.NET.Pages
 {
+    [Authorize]
     public class AddRecipesModel : PageModel
     {
-        private readonly RecipesData _cont;
+        private readonly RecipesContext _cont;
+        private readonly UserManager<IdentityUser> _userManager;
+
         [BindProperty]
         public int AddUser_id { get; set; }
 
-        [BindProperty,Required(ErrorMessage = "Pole Nazwa jest wymagane "),MaxLength(50, ErrorMessage = "Miej ni¿ 50 znaków")]
+        [BindProperty, Required(ErrorMessage = "Pole Nazwa jest wymagane "), MaxLength(50, ErrorMessage = "Miej ni¿ 50 znaków")]
         public string AddName { get; set; }
         [BindProperty, Required(ErrorMessage = "Pole Sk³adniki jest wymagane "), MaxLength(255, ErrorMessage = "Miej ni¿ 255 znaków")]
         public string AddIngs { get; set; }
@@ -25,20 +30,31 @@ namespace Project_.NET.Pages
         public string AddDesc { get; set; }
         public void OnGet()
         {
-            
+
         }
-        public AddRecipesModel(RecipesData cont)
+        public AddRecipesModel(RecipesContext cont, UserManager<IdentityUser> userManager)
         {
             _cont = cont;
+            _userManager = userManager;
         }
         public void OnPost()
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                Recipes rece = new Recipes(AddUser_id, AddName, AddIngs, AddDesc);
+                Recipes rece = new Recipes(GetUser(), AddName, AddIngs, AddDesc);
                 _cont.Recipes.Add(rece);
                 _cont.SaveChanges();
             }
+        }
+        public string GetUserId()
+        {
+            return _userManager.GetUserId(HttpContext.User);
+        }
+
+        public IdentityUser GetUser()
+        {
+            Task<IdentityUser> identityUser = _userManager.GetUserAsync(HttpContext.User);
+            return identityUser.Result;
         }
     }
 }

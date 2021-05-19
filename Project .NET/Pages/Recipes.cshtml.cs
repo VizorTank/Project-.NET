@@ -11,8 +11,8 @@ namespace Project_.NET.Pages.Shared
     public class RecipesModel : PageModel
     {
         public IList<Recipes> RP { get; set; }
-        private readonly RecipesData _cont;
-        public RecipesModel(RecipesData cont)
+        private readonly RecipesContext _cont;
+        public RecipesModel(RecipesContext cont)
         {
             _cont = cont;
         }
