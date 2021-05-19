@@ -17,10 +17,8 @@ namespace Project_.NET.Pages
     {
         private readonly RecipesContext _cont;
         private readonly UserManager<IdentityUser> _userManager;
-        [BindProperty]
-        public int AddUser_id { get; set; }
 
-        [BindProperty,Required(ErrorMessage = "Pole Nazwa jest wymagane "),MaxLength(50, ErrorMessage = "Miej ni¿ 50 znaków")]
+        [BindProperty, Required(ErrorMessage = "Pole Nazwa jest wymagane "), MaxLength(50, ErrorMessage = "Miej ni¿ 50 znaków")]
         public string AddName { get; set; }
         [BindProperty, Required(ErrorMessage = "Pole Sk³adniki jest wymagane "), MaxLength(255, ErrorMessage = "Miej ni¿ 255 znaków")]
         public string AddIngs { get; set; }
@@ -28,23 +26,23 @@ namespace Project_.NET.Pages
         [BindProperty, Required(ErrorMessage = "Pole Opis Przygotowania jest wymagane "), MaxLength(255, ErrorMessage = "Miej ni¿ 255 znaków")]
         public string AddDesc { get; set; }
         public string AddImg { get; set; }
-        public void OnGet()
-        {
-            
-        }
+
+        public void OnGet() { }
         public AddRecipesModel(RecipesContext cont, UserManager<IdentityUser> userManager)
         {
             _cont = cont;
             _userManager = userManager;
         }
-        public void OnPost()
+        public IActionResult OnPost()
         {
             if(ModelState.IsValid)
             {
                 Recipes rece = new Recipes(GetUserId(), AddName, AddIngs, AddDesc, AddImg);
                 _cont.Recipes.Add(rece);
                 _cont.SaveChanges();
+                return RedirectToPage("./Recipes");
             }
+            return Page();
         }
         public string GetUserId()
         {
