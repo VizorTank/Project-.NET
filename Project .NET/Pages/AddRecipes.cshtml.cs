@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Project_.NET.Data;
 using Project_.NET.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Project_.NET.Pages
 {
     public class AddRecipesModel : PageModel
     {
         private readonly RecipesData _cont;
+        private readonly UserManager<IdentityUser> _userManager;
         [BindProperty]
         public int AddUser_id { get; set; }
 
@@ -27,7 +29,7 @@ namespace Project_.NET.Pages
         {
             
         }
-        public AddRecipesModel(RecipesData cont)
+        public AddRecipesModel(RecipesData cont, UserManager<IdentityUser> userManager)
         {
             _cont = cont;
         }
@@ -35,10 +37,14 @@ namespace Project_.NET.Pages
         {
             if(ModelState.IsValid)
             {
-                Recipes rece = new Recipes(AddUser_id, AddName, AddIngs, AddDesc);
+                Recipes rece = new Recipes(GetUserId(), AddName, AddIngs, AddDesc);
                 _cont.Recipes.Add(rece);
                 _cont.SaveChanges();
             }
+        }
+        public string GetUserId()
+        {
+            return _userManager.GetUserId(HttpContext.User);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Project_.NET.Models
     {
         public int Id { get; set; }
 
-        public int User_Id { get; set; }
+        public string User_Id { get; set; }
 
         public string Name { get; set; }
         public string Ings { get; set; }
@@ -23,7 +23,7 @@ namespace Project_.NET.Models
 
         public string date { get; set; }
 
-        public Recipes(int _User_Id, string _Name, string _Ings, string _Desc )
+        public Recipes(string _User_Id, string _Name, string _Ings, string _Desc )
         {
             User_Id = _User_Id;
             Name = _Name;
