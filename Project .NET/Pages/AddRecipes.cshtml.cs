@@ -15,7 +15,7 @@ namespace Project_.NET.Pages
     [Authorize]
     public class AddRecipesModel : PageModel
     {
-        private readonly RecipesContext _cont;
+        private readonly ApplicationDbContext _cont;
         private readonly UserManager<IdentityUser> _userManager;
 
         [BindProperty, Required(ErrorMessage = "Pole Nazwa jest wymagane "), MaxLength(50, ErrorMessage = "Miej ni¿ 50 znaków")]
@@ -28,7 +28,7 @@ namespace Project_.NET.Pages
         public string AddImg { get; set; }
 
         public void OnGet() { }
-        public AddRecipesModel(RecipesContext cont, UserManager<IdentityUser> userManager)
+        public AddRecipesModel(ApplicationDbContext cont, UserManager<IdentityUser> userManager)
         {
             _cont = cont;
             _userManager = userManager;
@@ -37,16 +37,17 @@ namespace Project_.NET.Pages
         {
             if(ModelState.IsValid)
             {
-                Recipes rece = new Recipes(GetUserId(), AddName, AddIngs, AddDesc, AddImg);
+                Recipes rece = new Recipes(GetUser(), AddName, AddIngs, AddDesc, AddImg);
                 _cont.Recipes.Add(rece);
                 _cont.SaveChanges();
                 return RedirectToPage("./Recipes");
             }
             return Page();
         }
-        public string GetUserId()
+        public IdentityUser GetUser()
         {
-            return _userManager.GetUserId(HttpContext.User);
+            Task<IdentityUser> identityUser = _userManager.GetUserAsync(HttpContext.User);
+            return identityUser.Result;
         }
     }
 }

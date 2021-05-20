@@ -8,7 +8,7 @@ using Project_.NET.Data;
 
 namespace Project_.NET.Migrations
 {
-    [DbContext(typeof(RecipesContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20210518085939_recipes2")]
     partial class recipes2
     {

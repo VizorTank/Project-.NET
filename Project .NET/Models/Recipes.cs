@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Project_.NET.Models
     {
         public int Id { get; set; }
 
-        public string User_Id { get; set; }
+        public IdentityUser User { get; set; }
 
         public string Name { get; set; }
         public string Ings { get; set; }
@@ -25,9 +26,9 @@ namespace Project_.NET.Models
 
         public string Img { get; set; }
 
-        public Recipes(string _User_Id, string _Name, string _Ings, string _Desc, string _Img )
+        public Recipes(IdentityUser _User, string _Name, string _Ings, string _Desc, string _Img )
         {
-            User_Id = _User_Id;
+            User = _User;
             Name = _Name;
             Ings = _Ings;
             Desc = _Desc;

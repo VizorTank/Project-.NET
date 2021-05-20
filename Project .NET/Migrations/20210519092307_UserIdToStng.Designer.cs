@@ -8,7 +8,7 @@ using Project_.NET.Data;
 
 namespace Project_.NET.Migrations
 {
-    [DbContext(typeof(RecipesContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20210519092307_UserIdToStng")]
     partial class UserIdToStng
     {
