@@ -16,14 +16,10 @@ namespace Project_.NET.Models
 
         public string Name { get; set; }
         public string Ings { get; set; }
-
         public string Desc { get; set; }
         public int up_vote { get; set; }
-
         public int down_vote { get; set; }
-
         public string date { get; set; }
-
         public string Img { get; set; }
 
         public Recipes(IdentityUser _User, string _Name, string _Ings, string _Desc, string _Img )

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Project_.NET.Data;
 using Project_.NET.Models;
 namespace Project_.NET.Pages.Shared
@@ -21,7 +22,8 @@ namespace Project_.NET.Pages.Shared
         }
         public void OnGet()
         {
-            var RPQuerry = (from Recipes in _cont.Recipes orderby Recipes.date descending select Recipes);
+            //var RPQuerry = (from Recipes in _cont.Recipes orderby Recipes.date descending select Recipes).;
+            var RPQuerry = _cont.Recipes.Include(i => i.User);
             RP = RPQuerry.ToList();
         }
 

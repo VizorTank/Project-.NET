@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Project_.NET.Data;
 using Project_.NET.Models;
 namespace Project_.NET.Pages.Shared
@@ -21,7 +22,7 @@ namespace Project_.NET.Pages.Shared
         }
         public void OnGet()
         {
-            var RPQuerry = (from Recipes in _cont.Recipes orderby Recipes.date descending select Recipes);
+            var RPQuerry = (from Recipes in _cont.Recipes orderby Recipes.date descending select Recipes).Include(u => u.User);
             RP = RPQuerry.ToList();
         }
 
@@ -31,11 +32,11 @@ namespace Project_.NET.Pages.Shared
             DelRep(itemId);
             return  RedirectToPage("./Recipes2");
         }
-        public async Task<ActionResult> OnPostEditAsync()
+        public IActionResult OnPostEditAsync()
         {
             return  RedirectToPage("./Recipes");
         }
-        public async Task<ActionResult> OnPostLikeAsync(int itemId, string userId)
+        public IActionResult OnPostLikeAsync(int itemId, string userId)
         {
             Recipes RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
             if (RPUp != null)
@@ -46,7 +47,7 @@ namespace Project_.NET.Pages.Shared
             }
             return RedirectToPage("./Recipes2");
         }
-        public async Task<ActionResult> OnPostHateAsync(int itemId, string userId)
+        public IActionResult OnPostHateAsync(int itemId, string userId)
         {
             Recipes RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
             if (RPUp != null)
@@ -57,7 +58,7 @@ namespace Project_.NET.Pages.Shared
             }
             return RedirectToPage("./Recipes2");
         }
-        public async Task<ActionResult> OnPostFavoriteAsync()
+        public IActionResult OnPostFavoriteAsync()
         {
             return RedirectToPage("./Index");
         }
