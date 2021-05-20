@@ -12,7 +12,7 @@ namespace Project_.NET.Pages.Shared
 {
     public class Recipes2Model : PageModel
     {
-        public IList<Recipes> RP { get; set; }
+        public IList<Recipe> RP { get; set; }
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _cont;
         public Recipes2Model(ApplicationDbContext cont, UserManager<IdentityUser> userManager)
@@ -38,7 +38,7 @@ namespace Project_.NET.Pages.Shared
         }
         public IActionResult OnPostLikeAsync(int itemId, string userId)
         {
-            Recipes RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
+            Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
             if (RPUp != null)
             {
                 RPUp.up_vote = RPUp.up_vote + 1;
@@ -49,7 +49,7 @@ namespace Project_.NET.Pages.Shared
         }
         public IActionResult OnPostHateAsync(int itemId, string userId)
         {
-            Recipes RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
+            Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
             if (RPUp != null)
             {
                 RPUp.up_vote = RPUp.up_vote - 1;
@@ -64,7 +64,7 @@ namespace Project_.NET.Pages.Shared
         }
         public void DelRep(int i)
         {
-            Recipes RPDel = (from Recipes in _cont.Recipes where Recipes.Id == i orderby Recipes.date select Recipes).FirstOrDefault();
+            Recipe RPDel = (from Recipes in _cont.Recipes where Recipes.Id == i orderby Recipes.date select Recipes).FirstOrDefault();
             if(RPDel != null)
             {
                 _cont.Recipes.Remove(RPDel);

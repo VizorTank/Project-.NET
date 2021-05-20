@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Project_.NET.Models
 {
-    public class Recipes
+    public class Recipe
     {
         public int Id { get; set; }
 
@@ -22,7 +22,7 @@ namespace Project_.NET.Models
         public string date { get; set; }
         public string Img { get; set; }
 
-        public Recipes(IdentityUser _User, string _Name, string _Ings, string _Desc, string _Img )
+        public Recipe(IdentityUser _User, string _Name, string _Ings, string _Desc, string _Img )
         {
             User = _User;
             Name = _Name;
@@ -34,7 +34,7 @@ namespace Project_.NET.Models
             date = DateTime.Now.ToString();
 
         }
-        public Recipes()
+        public Recipe()
         { }
 
     }

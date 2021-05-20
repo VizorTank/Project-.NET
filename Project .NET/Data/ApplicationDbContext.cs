@@ -13,6 +13,14 @@ namespace Project_.NET.Data
             : base(options)
         {
         }
-        public DbSet<Recipes> Recipes { get; set; }
+        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Favorite>().HasKey(c => new { c.recipes, c.user });
+        }
+        
     }
 }

@@ -12,7 +12,7 @@ namespace Project_.NET.Pages.Shared
 {
     public class RecipesModel : PageModel
     {
-        public IList<Recipes> RP { get; set; }
+        public IList<Recipe> RP { get; set; }
         private readonly ApplicationDbContext _cont;
         private readonly UserManager<IdentityUser> _userManager;
         public RecipesModel(ApplicationDbContext cont, UserManager<IdentityUser> userManager)

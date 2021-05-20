@@ -37,7 +37,7 @@ namespace Project_.NET.Pages
         {
             if(ModelState.IsValid)
             {
-                Recipes rece = new Recipes(GetUser(), AddName, AddIngs, AddDesc, AddImg);
+                Recipe rece = new Recipe(GetUser(), AddName, AddIngs, AddDesc, AddImg);
                 _cont.Recipes.Add(rece);
                 _cont.SaveChanges();
                 return RedirectToPage("./Recipes");
