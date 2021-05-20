@@ -1,0 +1,62 @@
+﻿@page
+@model Project_.NET.Pages.Shared.Recipes2Model
+@{
+    ViewData["Title"] = "Lista Przepisów";
+
+
+
+    <div class="card-columns">
+        @foreach (var item in Model.RP)
+        {
+            
+                <div class="card">
+                    
+                        <div class="card-img" style="background-image: url('@item.Img'); height: 254px; width: 500px;"></div>
+                    
+                        <div class="card-body">
+                            <form method="post">
+
+                                <p class="card-text">
+                                    Autor: @Model.GetUserName(item.User_Id)
+                                    <br />
+                                    Nazwa: @item.Name
+                                    <br />
+                                    Data: @item.date <br />
+
+                                </p>
+                                @if (item.User_Id == Model.GetUserId())
+                                {
+                                    <form method="post">
+                                        @Html.Hidden("itemId", item.Id)
+                                        @Html.Hidden("userId", item.User_Id)
+                                        <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
+                                        <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
+                                        @item.up_vote
+                                        <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
+                                        <button type="submit" class="btn btn-primary" asp-page-handler="Edit">Edytuj</button>
+                                    </form>
+
+                                }
+                                else
+                                {
+                                    @Html.Hidden("itemId", item.Id)
+                                    @Html.Hidden("userId", item.User_Id)
+                            <form method="post">
+                                <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
+                                <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
+                                @item.up_vote
+                                <button type="submit" class="btn btn-secondary" asp-page-handler="Favorite">Ulubione</button>
+                            </form>
+                                }
+                            </form>
+
+                        </div>
+
+</div>
+
+        
+
+    }
+        </div>
+
+}
