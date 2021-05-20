@@ -27,8 +27,10 @@ namespace Project_.NET.Pages.Shared
 
         public string GetUserName(string userId)
         {
-            var username = _userManager.FindByIdAsync(userId);
-            return username.Result.UserName;
+            var username = _userManager.FindByIdAsync(userId).Result;
+            if (username != null)
+                return username.UserName;
+            return "Anonim";
         }
     }
 }
