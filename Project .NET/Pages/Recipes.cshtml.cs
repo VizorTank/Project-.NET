@@ -30,7 +30,7 @@ namespace Project_.NET.Pages.Shared
             var username = _userManager.FindByIdAsync(userId).Result;
             if (username != null)
                 return username.UserName;
-            return "Anonim";
+            return "U¿ytkownik zablokowany";
         }
     }
 }

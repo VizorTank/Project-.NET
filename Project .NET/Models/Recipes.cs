@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,7 +13,8 @@ namespace Project_.NET.Models
     {
         public int Id { get; set; }
 
-        public string User_Id { get; set; }
+        //[ForeignKey("PK_AspNetUsers")]
+        public IdentityUser User_Id { get; set; }
 
         public string Name { get; set; }
         public string Ings { get; set; }
@@ -25,7 +28,7 @@ namespace Project_.NET.Models
 
         public string Img { get; set; }
 
-        public Recipes(string _User_Id, string _Name, string _Ings, string _Desc, string _Img )
+        public Recipes(IdentityUser _User_Id, string _Name, string _Ings, string _Desc, string _Img )
         {
             User_Id = _User_Id;
             Name = _Name;
