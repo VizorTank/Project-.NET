@@ -13,8 +13,8 @@ namespace Project_.NET.Pages.Shared
     {
         public IList<Recipes> RP { get; set; }
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly RecipesContext _cont;
-        public Recipes2Model(RecipesContext cont, UserManager<IdentityUser> userManager)
+        private readonly ApplicationDbContext _cont;
+        public Recipes2Model(ApplicationDbContext cont, UserManager<IdentityUser> userManager)
         {
             _cont = cont;
             _userManager = userManager;
@@ -25,7 +25,7 @@ namespace Project_.NET.Pages.Shared
             RP = RPQuerry.ToList();
         }
 
-        public async Task<ActionResult> OnPostDeleteAsync(int itemId, string userId)
+        public IActionResult OnPostDeleteAsync(int itemId, string userId)
         {
             if (userId != null && userId.CompareTo(GetUserId()) == 0)
             DelRep(itemId);

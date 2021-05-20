@@ -17,18 +17,18 @@
                             <form method="post">
 
                                 <p class="card-text">
-                                    Autor: @Model.GetUserName(item.User_Id)
+                                    Autor: @item.User.UserName
                                     <br />
                                     Nazwa: @item.Name
                                     <br />
                                     Data: @item.date <br />
 
                                 </p>
-                                @if (item.User_Id == Model.GetUserId())
+                                @if (item.User.Id == Model.GetUserId())
                                 {
                                     <form method="post">
                                         @Html.Hidden("itemId", item.Id)
-                                        @Html.Hidden("userId", item.User_Id)
+                                        @Html.Hidden("userId", item.User.Id)
                                         <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
                                         <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
                                         @item.up_vote
@@ -40,7 +40,7 @@
                                 else
                                 {
                                     @Html.Hidden("itemId", item.Id)
-                                    @Html.Hidden("userId", item.User_Id)
+                                    @Html.Hidden("userId", item.User.Id)
                             <form method="post">
                                 <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
                                 <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
