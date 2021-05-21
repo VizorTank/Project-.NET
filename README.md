@@ -5,13 +5,13 @@ Platforma służy do publikowania,wyszukiwania i prezentowania przepisów.
 
 Funkcjonalności
 1. Profil użytkownika(1pkt):
-  ●jako Niezalogowany Użytkownik mam możliwość rejestracji w serwisie
+ ●jako Niezalogowany Użytkownik mam możliwość rejestracji w serwisie
   
-  ●jako Niezalogowany Użytkownik mam możliwość zresetowania hasła do własnego profilu;procedura odzyskiwania hasła powinna być bezpieczna(np.przez wysłanie linku aktywacyjnego na adres email)
+ ●jako Niezalogowany Użytkownik mam możliwość zresetowania hasła do własnego profilu;procedura odzyskiwania hasła powinna być bezpieczna(np.przez wysłanie linku aktywacyjnego na adres email)
   
-  ●jako Zalogowany Użytkowni kmogę edytować moje dane
+ ●jako Zalogowany Użytkowni kmogę edytować moje dane
   
-  ●jako Niezalogowany Użytkownik mogę się zalogować i wylogować z serwisu
+ ●jako Niezalogowany Użytkownik mogę się zalogować i wylogować z serwisu
   
 2. Zalogowany użytkownik ma możliwość opublikowania przepisu na posiłek.Przepis powinien zawierać nazwę,listę składników,opis wykonania oraz datę publikacji.Użytkownik może edytować i usuwać przepisy,które stworzył(1pkt).
 
