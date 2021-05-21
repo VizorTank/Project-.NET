@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_.NET.Data;
 
 namespace Project_.NET.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class RecipesDataModelSnapshot : ModelSnapshot
+    [Migration("20210520162703_fav")]
+    partial class fav
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,31 +246,6 @@ namespace Project_.NET.Migrations
                     b.ToTable("Favorites");
                 });
 
-            modelBuilder.Entity("Project_.NET.Models.Like", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("recipesId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("userId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("value")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("recipesId");
-
-                    b.HasIndex("userId");
-
-                    b.ToTable("Likes");
-                });
-
             modelBuilder.Entity("Project_.NET.Models.Recipe", b =>
                 {
                     b.Property<int>("Id")
@@ -359,17 +336,6 @@ namespace Project_.NET.Migrations
                 });
 
             modelBuilder.Entity("Project_.NET.Models.Favorite", b =>
-                {
-                    b.HasOne("Project_.NET.Models.Recipe", "recipes")
-                        .WithMany()
-                        .HasForeignKey("recipesId");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "user")
-                        .WithMany()
-                        .HasForeignKey("userId");
-                });
-
-            modelBuilder.Entity("Project_.NET.Models.Like", b =>
                 {
                     b.HasOne("Project_.NET.Models.Recipe", "recipes")
                         .WithMany()
