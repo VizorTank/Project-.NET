@@ -54,7 +54,7 @@ namespace Project_.NET.Pages
                 _cont.SaveChanges();
             }
 
-            return RedirectToPage("./Recipes2");
+            return RedirectToPage("./MyFavorites");
         }
         public IActionResult OnPostHateAsync(int itemId, string userId)
         {

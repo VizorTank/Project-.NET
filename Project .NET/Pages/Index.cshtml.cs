@@ -32,14 +32,14 @@ namespace Project_.NET.Pages
         {
             if (userId != null && userId.CompareTo(GetUserId()) == 0)
                 DelRep(itemId);
-            return RedirectToPage("./Recipes2");
+            return RedirectToPage("./Index");
         }
 
 
 
         public IActionResult OnPostEditAsync()
         {
-            return RedirectToPage("./Recipes");
+            return RedirectToPage("./Index");
         }
 
 
@@ -67,7 +67,7 @@ namespace Project_.NET.Pages
                 _cont.SaveChanges();
             }
 
-            return RedirectToPage("./Recipes2");
+            return RedirectToPage("./Index");
         }
         public IActionResult OnPostHateAsync(int itemId, string userId)
         {
@@ -92,7 +92,7 @@ namespace Project_.NET.Pages
                 _cont.SaveChanges();
             }
 
-            return RedirectToPage("./Recipes2");
+            return RedirectToPage("./Index");
         }
         public IActionResult OnPostFavoriteAsync(int itemId, string userId)
         {
@@ -111,7 +111,7 @@ namespace Project_.NET.Pages
                 _cont.Favorites.Update(FavQ);
                 _cont.SaveChanges();
             }
-            return RedirectToPage("./Recipes2");
+            return RedirectToPage("./Index");
         }
         public IActionResult OnPostUnFavoriteAsync(int itemId, string userId)
         {
@@ -130,7 +130,7 @@ namespace Project_.NET.Pages
                 _cont.Favorites.Update(FavQ);
                 _cont.SaveChanges();
             }
-            return RedirectToPage("./Recipes2");
+            return RedirectToPage("./Index");
         }
         public void DelRep(int i)
         {
