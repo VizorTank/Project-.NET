@@ -12,7 +12,7 @@ namespace Project_.NET.Models
     {
         public int Id { get; set; }
 
-        public IdentityUser User { get; set; }
+        public ApplicationUser User { get; set; }
 
         public string Name { get; set; }
         public string Ings { get; set; }
@@ -22,7 +22,9 @@ namespace Project_.NET.Models
         public string date { get; set; }
         public string Img { get; set; }
 
-        public Recipe(IdentityUser _User, string _Name, string _Ings, string _Desc, string _Img )
+        public ICollection<Favourite> Favourites { get; set; }
+
+        public Recipe(ApplicationUser _User, string _Name, string _Ings, string _Desc, string _Img )
         {
             User = _User;
             Name = _Name;

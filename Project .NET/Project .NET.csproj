@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20210520160231_Fav.cs" />
-    <Compile Remove="Migrations\20210520160231_Fav.Designer.cs" />
+    <Compile Remove="Migrations\20210520170821_Favorite.cs" />
+    <Compile Remove="Migrations\20210520170821_Favorite.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
