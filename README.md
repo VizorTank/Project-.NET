@@ -1,6 +1,7 @@
 # Project-.NET
 Projekt o tematyce "Przepisy" zaimplementowany w technologii .NET
 Platforma służy do publikowania,wyszukiwania i prezentowania przepisów.
+
 Funkcjonalności
 1.Profil użytkownika(1pkt):
   ●jako Niezalogowany Użytkownik mam możliwość rejestracji w serwisie
