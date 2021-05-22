@@ -1,0 +1,76 @@
+﻿@page
+@model Project_.NET.Pages.AllRecipesModel
+@{
+    ViewData["Title"] = "Lista Przepisów";
+
+
+
+    <div class="card-columns">
+        @foreach (var item in Model.RP)
+        {
+
+            <div class="card">
+
+                <div class="card-img" style="background-image: url('@item.Img'); height: 254px; width: 500px;"></div>
+
+                <div class="card-body">
+                    <form method="post">
+
+                        <p class="card-text">
+                            Autor: @item.User.UserName
+                            <br />
+                            Nazwa: @item.Name
+                            <br />
+                            Data: @item.date <br />
+
+                        </p>
+                        @if (item.User.Id == Model.GetUserId())
+                        {
+                            <form method="post">
+                                @Html.Hidden("itemId", item.Id)
+                                @Html.Hidden("userId", item.User.Id)
+                                <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
+                                <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
+                                @item.up_vote
+                                <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
+                                <button type="submit" class="btn btn-primary" asp-page-handler="Edit">Edytuj</button>
+                            </form>
+
+                        }
+                        else
+                        {
+                            @Html.Hidden("itemId", item.Id)
+                            @Html.Hidden("userId", item.User.Id)
+                            if (Model.IsFavorite(item.Id) == false)
+                            {
+                                <form method="post">
+                                    <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
+                                    <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
+                                    @item.up_vote
+                                    <button type="submit" class="btn btn-secondary" asp-page-handler="Favorite">Ulubione</button>
+                                </form>
+                            }
+
+                            else
+                            {
+                                <form method="post">
+                                    <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
+                                    <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
+                                    @item.up_vote
+                                    <button type="submit" class="btn btn-secondary" asp-page-handler="UnFavorite">Nie Ulubione</button>
+                                </form>
+                            }
+                        }
+                    </form>
+
+
+                </div>
+
+            </div>
+
+
+
+        }
+    </div>
+
+}
