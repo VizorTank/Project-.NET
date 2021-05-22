@@ -22,9 +22,10 @@ namespace Project_.NET.Models
         public ICollection<Favorite> Favorites { get; set; }
         public ICollection<Like> Likes { get; set;  }
 
-        public ICollection<Favorite> Favorites { get; set; }
-        public ICollection<Like> Likes { get; set; }
-        public Recipe(IdentityUser _User, string _Name, string _Ings, string _Desc, string _Img )
+        public Recipe()
+        { }
+
+        public Recipe(ApplicationUser _User, string _Name, string _Ings, string _Desc, string _Img )
         {
             User = _User;
             Name = _Name;

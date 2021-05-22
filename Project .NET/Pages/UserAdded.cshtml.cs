@@ -13,11 +13,11 @@ namespace Project_.NET.Pages
     public class UserAddedModel : RecipesFun
     {
 
-        public UserAddedModel(ApplicationDbContext cont, UserManager<IdentityUser> userManager) : base(cont, userManager, "./UserAdded")
+        public UserAddedModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager) : base(cont, userManager, "./UserAdded")
         { }
         public override void OnGet()
         {
-            IdentityUser user = GetUser();
+            ApplicationUser user = GetUser();
             var RPQuerry = (from Recipes in _cont.Recipes where Recipes.User==user orderby Recipes.date descending select Recipes).Include(u => u.User);
             RP = RPQuerry.ToList();
         }

@@ -14,10 +14,10 @@ namespace Project_.NET.Models
     {
         public IList<Recipe> RP { get; set; }
         public IList<Like> LDEL { get; set; }
-        protected readonly UserManager<IdentityUser> _userManager;
+        protected readonly UserManager<ApplicationUser> _userManager;
         protected readonly ApplicationDbContext _cont;
         protected readonly string _NamePage;
-        public RecipesFun(ApplicationDbContext cont, UserManager<IdentityUser> userManager, string NamePage)
+        public RecipesFun(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, string NamePage)
         {
             _cont = cont;
             _userManager = userManager;
@@ -45,19 +45,19 @@ namespace Project_.NET.Models
         {
 
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
-            IdentityUser user = GetUser();
+            ApplicationUser user = GetUser();
             Like LQ = (from Like in _cont.Likes where Like.User == user && Like.Recipe == RPUp select Like).ToList().ToList().LastOrDefault();
             if (LQ == null)
             {
-                Like newlike = new Like(RPUp, user, 1);
+                Like newlike = new Like(user, RPUp, 1);
                 _cont.Likes.Add(newlike);
                 RPUp.Votes = RPUp.Votes + 1;
                 _cont.Recipes.Update(RPUp);
                 _cont.SaveChanges();
             }
-            else if (LQ.value < 1)
+            else if (LQ.Value < 1)
             {
-                LQ.value = LQ.value + 1;
+                LQ.Value = LQ.Value + 1;
                 _cont.Likes.Update(LQ);
                 RPUp.Votes = RPUp.Votes + 1;
                 _cont.Recipes.Update(RPUp);
@@ -70,11 +70,11 @@ namespace Project_.NET.Models
         {
 
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
-            IdentityUser user = GetUser();
+            ApplicationUser user = GetUser();
             Like LQ = (from Like in _cont.Likes where Like.User == user && Like.Recipe == RPUp select Like).ToList().ToList().LastOrDefault();
             if (LQ == null)
             {
-                Like newlike = new Like(RPUp, user, -1);
+                Like newlike = new Like(user, RPUp, - 1);
                 _cont.Likes.Add(newlike);
                 RPUp.Votes = RPUp.Votes - 1;
                 _cont.Recipes.Update(RPUp);
@@ -82,7 +82,7 @@ namespace Project_.NET.Models
             }
             else if (LQ.Value > -1)
             {
-                LQ.value = LQ.value - 1;
+                LQ.Value = LQ.Value - 1;
                 _cont.Likes.Update(LQ);
                 RPUp.Votes = RPUp.Votes - 1;
                 _cont.Recipes.Update(RPUp);
@@ -95,7 +95,7 @@ namespace Project_.NET.Models
         public IActionResult OnPostFavoriteAsync(int itemId, string userId)
         {
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
-            IdentityUser user = GetUser();
+            ApplicationUser user = GetUser();
             Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.Recipe == RPUp select Favorite).ToList().LastOrDefault();
             if (FavQ == null)
             {
@@ -105,7 +105,9 @@ namespace Project_.NET.Models
             }
             else if (FavQ.value == false)
             {
-                AddFavorite(user, RPUp);
+                FavQ.value = true;
+                _cont.Favorites.Update(FavQ);
+                _cont.SaveChanges();
             }
             return RedirectToPage(_NamePage);
         }
@@ -113,7 +115,7 @@ namespace Project_.NET.Models
         public IActionResult OnPostUnFavoriteAsync(int itemId, string userId)
         {
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
-            IdentityUser user = GetUser();
+            ApplicationUser user = GetUser();
             Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.Recipe == RPUp select Favorite).ToList().LastOrDefault();
             if (FavQ == null)
             {
@@ -173,9 +175,9 @@ namespace Project_.NET.Models
             }
         }
 
-        public IdentityUser GetUser()
+        public ApplicationUser GetUser()
         {
-            Task<IdentityUser> identityUser = _userManager.GetUserAsync(HttpContext.User);
+            Task<ApplicationUser> identityUser = _userManager.GetUserAsync(HttpContext.User);
             return identityUser.Result;
         }
 

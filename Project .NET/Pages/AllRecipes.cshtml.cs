@@ -12,10 +12,9 @@ namespace Project_.NET.Pages
 {
     public class AllRecipesModel : RecipesFun
     {
-        public IList<Recipe> RP { get; set; }
-        public IList<Like> LDEL { get; set; }
 
-        public AllRecipesModel(ApplicationDbContext cont, UserManager<IdentityUser> userManager) : base(cont, userManager, "./AllRecipes")
+
+        public AllRecipesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager) : base(cont, userManager, "./AllRecipes")
         { }
 
         public override void OnGet()

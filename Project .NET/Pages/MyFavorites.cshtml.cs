@@ -15,13 +15,13 @@ namespace Project_.NET.Pages
     public class MyFavoritesModel : RecipesFun
     {
 
-        public MyFavoritesModel(ApplicationDbContext cont, UserManager<IdentityUser> userManager) : base(cont, userManager, "./MyFavorites")
+        public MyFavoritesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager) : base(cont, userManager, "./MyFavorites")
         { }
         public override void OnGet()
         {
 
             IdentityUser user = GetUser();
-            var FRQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.value == true select Favorite.Recipes);
+            var FRQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.value == true select Favorite.Recipe);
             RP = FRQ.ToList();
         }
 

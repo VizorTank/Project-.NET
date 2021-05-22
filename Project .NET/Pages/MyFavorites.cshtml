@@ -36,7 +36,7 @@
                         <form method="post">
                             <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
                             <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
-                            @item.up_vote
+                            @item.Votes
                             <button type="submit" class="btn btn-secondary" asp-page-handler="Favorite">Ulubione</button>
                         </form>
                         }
@@ -46,7 +46,7 @@
                         <form method="post">
                             <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
                             <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
-                            @item.up_vote
+                            @item.Votes
                             <button type="submit" class="btn btn-secondary" asp-page-handler="UnFavorite">Nie Ulubione</button>
                         </form>
                         }
@@ -63,4 +63,3 @@
         }
     </div>
 
-}

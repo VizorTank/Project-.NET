@@ -16,12 +16,12 @@ namespace Project_.NET.Models
 
         public Recipe Recipe { get; set; }
         
-        public IdentityUser User { get; set; }
+        public ApplicationUser User { get; set; }
         public bool value { get; set; }
 
         public Favorite()
         { }
-        public Favorite(Recipe _recipes, IdentityUser _user, bool _value)
+        public Favorite(Recipe _recipes, ApplicationUser _user, bool _value)
         {
             Recipe = _recipes;
             User = _user;

@@ -16,7 +16,7 @@ namespace Project_.NET.Pages
     {
 
 
-        public IndexModel(ApplicationDbContext cont, UserManager<IdentityUser> userManager): base (cont , userManager, "./Index")
+        public IndexModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager): base (cont , userManager, "./Index")
         {
 
         }
