@@ -15,15 +15,20 @@ namespace Project_.NET.Data
         {
         }
         public DbSet<Recipe> Recipes { get; set; }
-        public DbSet<Favourite> Favourites { get; set; }
-        
+        public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Like> Likes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             
-            modelBuilder.Entity<Favourite>().HasKey(c => new { c.RecipeId, c.UserId });
-            modelBuilder.Entity<Favourite>().HasOne(f => f.User).WithMany(u => u.Favourites).HasForeignKey(f => f.UserId);
-            modelBuilder.Entity<Favourite>().HasOne(f => f.Recipe).WithMany(r => r.Favourites).HasForeignKey(f => f.RecipeId);
+            modelBuilder.Entity<Favorite>().HasKey(c => new { c.RecipeId, c.UserId });
+            modelBuilder.Entity<Favorite>().HasOne(f => f.User).WithMany(u => u.Favorites).HasForeignKey(f => f.UserId);
+            modelBuilder.Entity<Favorite>().HasOne(f => f.Recipe).WithMany(r => r.Favorites).HasForeignKey(f => f.RecipeId);
+
+            modelBuilder.Entity<Like>().HasKey(c => new { c.RecipeId, c.UserId });
+            modelBuilder.Entity<Like>().HasOne(f => f.User).WithMany(u => u.Likes).HasForeignKey(f => f.UserId);
+            modelBuilder.Entity<Like>().HasOne(f => f.Recipe).WithMany(r => r.Likes).HasForeignKey(f => f.RecipeId);
         }
         
     }

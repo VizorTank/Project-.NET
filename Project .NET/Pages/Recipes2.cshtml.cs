@@ -25,131 +25,146 @@ namespace Project_.NET.Pages
             var RPQuerry = (from Recipes in _cont.Recipes orderby Recipes.date descending select Recipes).Include(u => u.User);
             RP = RPQuerry.ToList();
         }
+        public IActionResult OnPostEditAsync()
+        {
+            return RedirectToPage("./Recipes");
+        }
 
+        // Recipes
         public IActionResult OnPostDeleteAsync(int itemId, string userId)
         {
             if (userId != null && userId.CompareTo(GetUserId()) == 0)
-            DelRep(itemId);
+            {
+                DelRep(itemId);
+            }
+            
             return  RedirectToPage("./Recipes2");
         }
-        
-        
-        
-        public IActionResult OnPostEditAsync()
+        public void DelRep(int itemId)
         {
-            return  RedirectToPage("./Recipes");
-        }
-
-
-
-        public IActionResult OnPostLikeAsync(int itemId, string userId)
-        {
-
-            Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
-            IdentityUser user = GetUser();
-           Like LQ = (from Like in _cont.Likes where Like.user == user && Like.recipes == RPUp select Like).ToList().ToList().LastOrDefault();
-            if(LQ==null)
+            Recipe RPDel = GetRecipe(itemId);
+            if (RPDel != null)
             {
-                Like newlike = new Like(RPUp, user, 1);
-                _cont.Likes.Add(newlike);
-                RPUp.up_vote = RPUp.up_vote + 1;
-                _cont.Recipes.Update(RPUp);
+                _cont.Recipes.Remove(RPDel);
                 _cont.SaveChanges();
             }
-            else if(LQ.value<1)
+        }
+
+        // Likes
+        public IActionResult OnPostLikeAsync(int itemId, string userId)
+        {
+            Recipe RPUp = GetRecipe(itemId);
+            ApplicationUser user = GetUser();
+            Like LQ = GetLike(user, RPUp);
+            if (LQ == null)
             {
-                LQ.value = LQ.value + 1;
-                _cont.Likes.Update(LQ);
-                RPUp.up_vote = RPUp.up_vote + 1;
-                _cont.Recipes.Update(RPUp);
-                _cont.SaveChanges();
+                AddLike(user, RPUp, 1);
+            }
+            else if (LQ.Value < 1)
+            {
+                ModifyLike(RPUp, LQ, 1);
             }
 
             return RedirectToPage("./Recipes2");
         }
         public IActionResult OnPostHateAsync(int itemId, string userId)
         {
-
-            Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
-            IdentityUser user = GetUser();
-            Like LQ = (from Like in _cont.Likes where Like.user == user && Like.recipes == RPUp select Like).ToList().ToList().LastOrDefault();
+            Recipe RPUp = GetRecipe(itemId);
+            ApplicationUser user = GetUser();
+            Like LQ = GetLike(user, RPUp);
             if (LQ == null)
             {
-                Like newlike = new Like(RPUp, user, -1);
-                _cont.Likes.Add(newlike);
-                RPUp.up_vote = RPUp.up_vote - 1;
-                _cont.Recipes.Update(RPUp);
-                _cont.SaveChanges();
+                AddLike(user, RPUp, -1);
             }
-            else if (LQ.value > -1)
+            else if (LQ.Value > -1)
             {
-                LQ.value = LQ.value - 1;
-                _cont.Likes.Update(LQ);
-                RPUp.up_vote = RPUp.up_vote - 1;
-                _cont.Recipes.Update(RPUp);
-                _cont.SaveChanges();
+                ModifyLike(RPUp, LQ, -1);
             }
 
             return RedirectToPage("./Recipes2");
         }
+
+        private void ModifyLike(Recipe RPUp, Like LQ, int value)
+        {
+            LQ.Value = LQ.Value + value;
+            _cont.Likes.Update(LQ);
+            RPUp.up_vote = RPUp.up_vote + value;
+            _cont.Recipes.Update(RPUp);
+            _cont.SaveChanges();
+        }
+        private void AddLike(ApplicationUser user, Recipe RPUp, int value)
+        {
+            Like newlike = new Like(user, RPUp, value);
+            _cont.Likes.Add(newlike);
+            RPUp.up_vote = RPUp.up_vote + value;
+            _cont.Recipes.Update(RPUp);
+            _cont.SaveChanges();
+        }
+        private Like GetLike(ApplicationUser user, Recipe RPUp)
+        {
+            return (from Like in _cont.Likes where Like.User == user && Like.Recipe == RPUp select Like).ToList().ToList().LastOrDefault();
+        }
+
+        // Favorites
         public IActionResult OnPostFavoriteAsync(int itemId, string userId)
         {
-            Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
-            IdentityUser user = GetUser();
-            Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.user == user && Favorite.recipes == RPUp select Favorite).ToList().LastOrDefault();
-            if(FavQ==null)
+            Recipe RPUp = GetRecipe(itemId);
+            ApplicationUser user = GetUser();
+            Favorite FavQ = GetFavorites(user, RPUp);
+            if (FavQ==null)
             {
-                Favorite favi = new Favorite(RPUp, user, true);
-                _cont.Favorites.Add(favi);
-                _cont.SaveChanges();
+                AddFavorite(user, RPUp);
             }
-            else if(FavQ.value==false)
-            {
-                FavQ.value = true;
-                _cont.Favorites.Update(FavQ);
-                _cont.SaveChanges();
-            }
+
             return RedirectToPage("./Recipes2");
         }
+
         public IActionResult OnPostUnFavoriteAsync(int itemId, string userId)
         {
-            Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
-            IdentityUser user = GetUser();
-            Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.user == user && Favorite.recipes == RPUp select Favorite).ToList().LastOrDefault();
-            if (FavQ == null)
+            Recipe RPUp = GetRecipe(itemId);
+            ApplicationUser user = GetUser();
+            Favorite FavQ = GetFavorites(user, RPUp);
+            if (FavQ != null)
             {
-                Favorite favi = new Favorite(RPUp, user, false);
-                _cont.Favorites.Add(favi);
-                _cont.SaveChanges();
+                DelFavorite(FavQ);
             }
-            else if (FavQ.value == true)
-            {
-                FavQ.value = false;
-                _cont.Favorites.Update(FavQ);
-                _cont.SaveChanges();
-            }
+            
             return RedirectToPage("./Recipes2");
         }
-        public void DelRep(int i)
+
+        private void DelFavorite(Favorite FavQ)
         {
-            Recipe RPDel = (from Recipes in _cont.Recipes where Recipes.Id == i orderby Recipes.date select Recipes).FirstOrDefault();
-            if(RPDel != null)
-            {
-                _cont.Recipes.Remove(RPDel);
-                _cont.SaveChanges();
-            }
+            _cont.Favorites.Remove(FavQ);
+            _cont.SaveChanges();
         }
-        public bool UserProperty(string iduser)
+        private void AddFavorite(ApplicationUser user, Recipe RPUp)
         {
-            if (iduser == _userManager.GetUserId(HttpContext.User))
+            Favorite favi = new Favorite(user, RPUp, true);
+            _cont.Favorites.Add(favi);
+            _cont.SaveChanges();
+        }
+
+        // Other functions
+        public ApplicationUser GetUser()
+        {
+            Task<ApplicationUser> identityUser = _userManager.GetUserAsync(HttpContext.User);
+            return identityUser.Result;
+        }
+        private Recipe GetRecipe(int itemId)
+        {
+            return (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
+        }
+        private Favorite GetFavorites(ApplicationUser user, Recipe RPUp)
+        {
+            return (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.Recipe == RPUp select Favorite).ToList().LastOrDefault();
+        }
+
+        public bool UserProperty(string userId)
+        {
+            if (userId == _userManager.GetUserId(HttpContext.User))
                 return true;
             else
                 return false;
-        }
-        public IdentityUser GetUser()
-        {
-            Task<IdentityUser> identityUser = _userManager.GetUserAsync(HttpContext.User);
-            return identityUser.Result;
         }
         public string GetUserName(string userId)
         {
@@ -162,19 +177,14 @@ namespace Project_.NET.Pages
         {
             return _userManager.GetUserId(HttpContext.User);
         }
-       
         public bool IsFavorite(int itemId)
         {
-            IdentityUser user = GetUser();
-            Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
-            Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.user == user && Favorite.recipes == RPUp select Favorite).ToList().LastOrDefault();
-            if (FavQ.value == true)
+            ApplicationUser user = GetUser();
+            Recipe RPUp = GetRecipe(itemId);
+            Favorite FavQ = GetFavorites(user, RPUp);
+            if (FavQ != null)
                 return true;
             else return false;
-        }
-        public bool isFalse()
-        {
-            return false;
         }
     }
 }

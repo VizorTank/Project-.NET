@@ -11,6 +11,14 @@ namespace Project_.NET.Models
         public string UserId { get; set; }
         public Recipe Recipe { get; set; }
         public ApplicationUser User { get; set; }
-        public int value { get; set; }
+        public int Value { get; set; }
+
+        public Like() { }
+        public Like(ApplicationUser user, Recipe recipe, int value)
+        {
+            User = user;
+            Recipe = recipe;
+            Value = value;
+        }
     }
 }

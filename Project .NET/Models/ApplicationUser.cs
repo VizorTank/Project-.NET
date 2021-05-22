@@ -8,6 +8,7 @@ namespace Project_.NET.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public ICollection<Favourite> Favourites { get; set; }
+        public ICollection<Favorite> Favorites { get; set; }
+        public ICollection<Like> Likes { get; set; }
     }
 }
