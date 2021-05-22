@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace Project_.NET.Models
 {
-    public class Like
+    public class Favorite
     {
         public int Id { get; set; }
 
         public Recipe recipes { get; set; }
-
+        
         public IdentityUser user { get; set; }
-        public int value { get; set; }
+        public bool value { get; set; }
 
-        public Like()
+        public Favorite()
         { }
-        public Like(Recipe _recipes, IdentityUser _user, int _value)
+        public Favorite(Recipe _recipes, IdentityUser _user, bool _value)
         {
             recipes = _recipes;
             user = _user;
