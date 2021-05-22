@@ -40,9 +40,7 @@ namespace Project_.NET.Models
         {
             return RedirectToPage("./Recipes");
         }
-
-
-
+        // Likes
         public IActionResult OnPostLikeAsync(int itemId, string userId)
         {
 
@@ -82,7 +80,7 @@ namespace Project_.NET.Models
                 _cont.Recipes.Update(RPUp);
                 _cont.SaveChanges();
             }
-            else if (LQ.value > -1)
+            else if (LQ.Value > -1)
             {
                 LQ.value = LQ.value - 1;
                 _cont.Likes.Update(LQ);
@@ -93,6 +91,7 @@ namespace Project_.NET.Models
 
             return RedirectToPage(_NamePage);
         }
+        // Favorites
         public IActionResult OnPostFavoriteAsync(int itemId, string userId)
         {
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
@@ -106,12 +105,11 @@ namespace Project_.NET.Models
             }
             else if (FavQ.value == false)
             {
-                FavQ.value = true;
-                _cont.Favorites.Update(FavQ);
-                _cont.SaveChanges();
+                AddFavorite(user, RPUp);
             }
             return RedirectToPage(_NamePage);
         }
+
         public IActionResult OnPostUnFavoriteAsync(int itemId, string userId)
         {
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();

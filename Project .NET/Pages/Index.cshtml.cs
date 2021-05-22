@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Project_.NET.Data;
 using Project_.NET.Models;
+using Project_.NET.Secrvices;
 
 namespace Project_.NET.Pages
 {

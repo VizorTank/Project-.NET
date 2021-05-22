@@ -11,9 +11,7 @@ namespace Project_.NET.Models
     public class Recipe
     {
         public int Id { get; set; }
-
-        public IdentityUser User { get; set; }
-
+        public ApplicationUser User { get; set; }
         public string Name { get; set; }
         public string Ings { get; set; }
         public string Desc { get; set; }
@@ -21,6 +19,8 @@ namespace Project_.NET.Models
 
         public string date { get; set; }
         public string Img { get; set; }
+        public ICollection<Favorite> Favorites { get; set; }
+        public ICollection<Like> Likes { get; set;  }
 
         public ICollection<Favorite> Favorites { get; set; }
         public ICollection<Like> Likes { get; set; }
@@ -35,8 +35,5 @@ namespace Project_.NET.Models
             date = DateTime.Now.ToString();
 
         }
-        public Recipe()
-        { }
-
     }
 }
