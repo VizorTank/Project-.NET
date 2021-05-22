@@ -1,5 +1,5 @@
 ﻿@page
-@model Project_.NET.Pages.Shared.Recipes2Model
+@model Project_.NET.Pages.Recipes2Model
 @{
     ViewData["Title"] = "Lista Przepisów";
 
@@ -41,14 +41,28 @@
                                 {
                                     @Html.Hidden("itemId", item.Id)
                                     @Html.Hidden("userId", item.User.Id)
-                            <form method="post">
-                                <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
-                                <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
-                                @item.up_vote
-                                <button type="submit" class="btn btn-secondary" asp-page-handler="Favorite">Ulubione</button>
-                            </form>
+                                    if (Model.IsFavorite(item.Id) == false)
+                                    {
+                                        <form method="post">
+                                            <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
+                                            <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
+                                            @item.up_vote
+                                            <button type="submit" class="btn btn-secondary" asp-page-handler="Favorite">Ulubione</button>
+                                        </form>
+                                    }
+
+                                    else
+                                    {
+                                <form method="post">
+                                    <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
+                                    <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
+                                    @item.up_vote
+                                    <button type="submit" class="btn btn-secondary" asp-page-handler="UnFavorite">Nie Ulubione</button>
+                                </form>
+                                    }
                                 }
                             </form>
+                                
 
                         </div>
 

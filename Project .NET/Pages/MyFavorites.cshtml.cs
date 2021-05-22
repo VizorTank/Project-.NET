@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,37 +11,24 @@ using Project_.NET.Models;
 
 namespace Project_.NET.Pages
 {
-    public class IndexModel : PageModel
+    public class MyFavoritesModel : PageModel
     {
-
         public IList<Recipe> RP { get; set; }
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _cont;
-        public IndexModel(ApplicationDbContext cont, UserManager<IdentityUser> userManager)
+        public MyFavoritesModel(ApplicationDbContext cont, UserManager<IdentityUser> userManager)
         {
             _cont = cont;
             _userManager = userManager;
         }
         public void OnGet()
         {
-            var RPQuerry = (from Recipes in _cont.Recipes orderby Recipes.up_vote descending select Recipes).Include(u => u.User).Take(10);
-            RP = RPQuerry.ToList();
+
+            IdentityUser user = GetUser();
+            var RPQuerry = (from Recipes in _cont.Recipes/* where from Favorite in _cont.Favorites where Favorite.user == user && Favorite.value == true select Favorite.recipes*/ orderby Recipes.date descending select Recipes).Include(u => u.User);
+            var FRQ = (from Favorite in _cont.Favorites where Favorite.user == user && Favorite.value == true select Favorite.recipes);
+            RP = FRQ.ToList();
         }
-
-        public IActionResult OnPostDeleteAsync(int itemId, string userId)
-        {
-            if (userId != null && userId.CompareTo(GetUserId()) == 0)
-                DelRep(itemId);
-            return RedirectToPage("./Recipes2");
-        }
-
-
-
-        public IActionResult OnPostEditAsync()
-        {
-            return RedirectToPage("./Recipes");
-        }
-
 
 
         public IActionResult OnPostLikeAsync(int itemId, string userId)
@@ -92,7 +79,7 @@ namespace Project_.NET.Pages
                 _cont.SaveChanges();
             }
 
-            return RedirectToPage("./Recipes2");
+            return RedirectToPage("./MyFavorites");
         }
         public IActionResult OnPostFavoriteAsync(int itemId, string userId)
         {
@@ -111,7 +98,7 @@ namespace Project_.NET.Pages
                 _cont.Favorites.Update(FavQ);
                 _cont.SaveChanges();
             }
-            return RedirectToPage("./Recipes2");
+            return RedirectToPage("./MyFavorites");
         }
         public IActionResult OnPostUnFavoriteAsync(int itemId, string userId)
         {
@@ -130,7 +117,7 @@ namespace Project_.NET.Pages
                 _cont.Favorites.Update(FavQ);
                 _cont.SaveChanges();
             }
-            return RedirectToPage("./Recipes2");
+            return RedirectToPage("./MyFavorites");
         }
         public void DelRep(int i)
         {
@@ -164,7 +151,6 @@ namespace Project_.NET.Pages
         {
             return _userManager.GetUserId(HttpContext.User);
         }
-
         public bool IsFavorite(int itemId)
         {
             IdentityUser user = GetUser();
@@ -174,9 +160,7 @@ namespace Project_.NET.Pages
                 return true;
             else return false;
         }
-        public bool isFalse()
-        {
-            return false;
-        }
     }
-}
+
+    }
+

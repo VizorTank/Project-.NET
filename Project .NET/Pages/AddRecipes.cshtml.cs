@@ -40,7 +40,7 @@ namespace Project_.NET.Pages
                 Recipe rece = new Recipe(GetUser(), AddName, AddIngs, AddDesc, AddImg);
                 _cont.Recipes.Add(rece);
                 _cont.SaveChanges();
-                return RedirectToPage("./Recipes");
+                return RedirectToPage("./Recipes2");
             }
             return Page();
         }
