@@ -13,9 +13,9 @@ namespace Project_.NET.Pages
     public class Recipes2Model : PageModel
     {
         public IList<Recipe> RP { get; set; }
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _cont;
-        public Recipes2Model(ApplicationDbContext cont, UserManager<IdentityUser> userManager)
+        public Recipes2Model(ApplicationDbContext cont, UserManager<ApplicationUser> userManager)
         {
             _cont = cont;
             _userManager = userManager;
