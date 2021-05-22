@@ -20,7 +20,7 @@ namespace Project_.NET.Pages
         {
 
             IdentityUser user = GetUser();
-            var FRQ = (from Favorite in _cont.Favorites where Favorite.user == user && Favorite.value == true select Favorite.recipes);
+            var FRQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.value == true select Favorite.Recipes);
             RP = FRQ.ToList();
         }
 

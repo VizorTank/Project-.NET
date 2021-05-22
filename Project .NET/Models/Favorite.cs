@@ -11,19 +11,20 @@ namespace Project_.NET.Models
 {
     public class Favorite
     {
-        public int Id { get; set; }
+        public int RecipeId { get; set; }
+        public string UserId { get; set; }
 
-        public Recipe recipes { get; set; }
+        public Recipe Recipe { get; set; }
         
-        public IdentityUser user { get; set; }
+        public IdentityUser User { get; set; }
         public bool value { get; set; }
 
         public Favorite()
         { }
         public Favorite(Recipe _recipes, IdentityUser _user, bool _value)
         {
-            recipes = _recipes;
-            user = _user;
+            Recipe = _recipes;
+            User = _user;
             value = _value;
         }
     }

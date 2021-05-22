@@ -48,12 +48,12 @@ namespace Project_.NET.Models
 
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
             IdentityUser user = GetUser();
-            Like LQ = (from Like in _cont.Likes where Like.user == user && Like.recipes == RPUp select Like).ToList().ToList().LastOrDefault();
+            Like LQ = (from Like in _cont.Likes where Like.User == user && Like.Recipe == RPUp select Like).ToList().ToList().LastOrDefault();
             if (LQ == null)
             {
                 Like newlike = new Like(RPUp, user, 1);
                 _cont.Likes.Add(newlike);
-                RPUp.up_vote = RPUp.up_vote + 1;
+                RPUp.Votes = RPUp.Votes + 1;
                 _cont.Recipes.Update(RPUp);
                 _cont.SaveChanges();
             }
@@ -61,7 +61,7 @@ namespace Project_.NET.Models
             {
                 LQ.value = LQ.value + 1;
                 _cont.Likes.Update(LQ);
-                RPUp.up_vote = RPUp.up_vote + 1;
+                RPUp.Votes = RPUp.Votes + 1;
                 _cont.Recipes.Update(RPUp);
                 _cont.SaveChanges();
             }
@@ -73,12 +73,12 @@ namespace Project_.NET.Models
 
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
             IdentityUser user = GetUser();
-            Like LQ = (from Like in _cont.Likes where Like.user == user && Like.recipes == RPUp select Like).ToList().ToList().LastOrDefault();
+            Like LQ = (from Like in _cont.Likes where Like.User == user && Like.Recipe == RPUp select Like).ToList().ToList().LastOrDefault();
             if (LQ == null)
             {
                 Like newlike = new Like(RPUp, user, -1);
                 _cont.Likes.Add(newlike);
-                RPUp.up_vote = RPUp.up_vote - 1;
+                RPUp.Votes = RPUp.Votes - 1;
                 _cont.Recipes.Update(RPUp);
                 _cont.SaveChanges();
             }
@@ -86,7 +86,7 @@ namespace Project_.NET.Models
             {
                 LQ.value = LQ.value - 1;
                 _cont.Likes.Update(LQ);
-                RPUp.up_vote = RPUp.up_vote - 1;
+                RPUp.Votes = RPUp.Votes - 1;
                 _cont.Recipes.Update(RPUp);
                 _cont.SaveChanges();
             }
@@ -97,7 +97,7 @@ namespace Project_.NET.Models
         {
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
             IdentityUser user = GetUser();
-            Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.user == user && Favorite.recipes == RPUp select Favorite).ToList().LastOrDefault();
+            Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.Recipe == RPUp select Favorite).ToList().LastOrDefault();
             if (FavQ == null)
             {
                 Favorite favi = new Favorite(RPUp, user, true);
@@ -116,7 +116,7 @@ namespace Project_.NET.Models
         {
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
             IdentityUser user = GetUser();
-            Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.user == user && Favorite.recipes == RPUp select Favorite).ToList().LastOrDefault();
+            Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.Recipe == RPUp select Favorite).ToList().LastOrDefault();
             if (FavQ == null)
             {
                 Favorite favi = new Favorite(RPUp, user, false);
@@ -141,7 +141,7 @@ namespace Project_.NET.Models
                 while (true)
                 {
 
-                    Like LikeDEL = (from Like in _cont.Likes where Like.recipes == RPDel select Like).FirstOrDefault();
+                    Like LikeDEL = (from Like in _cont.Likes where Like.Recipe == RPDel select Like).FirstOrDefault();
                     if (LikeDEL == null)
                     {
                         break;
@@ -157,7 +157,7 @@ namespace Project_.NET.Models
                 while (true)
                 {
 
-                    Favorite FavDEL = (from Favorite in _cont.Favorites where Favorite.recipes == RPDel select Favorite).FirstOrDefault();
+                    Favorite FavDEL = (from Favorite in _cont.Favorites where Favorite.Recipe == RPDel select Favorite).FirstOrDefault();
                     if (FavDEL == null)
                     {
                         break;
@@ -191,7 +191,7 @@ namespace Project_.NET.Models
         {
             IdentityUser user = GetUser();
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
-            Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.user == user && Favorite.recipes == RPUp select Favorite).ToList().LastOrDefault();
+            Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.Recipe == RPUp select Favorite).ToList().LastOrDefault();
             if (FavQ == null)
             {
                 return false;

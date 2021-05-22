@@ -21,7 +21,7 @@ namespace Project_.NET.Pages
         }
         public override void OnGet()
         {
-            var RPQuerry = (from Recipes in _cont.Recipes orderby Recipes.up_vote descending select Recipes).Include(u => u.User).Take(10);
+            var RPQuerry = (from Recipes in _cont.Recipes orderby Recipes.Votes descending select Recipes).Include(u => u.User).Take(10);
             RP = RPQuerry.ToList();
         }
 
