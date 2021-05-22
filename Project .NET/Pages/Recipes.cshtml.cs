@@ -14,8 +14,8 @@ namespace Project_.NET.Pages.Shared
     {
         public IList<Recipe> RP { get; set; }
         private readonly ApplicationDbContext _cont;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public RecipesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager)
+        private readonly UserManager<IdentityUser> _userManager;
+        public RecipesModel(ApplicationDbContext cont, UserManager<IdentityUser> userManager)
         {
             _cont = cont;
             _userManager = userManager;
