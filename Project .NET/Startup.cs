@@ -41,6 +41,12 @@ namespace Project_.NET
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddRazorPages();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options => { 
+                options.IdleTimeout = TimeSpan.FromSeconds(10000); 
+                options.Cookie.HttpOnly = true; 
+                options.Cookie.IsEssential = true; 
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,7 +71,7 @@ namespace Project_.NET
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
