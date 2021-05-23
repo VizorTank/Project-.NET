@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
 using Project_.NET.Data;
-using Project_.NET.Migrations;
-using Microsoft.EntityFrameworkCore;
+
+
+using Project_.NET.Models;
 
 namespace Project_.NET.Pages
 {
@@ -32,24 +33,30 @@ namespace Project_.NET.Pages
             _recipesContext = recipesContext;
         }
 
-        public void OnGet()
-        {
+        
+        
+       
+           //var Rp = (from receipe in _recipesContext.Recipes where receipe.Name == SearchString || receipe.User_Id == SearchString orderby receipe.date descending select receipe);
 
-        }
+            //Receipe = Rp.ToList();
+        
 
         public async Task OnGetAsync()
         {
-            var receipes = from m in _recipesContext.Recipes
-                         select m;
+            var receipes = (from m in _recipesContext.Recipes 
+                         select m);
 
             if (!string.IsNullOrEmpty(SearchString))
             {
-                receipes = receipes.Where(s => s.Name.Contains(SearchString) || s.User_Id.Contains(SearchString));
+                receipes = (from m in _recipesContext.Recipes where m.Name==SearchString || m.User_Id==SearchString orderby m.date descending select m);
             }
 
-            Receipe = (IList<Recipes>)await receipes.AsQueryable().ToListAsync();
+            
+
+            Receipe = await receipes.ToListAsync();
            
         }
+        /*
         [HttpPost]
         public ActionResult Index(string ModelZnajdz)
         {
@@ -77,7 +84,7 @@ namespace Project_.NET.Pages
             }
 
             return View(await movies.ToListAsync());
-        }
+        }*/
 
     }
 }
