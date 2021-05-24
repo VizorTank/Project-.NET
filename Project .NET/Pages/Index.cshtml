@@ -13,14 +13,26 @@
             <input type="submit" value="Search" />
         </p>
     </form>
-
-    <div class="col-12">
-        @{
-            if (TempData.Peek("Message") != null)
-            {
-                <br />
-                <p>@TempData.Peek("Message")</p>
-            }
-        }
-    </div>
 </div>
+    <table class="table">
+
+        <tbody>
+            @foreach (var item in Model.Receipe)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User_Id)
+                    </td>
+                   
+                
+                </tr>
+            }
+        </tbody>
+    </table>
+
