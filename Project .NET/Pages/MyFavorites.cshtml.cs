@@ -13,6 +13,7 @@ using Project_.NET.Models;
 
 namespace Project_.NET.Pages
 {
+    [Authorize]
     public class MyFavoritesModel : RecipesFun
     {
 

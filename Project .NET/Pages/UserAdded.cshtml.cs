@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using Project_.NET.Data;
 using Project_.NET.Models;
 namespace Project_.NET.Pages
 {
+    [Authorize]
     public class UserAddedModel : RecipesFun
     {
 
