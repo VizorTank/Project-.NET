@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,11 +19,14 @@ namespace Project_.NET.Models
         protected readonly UserManager<ApplicationUser> _userManager;
         protected readonly ApplicationDbContext _cont;
         protected readonly string _NamePage;
-        public RecipesFun(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, string NamePage)
+        private readonly IWebHostEnvironment _webHostEnvironmen;
+
+        public RecipesFun(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, string NamePage, IWebHostEnvironment webHostEnvironmen)
         {
             _cont = cont;
             _userManager = userManager;
             _NamePage = NamePage;
+            _webHostEnvironmen = webHostEnvironmen;
         }
 
         public virtual void OnGet()
@@ -169,9 +174,20 @@ namespace Project_.NET.Models
 
 
                 }
+                removeFoto(RPDel.Img);
                 _cont.Recipes.Remove(RPDel);
 
                 _cont.SaveChanges();
+            }
+        }
+        public void removeFoto(string imgname)
+        {
+            if(imgname.Contains("../images/"))
+            if(imgname!=null)
+            {
+                imgname.Replace("../images/", "");
+                string filePath =Path.Combine(_webHostEnvironmen.WebRootPath,"images", imgname);
+                System.IO.File.Delete(filePath);
             }
         }
 
