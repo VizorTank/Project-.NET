@@ -1,0 +1,14 @@
+﻿@page
+@model Project_.NET.Pages.AllCategoriesModel
+@{
+}
+
+@foreach (var item in Model.Categories)
+{
+<form method="post">
+    @item.Name
+    @Html.Hidden("itemId", item.Name)
+    <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
+    <br />
+</form>
+}

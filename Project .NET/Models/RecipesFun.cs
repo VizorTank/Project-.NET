@@ -136,41 +136,29 @@ namespace Project_.NET.Models
             Recipe RPDel = (from Recipes in _cont.Recipes where Recipes.Id == i orderby Recipes.date select Recipes).FirstOrDefault();
             if (RPDel != null)
             {
-
-
+                /*
                 while (true)
                 {
-
                     Like LikeDEL = (from Like in _cont.Likes where Like.Recipe == RPDel select Like).FirstOrDefault();
                     if (LikeDEL == null)
                     {
                         break;
-
                     }
                     _cont.Likes.Remove(LikeDEL);
-
-
                     _cont.SaveChanges();
-
-
                 }
                 while (true)
                 {
-
                     Favorite FavDEL = (from Favorite in _cont.Favorites where Favorite.Recipe == RPDel select Favorite).FirstOrDefault();
                     if (FavDEL == null)
                     {
                         break;
-
                     }
                     _cont.Favorites.Remove(FavDEL);
-
                     _cont.SaveChanges();
-
-
                 }
+                */
                 _cont.Recipes.Remove(RPDel);
-
                 _cont.SaveChanges();
             }
         }

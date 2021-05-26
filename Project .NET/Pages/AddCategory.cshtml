@@ -1,0 +1,14 @@
+﻿@page
+@model Project_.NET.Pages.AddCategoryModel
+@{
+}
+<div class="form-group">
+    <form method="post">
+        <div class="form-group">
+            <small> <span asp-validation-for="CategoryName" class="text-danger"></span> <br /></small>
+            <label for="CategoryName">Nazwa Kategorii:</label><br />
+            <input name="CategoryName" /><br />
+        </div>
+        <button type="submit" class="btn btn-primary">Zatwierdź</button><br />
+    </form>
+</div>
