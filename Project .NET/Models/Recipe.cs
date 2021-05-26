@@ -21,6 +21,7 @@ namespace Project_.NET.Models
         public string Img { get; set; }
         public ICollection<Favorite> Favorites { get; set; }
         public ICollection<Like> Likes { get; set;  }
+        public ICollection<RecipeCategory> RecipeCategories { get; set; }
 
         public Recipe()
         { }
