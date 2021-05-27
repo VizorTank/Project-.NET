@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +13,7 @@ using Project_.NET.Data;
 
 namespace Project_.NET.Models
 {
+    
     public class RecipesFun : PageModel
     {
         public IList<Recipe> RP { get; set; }
@@ -17,13 +21,16 @@ namespace Project_.NET.Models
         protected readonly UserManager<ApplicationUser> _userManager;
         protected readonly ApplicationDbContext _cont;
         protected readonly string _NamePage;
-        public RecipesFun(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, string NamePage)
+        private readonly IWebHostEnvironment _webHostEnvironmen;
+
+        public RecipesFun(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, string NamePage, IWebHostEnvironment webHostEnvironmen)
         {
             _cont = cont;
             _userManager = userManager;
             _NamePage = NamePage;
+            _webHostEnvironmen = webHostEnvironmen;
         }
-
+        
         public virtual void OnGet()
         { }
 
@@ -35,7 +42,7 @@ namespace Project_.NET.Models
         }
 
 
-
+        
         public IActionResult OnPostEditAsync()
         {
             return RedirectToPage("./Recipes");
@@ -46,6 +53,7 @@ namespace Project_.NET.Models
 
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
             ApplicationUser user = GetUser();
+            if (user == null) { return RedirectToPage(_NamePage); }
             Like LQ = (from Like in _cont.Likes where Like.User == user && Like.Recipe == RPUp select Like).ToList().ToList().LastOrDefault();
             if (LQ == null)
             {
@@ -71,6 +79,7 @@ namespace Project_.NET.Models
 
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
             ApplicationUser user = GetUser();
+            if (user == null) { return RedirectToPage(_NamePage); } 
             Like LQ = (from Like in _cont.Likes where Like.User == user && Like.Recipe == RPUp select Like).ToList().ToList().LastOrDefault();
             if (LQ == null)
             {
@@ -96,6 +105,7 @@ namespace Project_.NET.Models
         {
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
             ApplicationUser user = GetUser();
+            if (user == null) { return RedirectToPage(_NamePage); }
             Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.Recipe == RPUp select Favorite).ToList().LastOrDefault();
             if (FavQ == null)
             {
@@ -111,7 +121,7 @@ namespace Project_.NET.Models
             }
             return RedirectToPage(_NamePage);
         }
-
+        
         public IActionResult OnPostUnFavoriteAsync(int itemId, string userId)
         {
             Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
@@ -158,8 +168,19 @@ namespace Project_.NET.Models
                     _cont.SaveChanges();
                 }
                 */
+                removeFoto(RPDel.Img);
                 _cont.Recipes.Remove(RPDel);
                 _cont.SaveChanges();
+            }
+        }
+        public void removeFoto(string imgname)
+        {
+            if(imgname.Contains("../images/"))
+            if(imgname!=null)
+            {
+                imgname.Replace("../images/", "");
+                string filePath =Path.Combine(_webHostEnvironmen.WebRootPath,"images", imgname);
+                System.IO.File.Delete(filePath);
             }
         }
 

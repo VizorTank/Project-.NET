@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,7 +17,7 @@ namespace Project_.NET.Pages
     {
 
 
-        public IndexModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager): base (cont , userManager, "./Index")
+        public IndexModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base (cont , userManager, "./Index",webHostEnvironment)
         {
 
         }

@@ -9,6 +9,9 @@ using Project_.NET.Data;
 using Project_.NET.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace Project_.NET.Pages
 {
@@ -17,6 +20,7 @@ namespace Project_.NET.Pages
     {
         private readonly ApplicationDbContext _cont;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         [BindProperty, Required(ErrorMessage = "Pole Nazwa jest wymagane "), MaxLength(50, ErrorMessage = "Miej ni¿ 50 znaków")]
         public string AddName { get; set; }
@@ -25,18 +29,27 @@ namespace Project_.NET.Pages
 
         [BindProperty, Required(ErrorMessage = "Pole Opis Przygotowania jest wymagane "), MaxLength(255, ErrorMessage = "Miej ni¿ 255 znaków")]
         public string AddDesc { get; set; }
+        [BindProperty]
         public string AddImg { get; set; }
+        [BindProperty]
+        public IFormFile Foto { get; set; }
 
         public void OnGet() { }
-        public AddRecipesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager)
+        public AddRecipesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _cont = cont;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult OnPost()
         {
             if(ModelState.IsValid)
             {
+                if(Foto != null)
+                {
+                    AddImg = "../images/" + PrecessFoto();
+
+                }
                 Recipe rece = new Recipe(GetUser(), AddName, AddIngs, AddDesc, AddImg);
                 _cont.Recipes.Add(rece);
                 _cont.SaveChanges();
@@ -44,10 +57,27 @@ namespace Project_.NET.Pages
             }
             return Page();
         }
+
         public ApplicationUser GetUser()
         {
             Task<ApplicationUser> identityUser = _userManager.GetUserAsync(HttpContext.User);
             return identityUser.Result;
+        }
+        private string PrecessFoto()
+        {
+            string uniFileName = null;
+            
+            if (Foto != null)
+            {
+                string uploadsfolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                uniFileName = Guid.NewGuid().ToString() + "_" + Foto.FileName;
+                string filePath = (Path.Combine(uploadsfolder, uniFileName));
+                using (var fileStream = new FileStream(filePath, FileMode.Create)) 
+                {
+                    Foto.CopyTo(fileStream);
+                }
+            }
+            return uniFileName;
         }
     }
 }
