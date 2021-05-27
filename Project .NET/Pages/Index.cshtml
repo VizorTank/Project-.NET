@@ -9,11 +9,18 @@
     <form>
         <p>
             Find receipe by typing name or author's e-mail adress
-            <input type="text" asp-for="SearchString" />
+            <input type="text" asp-for="searchString" />
             <input type="submit" value="Search" />
         </p>
     </form>
-</div>
+    <form>
+        <p>
+            Find author
+            <input type="text" asp-for="authorString" />
+            <input type="submit" value="Search" />
+        </p>
+    </form>
+
     <table class="table">
 
         <tbody>
@@ -29,10 +36,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.User_Id)
                     </td>
-                   
-                
                 </tr>
             }
         </tbody>
     </table>
+</div>
 

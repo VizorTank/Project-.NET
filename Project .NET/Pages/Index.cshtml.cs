@@ -8,16 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
 using Project_.NET.Data;
-
-
 using Project_.NET.Models;
 
 namespace Project_.NET.Pages
 {
     public class IndexModel : PageModel
     {
-      
-        public string SearchString;
+        [BindProperty(SupportsGet = true)]
+        public string searchString { get; set; }
+
+        public string authorString;
 
         public IList<Recipes> Receipe { get; set; }
 
@@ -25,8 +25,9 @@ namespace Project_.NET.Pages
         private readonly ILogger<IndexModel> _logger;
         [BindProperty]
         public Recipes Recipes { get; set; }
+       
+       
 
-   
         public IndexModel(ILogger<IndexModel> logger,RecipesContext recipesContext)
         {
             _logger = logger;
@@ -45,46 +46,21 @@ namespace Project_.NET.Pages
         {
             var receipes = (from m in _recipesContext.Recipes 
                          select m);
-
-            if (!string.IsNullOrEmpty(SearchString))
+            //var authors = (from Recipes in _recipesContext.Recipes where Recipes.User.UserName.Contain(authorString) select Recipes).include(u -> u.User);
+            if (!string.IsNullOrEmpty(searchString))
             {
-                receipes = (from m in _recipesContext.Recipes where m.Name==SearchString || m.User_Id==SearchString orderby m.date descending select m);
+                receipes = (from m in _recipesContext.Recipes where m.Name==searchString || m.User_Id==searchString orderby m.date descending select m);
             }
 
-            
+            /*if (!string.IsNullOrEmpty(authorString))
+            {
+                receipes = (from m in _recipesContext.Recipes  orderby m.date descending select m);
+            }*/
 
             Receipe = await receipes.ToListAsync();
            
         }
-        /*
-        [HttpPost]
-        public ActionResult Index(string ModelZnajdz)
-        {
-            var receipes = from i in _recipesContext.Recipes
-                       select i;
-            //jeśli coś przesłano, to wyszukaj po tym
-            if (!String.IsNullOrEmpty(Recipes))
-            {
-                receipes = from i in _recipesContext.Recipes
-                       where i.Name.Equals(ModelZnajdz)
-                       select i;
-            }
-
-            return View(receipes.ToList());
-        }
-        [HttpPost]
-        public async Task<IActionResult> Index1(string searchString)
-        {
-            var movies = from m in _recipesContext.Recipes
-                         select m;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                movies = movies.Where(s => s.Name.Contains(searchString));
-            }
-
-            return View(await movies.ToListAsync());
-        }*/
+       
 
     }
 }
