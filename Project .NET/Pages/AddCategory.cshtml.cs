@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Project_.NET.Data;
 using Project_.NET.Models;
 
@@ -17,8 +18,9 @@ namespace Project_.NET.Pages
     {
         private readonly ApplicationDbContext _cont;
         private readonly UserManager<ApplicationUser> _userManager;
+        public string ErrorMessage { get; set; }
 
-        [BindProperty, Required(ErrorMessage = "Pole Nazwa jest wymagane "), MaxLength(50, ErrorMessage = "Miej ni¿ 50 znaków")]
+        [BindProperty, Required(ErrorMessage = "Pole Nazwa jest wymagane"), MaxLength(50, ErrorMessage = "Miej ni¿ 50 znaków")]
         public string CategoryName { get; set; }
 
         public void OnGet() { }
@@ -29,12 +31,17 @@ namespace Project_.NET.Pages
         }
         public IActionResult OnPost()
         {
+            ErrorMessage = null;
             if (ModelState.IsValid)
             {
-                Category category = new Category(CategoryName);
-                _cont.Categories.Add(category);
-                _cont.SaveChanges();
-                return RedirectToPage("./AllCategories");
+                if (_cont.Categories.Find(CategoryName) == null)
+                {
+                    Category category = new Category(CategoryName);
+                    _cont.Categories.Add(category);
+                    _cont.SaveChanges();
+                    return RedirectToPage("./AllCategories");
+                }
+                ErrorMessage = "Kategoria ju¿ istnieje";
             }
             return Page();
         }

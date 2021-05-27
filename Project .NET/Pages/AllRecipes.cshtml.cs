@@ -14,7 +14,6 @@ namespace Project_.NET.Pages
     public class AllRecipesModel : RecipesFun
     {
 
-
         public AllRecipesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./AllRecipes", webHostEnvironment)
         { }
 
@@ -24,6 +23,15 @@ namespace Project_.NET.Pages
             RP = RPQuerry.ToList();
         }
 
-
+        public IList<RecipeCategory> GetCategories(Recipe recipe)
+        {
+            if (recipe != null)
+            {
+                IList<RecipeCategory> categories = (from RecipeCategory in _cont.RecipeCategories where RecipeCategory.Recipe == recipe select RecipeCategory).Include(c => c.Category).ToList();
+                if (categories != null)
+                    return categories;
+            }
+            return new List<RecipeCategory>();
+        }
     }
 }

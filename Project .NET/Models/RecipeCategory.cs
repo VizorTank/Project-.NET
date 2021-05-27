@@ -13,5 +13,10 @@ namespace Project_.NET.Models
         public Category Category { get; set; }
 
         public RecipeCategory() { }
+        public RecipeCategory(Recipe recipe, Category category)
+        {
+            Recipe = recipe;
+            Category = category;
+        }
     }
 }

@@ -33,8 +33,14 @@ namespace Project_.NET.Pages
         public string AddImg { get; set; }
         [BindProperty]
         public IFormFile Foto { get; set; }
+        public IList<Category> Categories { get; set; }
+        [BindProperty]
+        public IList<string> ChosenCategories { get; set; }
 
-        public void OnGet() { }
+        public void OnGet() 
+        {
+            Categories = (from Category in _cont.Categories select Category).ToList();
+        }
         public AddRecipesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _cont = cont;
@@ -43,19 +49,27 @@ namespace Project_.NET.Pages
         }
         public IActionResult OnPost()
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if(Foto != null)
                 {
                     AddImg = "../images/" + PrecessFoto();
-
                 }
                 Recipe rece = new Recipe(GetUser(), AddName, AddIngs, AddDesc, AddImg);
+                foreach (string item in ChosenCategories)
+                {
+                    AddRecipeCategory(rece, (from Category in _cont.Categories where Category.Name == item select Category).SingleOrDefault());
+                }
                 _cont.Recipes.Add(rece);
                 _cont.SaveChanges();
                 return RedirectToPage("./AllRecipes");
             }
             return Page();
+        }
+
+        public void AddRecipeCategory(Recipe recipe, Category category)
+        {
+            _cont.RecipeCategories.Add(new RecipeCategory(recipe, category));
         }
 
         public ApplicationUser GetUser()

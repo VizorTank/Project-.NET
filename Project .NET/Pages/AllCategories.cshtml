@@ -6,9 +6,9 @@
 @foreach (var item in Model.Categories)
 {
 <form method="post">
+    <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
     @item.Name
     @Html.Hidden("itemId", item.Name)
-    <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
     <br />
 </form>
 }

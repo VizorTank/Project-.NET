@@ -3,9 +3,6 @@
 @{
     ViewData["Title"] = "Dodawanie Przepisu";
 }
-
-
-
 <div class="form-group">
     <form method="post" enctype="multipart/form-data">
         <div class="form-group">
@@ -26,15 +23,18 @@
         <div class="form-group">
             <label for="AddImg">Dodaj zdjęcie:</label><br />
             <input name="AddImg" /><br />
-                                  
-                                       <small> <span asp-validation-for="Foto" class="text-danger"></span></small> <br />
-                                       <input type="file" class="form-control-file" name="Foto">
-                                   
+            <small> <span asp-validation-for="Foto" class="text-danger"></span></small> <br />
+            <input type="file" class="form-control-file" name="Foto">
+        </div>
+        <div class="form-group">
+            <label asp-for="ChosenCategories">Example multiple select</label>
+            <select multiple class="form-control" name="ChosenCategories">
+                @foreach (var item in Model.Categories)
+                {
+                    <option>@item.Name</option>
+                }
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Zatwierdź</button><br />
-
-
-
     </form>
-
 </div>

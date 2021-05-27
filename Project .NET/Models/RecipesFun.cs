@@ -175,8 +175,7 @@ namespace Project_.NET.Models
         }
         public void removeFoto(string imgname)
         {
-            if(imgname.Contains("../images/"))
-            if(imgname!=null)
+            if(imgname!=null && imgname.Contains("../images/"))
             {
                 imgname.Replace("../images/", "");
                 string filePath =Path.Combine(_webHostEnvironmen.WebRootPath,"images", imgname);
