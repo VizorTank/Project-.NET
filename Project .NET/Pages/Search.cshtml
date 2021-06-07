@@ -2,3 +2,53 @@
 @model Project_.NET.Pages.SearchModel
 @{
 }
+<div class="form-group">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <small> <span asp-validation-for="UserName" class="text-danger"></span></small>
+            <label for="UserName">Nazwa Użytkownika:</label><br />
+            <input name="UserName" />
+            <button type="submit" class="btn btn-success" asp-page-handler="User">Szukaj</button>
+        </div>
+        <div class="form-group">
+            <small> <span asp-validation-for="RecipeName" class="text-danger"></span></small>
+            <label for="RecipeName">Nazwa Dania:</label><br />
+            <input name="RecipeName" />
+            <button type="submit" class="btn btn-success" asp-page-handler="Recipe">Szukaj</button>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryName">Category:</label>
+            <select class="form-control" name="CategoryName">
+                <option></option>
+                @foreach (var item in Model.GetCategories())
+                {
+                    <option>@item.Name</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-success" asp-page-handler="Category">Szukaj</button>
+        </div>
+    </form>
+</div>
+@Model.ToolTip <br />
+<div class="card-columns">
+    @foreach (var item in Model.Recipes)
+    {
+        <div class="card">
+            <div class="card-img" style="background-image: url('@item.Img');"></div>
+            <div class="card-body">
+                <p class="card-text">
+                    Autor: @item.User.UserName
+                    <br />
+                    Nazwa: @item.Name
+                    <br />
+                    Data: @item.date <br />
+                </p>
+                Categorie:<br />
+                @foreach (var recipeCategory in Model.GetCategories(item))
+                {
+                    <button class="btn btn-info">@recipeCategory.Category.Name</button>
+                }
+            </div>
+        </div>
+    }
+</div>
