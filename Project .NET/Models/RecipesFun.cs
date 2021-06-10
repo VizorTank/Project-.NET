@@ -16,6 +16,7 @@ namespace Project_.NET.Models
     
     public class RecipesFun : PageModel
     {
+        public string letter;
         public IList<Recipe> RP { get; set; }
         public IList<Like> LDEL { get; set; }
         protected readonly UserManager<ApplicationUser> _userManager;
@@ -43,9 +44,9 @@ namespace Project_.NET.Models
 
 
         
-        public IActionResult OnPostEditAsync()
+        public IActionResult OnPostEditAsync(int itemId)
         {
-            return RedirectToPage("./Recipes");
+            return RedirectToPage("./Recipes?Id=" + itemId.ToString());
         }
         // Likes
         public IActionResult OnPostLikeAsync(int itemId, string userId)
@@ -148,6 +149,10 @@ namespace Project_.NET.Models
                 string filePath = Path.Combine(_webHostEnvironmen.WebRootPath,"images", imgname);
                 System.IO.File.Delete(filePath);
             }
+        }
+        public string Letter(int Id)
+        {
+            return "./Recipes?Id=" + Id.ToString();
         }
 
         public ApplicationUser GetUser()
