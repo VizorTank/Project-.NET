@@ -170,7 +170,10 @@ namespace Project_.NET.Models
         {
             ApplicationUser user = GetUser();
             Recipe RPUp = GetRecipe(itemId);
-            Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.Recipe == RPUp select Favorite).ToList().LastOrDefault();
+            Favorite FavQ = (from Favorite
+                            in _cont.Favorites
+                             where Favorite.User == user && Favorite.Recipe == RPUp
+                             select Favorite).ToList().LastOrDefault();
             if (FavQ == null)
                 return false;
             else 
