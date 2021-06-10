@@ -14,6 +14,11 @@ namespace Project_.NET.Secrvices
         public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
         {
             Options = optionsAccessor.Value;
+            if (Options.SendGridKey == null)
+            {
+                Options.SendGridKey = "1";
+                Options.SendGridUser = "1";
+            }
         }
 
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
