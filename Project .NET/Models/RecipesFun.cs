@@ -50,51 +50,35 @@ namespace Project_.NET.Models
         // Likes
         public IActionResult OnPostLikeAsync(int itemId, string userId)
         {
-
-            Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
-            ApplicationUser user = GetUser();
-            if (user == null) { return RedirectToPage(_NamePage); }
-            Like LQ = (from Like in _cont.Likes where Like.User == user && Like.Recipe == RPUp select Like).ToList().ToList().LastOrDefault();
-            if (LQ == null)
-            {
-                Like newlike = new Like(user, RPUp, 1);
-                _cont.Likes.Add(newlike);
-                RPUp.Votes = RPUp.Votes + 1;
-                _cont.Recipes.Update(RPUp);
-                _cont.SaveChanges();
-            }
-            else if (LQ.Value < 1)
-            {
-                LQ.Value = LQ.Value + 1;
-                _cont.Likes.Update(LQ);
-                RPUp.Votes = RPUp.Votes + 1;
-                _cont.Recipes.Update(RPUp);
-                _cont.SaveChanges();
-            }
-
-            return RedirectToPage(_NamePage);
+            return ChangeLike(itemId, 1);
         }
         public IActionResult OnPostHateAsync(int itemId, string userId)
         {
+            return ChangeLike(itemId, -1);
+        }
 
-            Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
+        public IActionResult ChangeLike(int itemId, int value)
+        {
             ApplicationUser user = GetUser();
-            if (user == null) { return RedirectToPage(_NamePage); } 
-            Like LQ = (from Like in _cont.Likes where Like.User == user && Like.Recipe == RPUp select Like).ToList().ToList().LastOrDefault();
-            if (LQ == null)
+            if (user == null)
+                return RedirectToPage(_NamePage);
+            Recipe recipe = GetRecipe(itemId);
+            Like like = GetLike(recipe, user);
+
+            if (like == null)
             {
-                Like newlike = new Like(user, RPUp, - 1);
+                Like newlike = new Like(user, recipe, value);
                 _cont.Likes.Add(newlike);
-                RPUp.Votes = RPUp.Votes - 1;
-                _cont.Recipes.Update(RPUp);
+                recipe.Votes = recipe.Votes + value;
+                _cont.Recipes.Update(recipe);
                 _cont.SaveChanges();
             }
-            else if (LQ.Value > -1)
+            else if (like.Value != value)
             {
-                LQ.Value = LQ.Value - 1;
-                _cont.Likes.Update(LQ);
-                RPUp.Votes = RPUp.Votes - 1;
-                _cont.Recipes.Update(RPUp);
+                like.Value = like.Value + value;
+                _cont.Likes.Update(like);
+                recipe.Votes = recipe.Votes + value;
+                _cont.Recipes.Update(recipe);
                 _cont.SaveChanges();
             }
 
@@ -103,9 +87,10 @@ namespace Project_.NET.Models
         // Favorites
         public IActionResult OnPostFavoriteAsync(int itemId, string userId)
         {
-            Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
             ApplicationUser user = GetUser();
-            if (user == null) { return RedirectToPage(_NamePage); }
+            if (user == null)
+                return RedirectToPage(_NamePage);
+            Recipe RPUp = GetRecipe(itemId);
             Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.Recipe == RPUp select Favorite).ToList().LastOrDefault();
             if (FavQ == null)
             {
@@ -141,35 +126,17 @@ namespace Project_.NET.Models
             }
             return RedirectToPage(_NamePage);
         }
-        public void DelRep(int i)
+        public void ChangeFavorite()
         {
-            Recipe RPDel = (from Recipes in _cont.Recipes where Recipes.Id == i orderby Recipes.date select Recipes).FirstOrDefault();
-            if (RPDel != null)
+
+        }
+        public void DelRep(int recipeId)
+        {
+            Recipe recipe = GetRecipe(recipeId);
+            if (recipe != null)
             {
-                /*
-                while (true)
-                {
-                    Like LikeDEL = (from Like in _cont.Likes where Like.Recipe == RPDel select Like).FirstOrDefault();
-                    if (LikeDEL == null)
-                    {
-                        break;
-                    }
-                    _cont.Likes.Remove(LikeDEL);
-                    _cont.SaveChanges();
-                }
-                while (true)
-                {
-                    Favorite FavDEL = (from Favorite in _cont.Favorites where Favorite.Recipe == RPDel select Favorite).FirstOrDefault();
-                    if (FavDEL == null)
-                    {
-                        break;
-                    }
-                    _cont.Favorites.Remove(FavDEL);
-                    _cont.SaveChanges();
-                }
-                */
-                removeFoto(RPDel.Img);
-                _cont.Recipes.Remove(RPDel);
+                removeFoto(recipe.Img);
+                _cont.Recipes.Remove(recipe);
                 _cont.SaveChanges();
             }
         }
@@ -178,7 +145,7 @@ namespace Project_.NET.Models
             if(imgname!=null && imgname.Contains("../images/"))
             {
                 imgname.Replace("../images/", "");
-                string filePath =Path.Combine(_webHostEnvironmen.WebRootPath,"images", imgname);
+                string filePath = Path.Combine(_webHostEnvironmen.WebRootPath,"images", imgname);
                 System.IO.File.Delete(filePath);
             }
         }
@@ -189,7 +156,6 @@ namespace Project_.NET.Models
             return identityUser.Result;
         }
 
-
         public string GetUserId()
         {
             return _userManager.GetUserId(HttpContext.User);
@@ -197,18 +163,37 @@ namespace Project_.NET.Models
 
         public bool IsFavorite(int itemId)
         {
-            IdentityUser user = GetUser();
-            Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
+            ApplicationUser user = GetUser();
+            Recipe RPUp = GetRecipe(itemId);
             Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.Recipe == RPUp select Favorite).ToList().LastOrDefault();
             if (FavQ == null)
-            {
                 return false;
-            }
-            if (FavQ.value == true)
-                return true;
-            else return false;
+            else 
+                return FavQ.value;
         }
 
+        public Recipe GetRecipe(int recipeId)
+        {
+            return (from Recipes 
+                    in _cont.Recipes 
+                    where Recipes.Id == recipeId 
+                    orderby Recipes.date 
+                    select Recipes).FirstOrDefault();
+        }
+        public Like GetLike(Recipe recipe, ApplicationUser user)
+        {
+            return (from Like 
+                    in _cont.Likes 
+                    where Like.User == user && Like.Recipe == recipe 
+                    select Like).FirstOrDefault();
+        }
+        public Favorite GetFavorite(Recipe recipe, ApplicationUser user)
+        {
+            return (from Favorite 
+                    in _cont.Favorites 
+                    where Favorite.User == user && Favorite.Recipe == recipe 
+                    select Favorite).LastOrDefault();
+        }
     }
 }
 

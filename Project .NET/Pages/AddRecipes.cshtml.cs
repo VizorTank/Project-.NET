@@ -37,6 +37,8 @@ namespace Project_.NET.Pages
         [BindProperty]
         public IList<string> ChosenCategories { get; set; }
 
+        public string test { get; set; }
+
         public void OnGet() 
         {
             Categories = (from Category in _cont.Categories select Category).ToList();
@@ -65,6 +67,12 @@ namespace Project_.NET.Pages
                 return RedirectToPage("./AllRecipes");
             }
             return Page();
+        }
+
+        public void OnPostEdit()
+        {
+            test = "AAAA";
+            OnGet();
         }
 
         public void AddRecipeCategory(Recipe recipe, Category category)
