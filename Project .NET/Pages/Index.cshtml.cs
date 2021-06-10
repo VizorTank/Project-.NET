@@ -17,9 +17,11 @@ namespace Project_.NET.Pages
         [BindProperty(SupportsGet = true)]
         public string searchString { get; set; }
 
-        public string authorString;
+        [BindProperty(SupportsGet = true)]
+        public string authorString { get; set; }
 
         public IList<Recipes> Receipe { get; set; }
+        
 
         private readonly RecipesContext _recipesContext;
         private readonly ILogger<IndexModel> _logger;
@@ -46,16 +48,16 @@ namespace Project_.NET.Pages
         {
             var receipes = (from m in _recipesContext.Recipes 
                          select m);
-            //var authors = (from Recipes in _recipesContext.Recipes where Recipes.User.UserName.Contain(authorString) select Recipes).include(u -> u.User);
+            
             if (!string.IsNullOrEmpty(searchString))
             {
                 receipes = (from m in _recipesContext.Recipes where m.Name==searchString || m.User_Id==searchString orderby m.date descending select m);
             }
 
-            /*if (!string.IsNullOrEmpty(authorString))
+            if (!string.IsNullOrEmpty(authorString))
             {
-                receipes = (from m in _recipesContext.Recipes  orderby m.date descending select m);
-            }*/
+                receipes = (from m in _recipesContext.Recipes where  m.User_Id == searchString orderby m.date descending select m);
+            }
 
             Receipe = await receipes.ToListAsync();
            

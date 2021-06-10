@@ -13,6 +13,25 @@
             <input type="submit" value="Search" />
         </p>
     </form>
+    <table class="table">
+
+        <tbody>
+            @foreach (var item in Model.Receipe)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User_Id)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
     <form>
         <p>
             Find author
