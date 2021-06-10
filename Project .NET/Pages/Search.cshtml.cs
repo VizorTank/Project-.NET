@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,10 +12,8 @@ using Project_.NET.Models;
 
 namespace Project_.NET.Pages
 {
-    public class SearchModel : PageModel
+    public class SearchModel : RecipesFun
     {
-        private readonly ApplicationDbContext _cont;
-        private readonly UserManager<ApplicationUser> _userManager;
 
         [BindProperty]
         public string UserName { get; set; }
@@ -27,12 +26,9 @@ namespace Project_.NET.Pages
 
         public IList<Recipe> Recipes { get; set; }
 
-        public SearchModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager)
-        {
-            this._cont = cont;
-            this._userManager = userManager;
-        }
-        public void OnGet()
+        public SearchModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./Search", webHostEnvironment)
+        { }
+        public override void OnGet()
         {
             Recipes = (from Recipe 
                        in _cont.Recipes 
@@ -42,32 +38,47 @@ namespace Project_.NET.Pages
 
         public void OnPostUserAsync()
         {
-            ToolTip = "Wyszukiwanie receptury po u¿ytkowniku \"" + UserName + "\"";
-            Recipes = (from Recipe 
-                       in _cont.Recipes 
-                       where Recipe.User.UserName == UserName
-                       orderby Recipe.Votes descending 
-                       select Recipe).Include(u => u.User).Take(10).ToList();
+            if (UserName != null)
+            {
+                ToolTip = "Wyszukiwanie receptury po u¿ytkowniku \"" + UserName + "\"";
+                Recipes = (from Recipe
+                           in _cont.Recipes
+                           where Recipe.User.UserName == UserName
+                           orderby Recipe.Votes descending
+                           select Recipe).Include(u => u.User).Take(10).ToList();
+            }
+            else
+                OnGet();
         }
 
         public void OnPostRecipeAsync()
         {
-            ToolTip = "Wyszukiwanie receptury po nazwie \"" + RecipeName + "\"";
-            Recipes = (from Recipe 
-                       in _cont.Recipes
-                       where Recipe.Name.Contains(RecipeName)
-                       orderby Recipe.Votes descending 
-                       select Recipe).Include(u => u.User).Take(10).ToList();
-        }
+            if (RecipeName != null)
+            {
+                ToolTip = "Wyszukiwanie receptury po nazwie \"" + RecipeName + "\"";
+                Recipes = (from Recipe 
+                           in _cont.Recipes
+                           where Recipe.Name.Contains(RecipeName)
+                           orderby Recipe.Votes descending 
+                           select Recipe).Include(u => u.User).Take(10).ToList();
+            }
+            else
+                OnGet();
+    }
 
         public void OnPostCategoryAsync()
         {
-            ToolTip = "Wyszukiwanie receptury po kategorii " + CategoryName;
-            Recipes = (from Recipe
+            if (CategoryName != null)
+            {
+                ToolTip = "Wyszukiwanie receptury po kategorii " + CategoryName;
+                Recipes = (from Recipe
                        in _cont.Recipes
                        where Recipe.RecipeCategories.Any(r => r.Category.Name == CategoryName)
                        orderby Recipe.Votes descending
                        select Recipe).Include(u => u.User).Include(r => r.RecipeCategories).ThenInclude(u => u.Category).Take(10).ToList();
+            }
+            else
+                OnGet();
         }
 
         public IList<Category> GetCategories()

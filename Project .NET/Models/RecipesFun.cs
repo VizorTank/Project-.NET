@@ -33,7 +33,6 @@ namespace Project_.NET.Models
         }
         
         public virtual void OnGet() { }
-
         public IActionResult OnPostDeleteAsync(int itemId)
         {
             ApplicationUser user = GetUser();
@@ -49,12 +48,10 @@ namespace Project_.NET.Models
 
             return RedirectToPage(_NamePage);
         }
-        
         public IActionResult OnPostEditAsync(int itemId)
         {
             return RedirectToPage("./Recipes?Id=" + itemId.ToString());
         }
-        // Likes
         public IActionResult OnPostLikeAsync(int itemId)
         {
             return ChangeLike(itemId, 1);
@@ -63,7 +60,6 @@ namespace Project_.NET.Models
         {
             return ChangeLike(itemId, -1);
         }
-
         public IActionResult ChangeLike(int itemId, int value)
         {
             ApplicationUser user = GetUser();
@@ -91,12 +87,10 @@ namespace Project_.NET.Models
 
             return RedirectToPage(_NamePage);
         }
-        // Favorites
         public IActionResult OnPostFavoriteAsync(int itemId)
         {
             return ChangeFavorite(itemId, true);
         }
-        
         public IActionResult OnPostUnFavoriteAsync(int itemId)
         {
             return ChangeFavorite(itemId, false);
@@ -136,18 +130,15 @@ namespace Project_.NET.Models
         {
             return "./Recipes?Id=" + Id.ToString();
         }
-
         public ApplicationUser GetUser()
         {
             Task<ApplicationUser> identityUser = _userManager.GetUserAsync(HttpContext.User);
             return identityUser.Result;
         }
-
         public string GetUserId()
         {
             return _userManager.GetUserId(HttpContext.User);
         }
-
         public bool IsFavorite(int itemId)
         {
             ApplicationUser user = GetUser();
@@ -158,7 +149,6 @@ namespace Project_.NET.Models
             else 
                 return favorite.value;
         }
-
         public Recipe GetRecipe(int recipeId)
         {
             return (from Recipes 
@@ -181,6 +171,24 @@ namespace Project_.NET.Models
                     where Favorite.User == user && Favorite.Recipe == recipe 
                     select Favorite).ToList().LastOrDefault();
         }
+        public IList<Category> GetCategories()
+        {
+            IList<Category> categories = (from Category in _cont.Categories select Category).ToList();
+            if (categories != null)
+                return categories;
+            return new List<Category>();
+        }
+        public IList<RecipeCategory> GetCategories(Recipe recipe)
+        {
+            if (recipe != null)
+            {
+                IList<RecipeCategory> categories = (from RecipeCategory in _cont.RecipeCategories where RecipeCategory.Recipe == recipe select RecipeCategory).Include(c => c.Category).ToList();
+                if (categories != null)
+                    return categories;
+            }
+            return new List<RecipeCategory>();
+        }
+
     }
 }
 

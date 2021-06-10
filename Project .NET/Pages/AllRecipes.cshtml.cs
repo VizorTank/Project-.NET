@@ -22,16 +22,6 @@ namespace Project_.NET.Pages
             var RPQuerry = (from Recipes in _cont.Recipes orderby Recipes.date descending select Recipes).Include(u => u.User);
             RP = RPQuerry.ToList();
         }
-
-        public IList<RecipeCategory> GetCategories(Recipe recipe)
-        {
-            if (recipe != null)
-            {
-                IList<RecipeCategory> categories = (from RecipeCategory in _cont.RecipeCategories where RecipeCategory.Recipe == recipe select RecipeCategory).Include(c => c.Category).ToList();
-                if (categories != null)
-                    return categories;
-            }
-            return new List<RecipeCategory>();
-        }
+        
     }
 }

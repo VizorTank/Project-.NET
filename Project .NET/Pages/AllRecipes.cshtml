@@ -1,54 +1,47 @@
 ﻿@page
 @model Project_.NET.Pages.AllRecipesModel
-@{ 
-    ViewData["Title"] = "Lista Przepisów"; 
+@{
+    ViewData["Title"] = "Lista Przepisów";
 }
-
 <div class="card-columns">
-    @foreach (var item in Model.RP)
-    {
+@foreach (var item in Model.RP)
+{
     <div class="card">
         <div class="card-img" style="background-image: url('@item.Img');"></div>
         <div class="card-body">
-
             <p class="card-text">
-                Autor: @item.User.UserName
-                <br />
-                Nazwa: @item.Name
-                <br />
+                Autor: @item.User.UserName<br />
+                Nazwa: @item.Name<br />
                 Data: @item.date <br />
             </p>
+            <form method="post">
+                @Html.Hidden("itemId", item.Id)
+                <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
+                @item.Votes
+                <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
+                @if (item.User.Id == Model.GetUserId())
+                {
+                    <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
+                    <button type="submit" class="btn btn-primary" asp-page="AddRecipes" asp-page-handler="Edit">Edytuj</button> 
+                }
+                else
+                {
+                    if (Model.IsFavorite(item.Id) == false)
+                    {
+                        <button type="submit" class="btn btn-secondary" asp-page-handler="Favorite">Ulubione</button> 
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-secondary" asp-page-handler="UnFavorite">Nie Ulubione</button>
+                    }
+                }
+            </form>
             Categorie:<br />
             @foreach (var recipeCategory in Model.GetCategories(item))
             {
                 <button class="btn btn-info">@recipeCategory.Category.Name</button>
             }
-            <form method="post">
-            <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
-            @item.Votes
-            <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
-            @if (item.User.Id == Model.GetUserId())
-            {
-                @Html.Hidden("itemId", item.Id)
-                @Html.Hidden("userId", item.User.Id)
-                <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
-                <button type="submit" class="btn btn-primary" asp-page="AddRecipes" asp-page-handler="Edit">Edytuj</button>
-            }
-            else
-            {
-                @Html.Hidden("itemId", item.Id)
-                @Html.Hidden("userId", item.User.Id) 
-                if (Model.IsFavorite(item.Id) == false)
-                {
-                    <button type="submit" class="btn btn-secondary" asp-page-handler="Favorite">Ulubione</button> 
-                }
-                else
-                {
-                    <button type="submit" class="btn btn-secondary" asp-page-handler="UnFavorite">Nie Ulubione</button>
-                }
-            }
-            </form>
         </div>
     </div>
-    }
+}
 </div>

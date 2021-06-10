@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace Project_.NET.Pages
 {
@@ -37,6 +38,7 @@ namespace Project_.NET.Pages
         [BindProperty]
         public IList<string> ChosenCategories { get; set; }
 
+        public int recipeId { get; set; }
         public string test { get; set; }
 
         public void OnGet() 
@@ -49,7 +51,7 @@ namespace Project_.NET.Pages
             _userManager = userManager;
             _webHostEnvironment = webHostEnvironment;
         }
-        public IActionResult OnPost()
+        public IActionResult OnPostAdd()
         {
             if (ModelState.IsValid)
             {
@@ -57,22 +59,68 @@ namespace Project_.NET.Pages
                 {
                     AddImg = "../images/" + PrecessFoto();
                 }
+                
                 Recipe rece = new Recipe(GetUser(), AddName, AddIngs, AddDesc, AddImg);
                 foreach (string item in ChosenCategories)
                 {
                     AddRecipeCategory(rece, (from Category in _cont.Categories where Category.Name == item select Category).SingleOrDefault());
                 }
+                if (GetRecipe(recipeId) != null)
+                    _cont.Recipes.Remove(GetRecipe(recipeId));
+
                 _cont.Recipes.Add(rece);
+                
                 _cont.SaveChanges();
                 return RedirectToPage("./AllRecipes");
             }
             return Page();
         }
 
-        public void OnPostEdit()
+        public bool IsInSelectedCategory(Category category)
         {
-            test = "AAAA";
-            OnGet();
+            Recipe recipe = GetRecipe(recipeId);
+            if (recipe != null)
+            {
+                var querry = (from RecipeCategory 
+                              in _cont.RecipeCategories 
+                              where RecipeCategory.Recipe == recipe 
+                              && RecipeCategory.Category == category 
+                              select RecipeCategory).Count();
+                if (querry == 1)
+                    return true;
+            }
+            
+            return false;
+        }
+
+        public IList<RecipeCategory> GetCategories(Recipe recipe)
+        {
+            if (recipe != null)
+            {
+                IList<RecipeCategory> categories = (from RecipeCategory in _cont.RecipeCategories where RecipeCategory.Recipe == recipe select RecipeCategory).Include(c => c.Category).ToList();
+                if (categories != null)
+                    return categories;
+            }
+            return new List<RecipeCategory>();
+        }
+
+        public void OnPostEdit(int itemId)
+        {
+            recipeId = itemId;
+            Recipe recipe = GetRecipe(itemId);
+            AddName = recipe.Name;
+            AddIngs = recipe.Ings;
+            AddDesc = recipe.Desc;
+
+            Categories = (from Category in _cont.Categories select Category).ToList();
+        }
+        public Recipe GetRecipe(int recipeId)
+        {
+            return (from Recipes
+                    in _cont.Recipes
+                    where Recipes.Id == recipeId
+                    orderby Recipes.date
+                    select Recipes).FirstOrDefault();
         }
 
         public void AddRecipeCategory(Recipe recipe, Category category)
