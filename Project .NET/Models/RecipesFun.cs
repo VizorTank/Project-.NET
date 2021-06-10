@@ -32,28 +32,34 @@ namespace Project_.NET.Models
             _webHostEnvironmen = webHostEnvironmen;
         }
         
-        public virtual void OnGet()
-        { }
+        public virtual void OnGet() { }
 
-        public IActionResult OnPostDeleteAsync(int itemId, string userId)
+        public IActionResult OnPostDeleteAsync(int itemId)
         {
-            if (userId != null && userId.CompareTo(GetUserId()) == 0)
-                DelRep(itemId);
+            ApplicationUser user = GetUser();
+            if (user == null)
+                return RedirectToPage(_NamePage);
+            Recipe recipe = GetRecipe(itemId);
+            if (recipe != null && recipe.User == user)
+            {
+                removeFoto(recipe.Img);
+                _cont.Recipes.Remove(recipe);
+                _cont.SaveChanges();
+            }
+
             return RedirectToPage(_NamePage);
         }
-
-
         
         public IActionResult OnPostEditAsync(int itemId)
         {
             return RedirectToPage("./Recipes?Id=" + itemId.ToString());
         }
         // Likes
-        public IActionResult OnPostLikeAsync(int itemId, string userId)
+        public IActionResult OnPostLikeAsync(int itemId)
         {
             return ChangeLike(itemId, 1);
         }
-        public IActionResult OnPostHateAsync(int itemId, string userId)
+        public IActionResult OnPostHateAsync(int itemId)
         {
             return ChangeLike(itemId, -1);
         }
@@ -86,60 +92,36 @@ namespace Project_.NET.Models
             return RedirectToPage(_NamePage);
         }
         // Favorites
-        public IActionResult OnPostFavoriteAsync(int itemId, string userId)
+        public IActionResult OnPostFavoriteAsync(int itemId)
+        {
+            return ChangeFavorite(itemId, true);
+        }
+        
+        public IActionResult OnPostUnFavoriteAsync(int itemId)
+        {
+            return ChangeFavorite(itemId, false);
+        }
+        public IActionResult ChangeFavorite(int itemId, bool value)
         {
             ApplicationUser user = GetUser();
             if (user == null)
                 return RedirectToPage(_NamePage);
-            Recipe RPUp = GetRecipe(itemId);
-            Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.Recipe == RPUp select Favorite).ToList().LastOrDefault();
-            if (FavQ == null)
-            {
-                Favorite favi = new Favorite(RPUp, user, true);
-                _cont.Favorites.Add(favi);
-                _cont.SaveChanges();
-            }
-            else if (FavQ.value == false)
-            {
-                FavQ.value = true;
-                _cont.Favorites.Update(FavQ);
-                _cont.SaveChanges();
-            }
-            return RedirectToPage(_NamePage);
-        }
-        
-        public IActionResult OnPostUnFavoriteAsync(int itemId, string userId)
-        {
-            Recipe RPUp = (from Recipes in _cont.Recipes where Recipes.Id == itemId orderby Recipes.date select Recipes).FirstOrDefault();
-            ApplicationUser user = GetUser();
-            Favorite FavQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.Recipe == RPUp select Favorite).ToList().LastOrDefault();
-            if (FavQ == null)
-            {
-                Favorite favi = new Favorite(RPUp, user, false);
-                _cont.Favorites.Add(favi);
-                _cont.SaveChanges();
-            }
-            else if (FavQ.value == true)
-            {
-                FavQ.value = false;
-                _cont.Favorites.Update(FavQ);
-                _cont.SaveChanges();
-            }
-            return RedirectToPage(_NamePage);
-        }
-        public void ChangeFavorite()
-        {
+            Recipe recipe = GetRecipe(itemId);
 
-        }
-        public void DelRep(int recipeId)
-        {
-            Recipe recipe = GetRecipe(recipeId);
-            if (recipe != null)
+            Favorite favorite = GetFavorite(recipe, user);
+            if (favorite == null)
             {
-                removeFoto(recipe.Img);
-                _cont.Recipes.Remove(recipe);
+                Favorite favi = new Favorite(recipe, user, value);
+                _cont.Favorites.Add(favi);
                 _cont.SaveChanges();
             }
+            else if (favorite.value != value)
+            {
+                favorite.value = value;
+                _cont.Favorites.Update(favorite);
+                _cont.SaveChanges();
+            }
+            return RedirectToPage(_NamePage);
         }
         public void removeFoto(string imgname)
         {
@@ -169,15 +151,12 @@ namespace Project_.NET.Models
         public bool IsFavorite(int itemId)
         {
             ApplicationUser user = GetUser();
-            Recipe RPUp = GetRecipe(itemId);
-            Favorite FavQ = (from Favorite
-                            in _cont.Favorites
-                             where Favorite.User == user && Favorite.Recipe == RPUp
-                             select Favorite).ToList().LastOrDefault();
-            if (FavQ == null)
+            Recipe recipe = GetRecipe(itemId);
+            Favorite favorite = GetFavorite(recipe, user);
+            if (favorite == null)
                 return false;
             else 
-                return FavQ.value;
+                return favorite.value;
         }
 
         public Recipe GetRecipe(int recipeId)
@@ -200,7 +179,7 @@ namespace Project_.NET.Models
             return (from Favorite 
                     in _cont.Favorites 
                     where Favorite.User == user && Favorite.Recipe == recipe 
-                    select Favorite).LastOrDefault();
+                    select Favorite).ToList().LastOrDefault();
         }
     }
 }
