@@ -4,44 +4,44 @@
     ViewData["Title"] = "Lista Przepisów";
 }
 <div class="card-columns">
-@foreach (var item in Model.RP)
-{
-    <div class="card">
-        <div class="card-img" style="background-image: url('@item.Img');"></div>
-        <div class="card-body">
-            <p class="card-text">
-                Autor: @item.User.UserName<br />
-                Nazwa: @item.Name<br />
-                Data: @item.date <br />
-            </p>
-            <form method="post">
-                @Html.Hidden("itemId", item.Id)
-                <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
-                @item.Votes
-                <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
-                @if (item.User.Id == Model.GetUserId())
-                {
-                    <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
-                    <button type="submit" class="btn btn-primary" asp-page="AddRecipes" asp-page-handler="Edit">Edytuj</button> 
-                }
-                else
-                {
-                    if (Model.IsFavorite(item.Id) == false)
+    @foreach (var item in Model.RP)
+    {
+        <div class="card">
+            <div class="card-img" style="background-image: url('@item.Img');"></div>
+            <div class="card-body">
+                <p class="card-text">
+                    Autor: @item.User.UserName<br />
+                    Nazwa: @item.Name<br />
+                    Data: @item.date <br />
+                </p>
+                <form method="post">
+                    @Html.Hidden("itemId", item.Id)
+                    <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
+                    @item.Votes
+                    <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
+                    @if (item.User.Id == Model.GetUserId())
                     {
-                        <button type="submit" class="btn btn-secondary" asp-page-handler="Favorite">Ulubione</button> 
+                        <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
+                        <button type="submit" class="btn btn-primary" asp-page="AddRecipes" asp-page-handler="Edit">Edytuj</button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-secondary" asp-page-handler="UnFavorite">Nie Ulubione</button>
+                        if (Model.IsFavorite(item.Id) == false)
+                        {
+                            <button type="submit" class="btn btn-secondary" asp-page-handler="Favorite">Ulubione</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-secondary" asp-page-handler="UnFavorite">Nie Ulubione</button>
+                        }
                     }
+                </form>
+                Categorie:<br />
+                @foreach (var recipeCategory in Model.GetCategories(item))
+                {
+                    <button class="btn btn-info">@recipeCategory.Category.Name</button>
                 }
-            </form>
-            Categorie:<br />
-            @foreach (var recipeCategory in Model.GetCategories(item))
-            {
-                <button class="btn btn-info">@recipeCategory.Category.Name</button>
-            }
+            </div>
         </div>
-    </div>
-}
+    }
 </div>
