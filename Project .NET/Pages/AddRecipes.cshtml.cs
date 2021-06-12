@@ -44,6 +44,7 @@ namespace Project_.NET.Pages
         public void OnGet() 
         {
             Categories = (from Category in _cont.Categories select Category).ToList();
+            recipeId = -1;
         }
         public AddRecipesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
@@ -51,29 +52,44 @@ namespace Project_.NET.Pages
             _userManager = userManager;
             _webHostEnvironment = webHostEnvironment;
         }
-        public IActionResult OnPostAdd()
+        public IActionResult OnPostAdd(int itemId)
         {
+            recipeId = itemId;
             if (ModelState.IsValid)
             {
-                if(Foto != null)
+                Recipe recipe;
+                if (GetRecipe(recipeId) != null)
                 {
-                    AddImg = "../images/" + PrecessFoto();
+                    recipe = GetRecipe(recipeId);
+                    recipe.Name = AddName;
+                    recipe.Ings = AddIngs;
+                    recipe.Desc = AddDesc;
+                    RemoveRecipeCategories(recipe);
                 }
-                
-                Recipe rece = new Recipe(GetUser(), AddName, AddIngs, AddDesc, AddImg);
+                else
+                {
+                    if (Foto != null)
+                    {
+                        AddImg = "../images/" + PrecessFoto();
+                    }
+
+                    recipe = new Recipe(GetUser(), AddName, AddIngs, AddDesc, AddImg);
+                    
+                    _cont.Recipes.Add(recipe);
+                }
                 foreach (string item in ChosenCategories)
                 {
-                    AddRecipeCategory(rece, (from Category in _cont.Categories where Category.Name == item select Category).SingleOrDefault());
+                    AddRecipeCategory(recipe, GetCategory(item));
                 }
-                if (GetRecipe(recipeId) != null)
-                    _cont.Recipes.Remove(GetRecipe(recipeId));
-
-                _cont.Recipes.Add(rece);
-                
                 _cont.SaveChanges();
                 return RedirectToPage("./AllRecipes");
             }
             return Page();
+        }
+
+        public Category GetCategory(string name)
+        {
+            return (from Category in _cont.Categories where Category.Name == name select Category).SingleOrDefault();
         }
 
         public bool IsInSelectedCategory(Category category)
@@ -126,6 +142,15 @@ namespace Project_.NET.Pages
         public void AddRecipeCategory(Recipe recipe, Category category)
         {
             _cont.RecipeCategories.Add(new RecipeCategory(recipe, category));
+        }
+
+        public void RemoveRecipeCategories(Recipe recipe)
+        {
+            IList<RecipeCategory> recipeCategories = (from RC in _cont.RecipeCategories where RC.Recipe == recipe select RC).ToList();
+            foreach(var item in recipeCategories)
+            {
+                _cont.RecipeCategories.Remove(item);
+            }
         }
 
         public ApplicationUser GetUser()

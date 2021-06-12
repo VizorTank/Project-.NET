@@ -7,6 +7,7 @@
 @Model.test
 <div class="form-group">
     <form method="post" enctype="multipart/form-data">
+        @Html.Hidden("itemId", Model.recipeId)
         <div class="form-group">
             <small> <span asp-validation-for="AddName" class="text-danger"></span> <br /></small>
             <label for="AddName">Nazwa Dania:</label><br />
