@@ -4,7 +4,6 @@
     ViewData["Title"] = "Dodawanie Przepisu";
 }
 
-@Model.test
 <div class="form-group">
     <form method="post" enctype="multipart/form-data">
         @Html.Hidden("itemId", Model.recipeId)
@@ -32,7 +31,7 @@
         <div class="form-group">
             <label asp-for="ChosenCategories">Example multiple select</label>
             <select multiple class="form-control" name="ChosenCategories">
-                @foreach (var item in Model.Categories)
+                @foreach (var item in Model.GetCategories())
                 {
                     @if (Model.IsInSelectedCategory(item))
                     {

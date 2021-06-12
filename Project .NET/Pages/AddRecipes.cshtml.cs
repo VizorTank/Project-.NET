@@ -37,15 +37,9 @@ namespace Project_.NET.Pages
         public IList<Category> Categories { get; set; }
         [BindProperty]
         public IList<string> ChosenCategories { get; set; }
-
         public int recipeId { get; set; }
-        public string test { get; set; }
 
-        public void OnGet() 
-        {
-            Categories = (from Category in _cont.Categories select Category).ToList();
-            recipeId = -1;
-        }
+        public void OnGet() { }
         public AddRecipesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _cont = cont;
@@ -91,6 +85,13 @@ namespace Project_.NET.Pages
         {
             return (from Category in _cont.Categories where Category.Name == name select Category).SingleOrDefault();
         }
+        public IList<Category> GetCategories()
+        {
+            IList<Category> categories = (from Category in _cont.Categories select Category).ToList();
+            if (categories != null)
+                return categories;
+            return new List<Category>();
+        }
 
         public bool IsInSelectedCategory(Category category)
         {
@@ -127,8 +128,6 @@ namespace Project_.NET.Pages
             AddName = recipe.Name;
             AddIngs = recipe.Ings;
             AddDesc = recipe.Desc;
-
-            Categories = (from Category in _cont.Categories select Category).ToList();
         }
         public Recipe GetRecipe(int recipeId)
         {
