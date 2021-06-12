@@ -30,12 +30,13 @@
     </form>
 </div>
 @Model.ToolTip <br />
-<div class="card-columns">
+
     @foreach (var item in Model.Recipes)
     {
         <div class="card">
-            <div class="card-img" style="background-image: url('@item.Img');"></div>
+            
             <div class="card-body">
+                <div class="card-img" style="background-image: url('@item.Img');"></div>
                 <p class="card-text">
                     Autor: @item.User.UserName
                     <br />

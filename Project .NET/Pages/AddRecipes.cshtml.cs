@@ -25,10 +25,10 @@ namespace Project_.NET.Pages
 
         [BindProperty, Required(ErrorMessage = "Pole Nazwa jest wymagane "), MaxLength(50, ErrorMessage = "Miej ni¿ 50 znaków")]
         public string AddName { get; set; }
-        [BindProperty, Required(ErrorMessage = "Pole Sk³adniki jest wymagane "), MaxLength(255, ErrorMessage = "Miej ni¿ 255 znaków")]
+        [BindProperty, Required(ErrorMessage = "Pole Sk³adniki jest wymagane "), MaxLength(2500, ErrorMessage = "Miej ni¿ 2500 znaków")]
         public string AddIngs { get; set; }
 
-        [BindProperty, Required(ErrorMessage = "Pole Opis Przygotowania jest wymagane "), MaxLength(255, ErrorMessage = "Miej ni¿ 255 znaków")]
+        [BindProperty, Required(ErrorMessage = "Pole Opis Przygotowania jest wymagane "), MaxLength(2500, ErrorMessage = "Miej ni¿ 2500 znaków")]
         public string AddDesc { get; set; }
         [BindProperty]
         public string AddImg { get; set; }

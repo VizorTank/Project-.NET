@@ -5,11 +5,15 @@
     @foreach (var item in Model.RP)
     {
         <p>
-            Autor: @item.User.UserName <br />
-            @item.Name <br />
-
-            Składniki: <br />    @item.Ings <br /> Przygotowanie: <br /> @item.Desc <br />
-            Data: @item.date <br />
+         <p style="font-size:35px">@item.Name <br /></p>
+        <p style="font-size:20px"> Autor: @item.User.UserName <br /><br /> </p>
+        <img src="@item.Img" style="height:440px; width:440px"><br />
+        <p style="font-size:30px">Składniki:<br/> </p>    
+        <p style="font-size:20px">   @item.Ings <br /><br /> </p>
+        <p style="font-size:30px">  Przygotowanie: <br /> </p>
+        <p style="font-size:20px"> @item.Desc <br /><br /> </p>
+        Data: @item.date
+        <br />
 
 
         </p>

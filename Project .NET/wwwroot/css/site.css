@@ -11,28 +11,22 @@ for details on configuring this project to bundle and minify static web assets. 
 .card-columns .card:hover .card-img {
     opacity: 1;
 }
-
-.card-columns .card-body {
-    height: 200px;
-
-    background: #fbfafd;
+.card {
+    width: 620px;
+    height: 367px;
+}
+.card .card-body {
+    width: 620px;
 }
 
-.card-columns .card-img {
+.card .card-img {
     height: 330px;
-    vertical-align: bottom;
+    width: 330px;
+    float:left;
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */
     opacity: .8;
-}
-
-.modal .card-img {
-    height: 500px;
-    vertical-align: bottom;
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-size: cover; /* Resize the background image to cover the entire container */
 }
 
 
