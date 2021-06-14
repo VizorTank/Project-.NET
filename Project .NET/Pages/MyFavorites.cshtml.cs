@@ -23,8 +23,9 @@ namespace Project_.NET.Pages
         {
 
             IdentityUser user = GetUser();
-            var FRQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.value == true select Favorite.Recipe);
-            RP = FRQ.ToList();
+            //var FRQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.value == true select Favorite.Recipe);
+            var RPQuerry = (from Recipes in _cont.Recipes where Recipes == from Favorite in _cont.Favorites where Favorite.User == user && Favorite.value == true select Favorite.Recipe orderby Recipes.date descending select Recipes).Include(u => u.User);
+            RP = RPQuerry.ToList();
         }
 
 
