@@ -20,7 +20,10 @@ namespace Project_.NET.Pages
             IWebHostEnvironment webHostEnvironment) : base (cont , userManager, "./Index",webHostEnvironment) { }
         public void OnGet()
         {
-            var RPQuerry = (from Recipes in _cont.Recipes orderby Recipes.Votes descending select Recipes).Include(u => u.User).Take(10);
+            var RPQuerry = (from Recipes 
+                            in _cont.Recipes 
+                            orderby Recipes.Votes descending 
+                            select Recipes).Include(u => u.User).Take(10);
             Recipes = RPQuerry.ToList();
         }
     }

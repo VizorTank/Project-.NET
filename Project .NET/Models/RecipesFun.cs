@@ -201,8 +201,6 @@ namespace Project_.NET.Models
         }
         public virtual IActionResult Reload(string getData)
         {
-            if (HttpContext.Request.Path == "/")
-                return Redirect("/Index" + getData);
             return Redirect(HttpContext.Request.Path + getData);
         }
     }

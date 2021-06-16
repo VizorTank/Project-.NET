@@ -13,13 +13,13 @@ namespace Project_.NET.Pages
 {
     public class AllRecipesModel : RecipesFun
     {
-        public AllRecipesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./AllRecipes", webHostEnvironment)
-        { }
+        public AllRecipesModel(ApplicationDbContext cont, 
+            UserManager<ApplicationUser> userManager, 
+            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./AllRecipes", webHostEnvironment) { }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            var RPQuerry = (from Recipes in _cont.Recipes orderby Recipes.date descending select Recipes).Include(u => u.User);
-            Recipes = RPQuerry.ToList();
+            return Redirect("/Search");
         }
     }
 }

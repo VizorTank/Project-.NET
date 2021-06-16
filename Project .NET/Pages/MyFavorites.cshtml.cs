@@ -17,14 +17,12 @@ namespace Project_.NET.Pages
     public class MyFavoritesModel : RecipesFun
     {
 
-        public MyFavoritesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./MyFavorites", webHostEnvironment)
-        { }
+        public MyFavoritesModel(ApplicationDbContext cont, 
+            UserManager<ApplicationUser> userManager, 
+            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./MyFavorites", webHostEnvironment) { }
         public void OnGet()
         {
-
             IdentityUser user = GetUser();
-            //var FRQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.value == true select Favorite.Recipe);
-            //var RPQuerry = (from Recipes in _cont.Recipes where Recipes == from Favorite in _cont.Favorites where Favorite.User == user && Favorite.value == true select Favorite.Recipe orderby Recipes.date descending select Recipes).Include(u => u.User);
             var RPQuerry = (from Favorites 
                             in _cont.Favorites 
                             where Favorites.User == user 
@@ -33,14 +31,15 @@ namespace Project_.NET.Pages
             Recipes = RPQuerry.ToList();
         }
 
-
         public string GetUsername(int itemID)
         {
-            Recipe RPDel = (from Recipes in _cont.Recipes where Recipes.Id == itemID orderby Recipes.date select Recipes).Include(i => i.User).FirstOrDefault();
+            Recipe RPDel = (from Recipes 
+                            in _cont.Recipes 
+                            where Recipes.Id == itemID 
+                            orderby Recipes.date descending
+                            select Recipes).Include(i => i.User).FirstOrDefault();
             return RPDel.User.UserName;
         }
-
-
     }
 }
 

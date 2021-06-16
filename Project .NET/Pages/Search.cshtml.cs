@@ -14,17 +14,13 @@ namespace Project_.NET.Pages
 {
     public class SearchModel : RecipesFun
     {
-
         [BindProperty]
         public string UserName { get; set; }
         [BindProperty]
         public string CategoryName { get; set; }
         [BindProperty]
         public string RecipeName { get; set; }
-
         public string ToolTip { get; set; }
-
-        public IList<Recipe> Recipes { get; set; }
 
         public SearchModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./Search", webHostEnvironment)
         { }
@@ -32,8 +28,8 @@ namespace Project_.NET.Pages
         {
             Recipes = (from Recipe 
                        in _cont.Recipes 
-                       orderby Recipe.Votes descending 
-                       select Recipe).Include(u => u.User).Take(10).ToList();
+                       orderby Recipe.date descending
+                       select Recipe).Include(u => u.User).ToList();
         }
 
         public void OnPostUserAsync()
@@ -44,8 +40,8 @@ namespace Project_.NET.Pages
                 Recipes = (from Recipe
                            in _cont.Recipes
                            where Recipe.User.UserName == UserName
-                           orderby Recipe.Votes descending
-                           select Recipe).Include(u => u.User).Take(10).ToList();
+                           orderby Recipe.date descending
+                           select Recipe).Include(u => u.User).ToList();
             }
             else
                 OnGet();
@@ -59,8 +55,8 @@ namespace Project_.NET.Pages
                 Recipes = (from Recipe 
                            in _cont.Recipes
                            where Recipe.Name.Contains(RecipeName)
-                           orderby Recipe.Votes descending 
-                           select Recipe).Include(u => u.User).Take(10).ToList();
+                           orderby Recipe.date descending
+                           select Recipe).Include(u => u.User).ToList();
             }
             else
                 OnGet();
@@ -72,10 +68,10 @@ namespace Project_.NET.Pages
             {
                 ToolTip = "Wyszukiwanie receptury po kategorii " + CategoryName;
                 Recipes = (from Recipe
-                       in _cont.Recipes
-                       where Recipe.RecipeCategories.Any(r => r.Category.Name == CategoryName)
-                       orderby Recipe.Votes descending
-                       select Recipe).Include(u => u.User).Include(r => r.RecipeCategories).ThenInclude(u => u.Category).Take(10).ToList();
+                           in _cont.Recipes
+                           where Recipe.RecipeCategories.Any(r => r.Category.Name == CategoryName)
+                           orderby Recipe.date descending
+                           select Recipe).Include(u => u.User).Include(r => r.RecipeCategories).ThenInclude(u => u.Category).ToList();
             }
             else
                 OnGet();
