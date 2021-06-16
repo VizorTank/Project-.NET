@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +33,6 @@ namespace Project_.NET.Models
             _webHostEnvironmen = webHostEnvironmen;
         }
         
-        public virtual void OnGet() { }
         public IActionResult OnPostDeleteAsync(int itemId)
         {
             ApplicationUser user = GetUser();
@@ -134,6 +134,11 @@ namespace Project_.NET.Models
         {
             Task<ApplicationUser> identityUser = _userManager.GetUserAsync(HttpContext.User);
             return identityUser.Result;
+        }
+        public ApplicationUser GetUserByName(string username)
+        {
+            var querry = _userManager.Users.Where(u => u.UserName == username).FirstOrDefault();
+            return querry;
         }
         public string GetUserId()
         {

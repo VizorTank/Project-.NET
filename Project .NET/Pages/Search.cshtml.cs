@@ -28,7 +28,7 @@ namespace Project_.NET.Pages
 
         public SearchModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./Search", webHostEnvironment)
         { }
-        public override void OnGet()
+        public void OnGet()
         {
             Recipes = (from Recipe 
                        in _cont.Recipes 

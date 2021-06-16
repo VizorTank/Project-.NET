@@ -17,7 +17,7 @@ namespace Project_.NET.Pages.Shared
         public int Id { get; set; }
         public RecipesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./Recipes", webHostEnvironment)
         { }
-        public override void  OnGet()
+        public void  OnGet()
         {
             var RPQuerry = (from Recipes in _cont.Recipes where Recipes.Id==Id orderby Recipes.date descending select Recipes).Include(u => u.User);
             RP = RPQuerry.ToList();

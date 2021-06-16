@@ -19,12 +19,17 @@ namespace Project_.NET.Pages
 
         public MyFavoritesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./MyFavorites", webHostEnvironment)
         { }
-        public override void OnGet()
+        public void OnGet()
         {
 
             IdentityUser user = GetUser();
             //var FRQ = (from Favorite in _cont.Favorites where Favorite.User == user && Favorite.value == true select Favorite.Recipe);
-            var RPQuerry = (from Recipes in _cont.Recipes where Recipes == from Favorite in _cont.Favorites where Favorite.User == user && Favorite.value == true select Favorite.Recipe orderby Recipes.date descending select Recipes).Include(u => u.User);
+            //var RPQuerry = (from Recipes in _cont.Recipes where Recipes == from Favorite in _cont.Favorites where Favorite.User == user && Favorite.value == true select Favorite.Recipe orderby Recipes.date descending select Recipes).Include(u => u.User);
+            var RPQuerry = (from Favorites 
+                            in _cont.Favorites 
+                            where Favorites.User == user 
+                            && Favorites.value == true 
+                            select Favorites).Include(r => r.Recipe).ThenInclude(r => r.User).Select(f => f.Recipe);
             RP = RPQuerry.ToList();
         }
 

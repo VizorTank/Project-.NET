@@ -10,22 +10,23 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Project_.NET.Data;
 using Project_.NET.Models;
+
 namespace Project_.NET.Pages
 {
-    [Authorize]
     public class UserAddedModel : RecipesFun
     {
-
+        public string Answer { get; set; }
         public UserAddedModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./UserAdded", webHostEnvironment)
         { }
-        public override void OnGet()
+        public void OnGet(string username)
         {
-            ApplicationUser user = GetUser();
+            if (username == null || username == "")
+                Answer = "Nie znaleziono u¿ytkownika";
+            Answer = HttpContext.Request.Path;
+            ApplicationUser user = GetUserByName(username);
             var RPQuerry = (from Recipes in _cont.Recipes where Recipes.User==user orderby Recipes.date descending select Recipes).Include(u => u.User);
             RP = RPQuerry.ToList();
         }
-
-
     }
 
 }
