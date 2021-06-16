@@ -19,7 +19,7 @@ namespace Project_.NET.Pages
         public string Username { get; set; }
         public UserModel(ApplicationDbContext cont, 
             UserManager<ApplicationUser> userManager, 
-            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./User", webHostEnvironment) { }
+            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, webHostEnvironment) { }
         public void OnGet(string username = null)
         {
             Username = username;

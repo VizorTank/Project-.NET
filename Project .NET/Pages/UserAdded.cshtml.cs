@@ -17,7 +17,7 @@ namespace Project_.NET.Pages
     {
         public UserAddedModel(ApplicationDbContext cont,
             UserManager<ApplicationUser> userManager,
-            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./User", webHostEnvironment) { }
+            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, webHostEnvironment) { }
         public IActionResult OnGet()
         {
             return Redirect(UserPage(GetUser().UserName));

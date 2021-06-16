@@ -15,7 +15,9 @@ namespace Project_.NET.Pages.Shared
     {
         [BindProperty(SupportsGet = true)]
         public int Id { get; set; }
-        public RecipesModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./Recipes", webHostEnvironment)
+        public RecipesModel(ApplicationDbContext cont, 
+            UserManager<ApplicationUser> userManager, 
+            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, webHostEnvironment)
         { }
         public void  OnGet()
         {

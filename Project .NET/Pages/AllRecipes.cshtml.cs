@@ -15,7 +15,7 @@ namespace Project_.NET.Pages
     {
         public AllRecipesModel(ApplicationDbContext cont, 
             UserManager<ApplicationUser> userManager, 
-            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./AllRecipes", webHostEnvironment) { }
+            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, webHostEnvironment) { }
 
         public IActionResult OnGet()
         {

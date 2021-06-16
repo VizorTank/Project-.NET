@@ -24,14 +24,12 @@ namespace Project_.NET.Models
         public QueryString GetData { get; set; }
         protected readonly UserManager<ApplicationUser> _userManager;
         protected readonly ApplicationDbContext _cont;
-        protected readonly string _NamePage;
         private readonly IWebHostEnvironment _webHostEnvironmen;
 
-        public RecipesFun(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, string NamePage, IWebHostEnvironment webHostEnvironmen)
+        public RecipesFun(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironmen)
         {
             _cont = cont;
             _userManager = userManager;
-            _NamePage = NamePage;
             _webHostEnvironmen = webHostEnvironmen;
         }
         

@@ -17,7 +17,7 @@ namespace Project_.NET.Pages
     {
         public IndexModel(ApplicationDbContext cont, 
             UserManager<ApplicationUser> userManager, 
-            IWebHostEnvironment webHostEnvironment) : base (cont , userManager, "./Index",webHostEnvironment) { }
+            IWebHostEnvironment webHostEnvironment) : base (cont , userManager, webHostEnvironment) { }
         public void OnGet()
         {
             var RPQuerry = (from Recipes 

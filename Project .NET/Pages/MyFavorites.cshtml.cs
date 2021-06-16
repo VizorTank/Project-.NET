@@ -19,7 +19,7 @@ namespace Project_.NET.Pages
 
         public MyFavoritesModel(ApplicationDbContext cont, 
             UserManager<ApplicationUser> userManager, 
-            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./MyFavorites", webHostEnvironment) { }
+            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, webHostEnvironment) { }
         public void OnGet()
         {
             IdentityUser user = GetUser();

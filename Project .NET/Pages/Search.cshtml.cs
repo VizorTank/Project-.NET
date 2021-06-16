@@ -22,7 +22,9 @@ namespace Project_.NET.Pages
         public string RecipeName { get; set; }
         public string ToolTip { get; set; }
 
-        public SearchModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./Search", webHostEnvironment)
+        public SearchModel(ApplicationDbContext cont, 
+            UserManager<ApplicationUser> userManager, 
+            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, webHostEnvironment)
         { }
         public void OnGet()
         {
