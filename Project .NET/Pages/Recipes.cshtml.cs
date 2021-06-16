@@ -20,7 +20,7 @@ namespace Project_.NET.Pages.Shared
         public void  OnGet()
         {
             var RPQuerry = (from Recipes in _cont.Recipes where Recipes.Id==Id orderby Recipes.date descending select Recipes).Include(u => u.User);
-            RP = RPQuerry.ToList();
+            Recipes = RPQuerry.ToList();
         }
 
     }

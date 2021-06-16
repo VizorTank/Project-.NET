@@ -30,7 +30,7 @@ namespace Project_.NET.Pages
                             where Favorites.User == user 
                             && Favorites.value == true 
                             select Favorites).Include(r => r.Recipe).ThenInclude(r => r.User).Select(f => f.Recipe);
-            RP = RPQuerry.ToList();
+            Recipes = RPQuerry.ToList();
         }
 
 

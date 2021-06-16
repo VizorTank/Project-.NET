@@ -18,7 +18,7 @@ namespace Project_.NET.Models
     public class RecipesFun : PageModel
     {
         public string letter;
-        public IList<Recipe> RP { get; set; }
+        public IList<Recipe> Recipes { get; set; }
         public IList<Like> LDEL { get; set; }
         protected readonly UserManager<ApplicationUser> _userManager;
         protected readonly ApplicationDbContext _cont;

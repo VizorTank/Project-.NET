@@ -4,10 +4,9 @@
     ViewData["Title"] = "Lista Przepisów";
 }
 
-@foreach (var item in Model.RP)
+@foreach (var item in Model.Recipes)
 {
     <div class="card">
-
         <div class="card-body">
             <a href=@Model.Letter(item.Id)><div class="card-img" style="background-image: url('@item.Img');"></div></a>
             <p class="card-text">

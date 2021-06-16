@@ -13,10 +13,10 @@ using Project_.NET.Models;
 
 namespace Project_.NET.Pages
 {
-    public class UserAddedModel : RecipesFun
+    public class UserModel : RecipesFun
     {
         public string Answer { get; set; }
-        public UserAddedModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./UserAdded", webHostEnvironment)
+        public UserModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./UserAdded", webHostEnvironment)
         { }
         public void OnGet(string username)
         {
@@ -25,7 +25,7 @@ namespace Project_.NET.Pages
             Answer = HttpContext.Request.Path;
             ApplicationUser user = GetUserByName(username);
             var RPQuerry = (from Recipes in _cont.Recipes where Recipes.User==user orderby Recipes.date descending select Recipes).Include(u => u.User);
-            RP = RPQuerry.ToList();
+            Recipes = RPQuerry.ToList();
         }
     }
 
