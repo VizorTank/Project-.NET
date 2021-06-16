@@ -31,9 +31,8 @@ namespace Project_.NET.Pages
             _cont = cont;
             _userManager = userManager;
         }
-        public IActionResult OnPostAdd(string itemId)
+        public IActionResult OnPostAdd()
         {
-            CategoryName = itemId;
             ErrorMessage = null;
             if (ModelState.IsValid)
             {
@@ -53,6 +52,13 @@ namespace Project_.NET.Pages
                 }
             }
             return Page();
+        }
+
+        public void OnPostEdit(string itemId)
+        {
+            CategoryName = itemId;
+            Category category = _cont.Categories.Find(CategoryName);
+            Description = category.Description;
         }
     }
 }

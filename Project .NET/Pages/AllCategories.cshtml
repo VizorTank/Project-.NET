@@ -6,11 +6,22 @@
 
 @foreach (var item in Model.Categories)
 {
-<form method="post">
-    <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
-    <button type="submit" class="btn btn-warning" asp-page="/AddCategory" asp-page-handler="Add">Edytuj</button>
-    @item.Name
-    @Html.Hidden("itemId", item.Name)
+    <div>
+        Nazwa kategorii: @item.Name <br />
+        Opis kategorii:
+        @if (@item.Description == null || @item.Description == "")
+        {
+            <div>Brak</div>
+        }
+        else
+        {
+            <p>@item.Description</p>
+        }
+        <form method="post">
+            <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
+            <button type="submit" class="btn btn-primary" asp-page="/AddCategory" asp-page-handler="Edit">Edytuj</button>
+            @Html.Hidden("itemId", item.Name)
+        </form>
+    </div>
     <br />
-</form>
 }
