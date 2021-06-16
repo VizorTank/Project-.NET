@@ -16,7 +16,6 @@ namespace Project_.NET.Models
         public string Ings { get; set; }
         public string Desc { get; set; }
         public int Votes { get; set; }
-
         public string date { get; set; }
         public string Img { get; set; }
         public ICollection<Favorite> Favorites { get; set; }

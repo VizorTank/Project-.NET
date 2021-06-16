@@ -22,6 +22,8 @@ namespace Project_.NET.Pages
 
         [BindProperty, Required(ErrorMessage = "Pole Nazwa jest wymagane"), MaxLength(50, ErrorMessage = "Miej ni¿ 50 znaków")]
         public string CategoryName { get; set; }
+        [BindProperty, MaxLength(2500, ErrorMessage = "Miej ni¿ 2500 znaków")]
+        public string Description { get; set; }
 
         public void OnGet() { }
         public AddCategoryModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager)
@@ -29,19 +31,26 @@ namespace Project_.NET.Pages
             _cont = cont;
             _userManager = userManager;
         }
-        public IActionResult OnPost()
+        public IActionResult OnPostAdd(string itemId)
         {
+            CategoryName = itemId;
             ErrorMessage = null;
             if (ModelState.IsValid)
             {
                 if (_cont.Categories.Find(CategoryName) == null)
                 {
-                    Category category = new Category(CategoryName);
+                    Category category = new Category(CategoryName, Description);
                     _cont.Categories.Add(category);
                     _cont.SaveChanges();
                     return RedirectToPage("./AllCategories");
                 }
-                ErrorMessage = "Kategoria ju¿ istnieje";
+                else
+                {
+                    Category category = _cont.Categories.Find(CategoryName);
+                    category.Description = Description;
+                    _cont.SaveChanges();
+                    return RedirectToPage("./AllCategories");
+                }
             }
             return Page();
         }

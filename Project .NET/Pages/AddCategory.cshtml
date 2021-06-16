@@ -8,8 +8,20 @@
         <div class="form-group">
             <small> <span asp-validation-for="CategoryName" class="text-danger">@Model.ErrorMessage</span> <br /></small>
             <label for="CategoryName">Nazwa Kategorii:</label><br />
-            <input name="CategoryName" /><br />
+            @if (Model.CategoryName != null && Model.CategoryName != "")
+            {
+                <input name="CategoryName" value="@Model.CategoryName" readonly /><br />
+            }
+            else
+            {
+                <input name="CategoryName" /><br />
+            }
         </div>
-        <button type="submit" class="btn btn-primary">Zatwierdź</button><br />
+        <div class="form-group">
+            <small> <span asp-validation-for="Description" class="text-danger"></span> <br /></small>
+            <label for="Description">Opis kategorii</label>
+            <textarea name="Description" class="form-control" id="Description" rows="5">@Model.Description</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" asp-page-handler="Add">Zatwierdź</button><br />
     </form>
 </div>

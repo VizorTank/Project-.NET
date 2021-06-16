@@ -5,8 +5,8 @@
     @foreach (var item in Model.Recipes)
     {
         <p>
-         <p style="font-size:35px">@item.Name <br /></p>
-        <p style="font-size:20px"> Autor: @item.User.UserName <br /><br /> </p>
+        <p style="font-size:35px">@item.Name <br /></p>
+        <p style="font-size:20px"> Autor: <a href=@Model.UserPage(item.User.UserName)> @item.User.UserName </a> <br /><br /> </p>
         <img src="@item.Img" style="height:440px; width:440px"><br />
         <p style="font-size:30px">Składniki:<br/> </p>    
         <p style="font-size:20px">   @item.Ings <br /><br /> </p>

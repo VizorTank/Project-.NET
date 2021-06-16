@@ -32,25 +32,4 @@
 </div>
 @Model.ToolTip <br />
 
-    @foreach (var item in Model.Recipes)
-    {
-        <div class="card">
-            
-            <div class="card-body">
-                <div class="card-img" style="background-image: url('@item.Img');"></div>
-                <p class="card-text">
-                    Autor: @item.User.UserName
-                    <br />
-                    Nazwa: @item.Name
-                    <br />
-                    Data: @item.date <br />
-                </p>
-                Categorie:<br />
-                @foreach (var recipeCategory in Model.GetCategories(item))
-                {
-                    <button class="btn btn-info">@recipeCategory.Category.Name</button>
-                }
-            </div>
-        </div>
-    }
-</div>
+<partial name="_Recipe" />

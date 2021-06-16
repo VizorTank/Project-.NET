@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -20,6 +21,7 @@ namespace Project_.NET.Models
         public string letter;
         public IList<Recipe> Recipes { get; set; }
         public IList<Like> LDEL { get; set; }
+        public QueryString GetData { get; set; }
         protected readonly UserManager<ApplicationUser> _userManager;
         protected readonly ApplicationDbContext _cont;
         protected readonly string _NamePage;
@@ -33,11 +35,11 @@ namespace Project_.NET.Models
             _webHostEnvironmen = webHostEnvironmen;
         }
         
-        public IActionResult OnPostDeleteAsync(int itemId)
+        public IActionResult OnPostDeleteAsync(int itemId, string getData)
         {
             ApplicationUser user = GetUser();
             if (user == null)
-                return RedirectToPage(_NamePage);
+                return Reload(getData);
             Recipe recipe = GetRecipe(itemId);
             if (recipe != null && recipe.User == user)
             {
@@ -46,25 +48,25 @@ namespace Project_.NET.Models
                 _cont.SaveChanges();
             }
 
-            return RedirectToPage(_NamePage);
+            return Reload(getData);
         }
         public IActionResult OnPostEditAsync(int itemId)
         {
             return RedirectToPage("./Recipes?Id=" + itemId.ToString());
         }
-        public IActionResult OnPostLikeAsync(int itemId)
+        public IActionResult OnPostLikeAsync(int itemId, string getData)
         {
-            return ChangeLike(itemId, 1);
+            return ChangeLike(itemId, 1, getData);
         }
-        public IActionResult OnPostHateAsync(int itemId)
+        public IActionResult OnPostHateAsync(int itemId, string getData)
         {
-            return ChangeLike(itemId, -1);
+            return ChangeLike(itemId, -1, getData);
         }
-        public IActionResult ChangeLike(int itemId, int value)
+        public IActionResult ChangeLike(int itemId, int value, string getData)
         {
             ApplicationUser user = GetUser();
             if (user == null)
-                return RedirectToPage(_NamePage);
+                return Reload(getData);
             Recipe recipe = GetRecipe(itemId);
             Like like = GetLike(recipe, user);
 
@@ -85,21 +87,21 @@ namespace Project_.NET.Models
                 _cont.SaveChanges();
             }
 
-            return RedirectToPage(_NamePage);
+            return Reload(getData);
         }
-        public IActionResult OnPostFavoriteAsync(int itemId)
+        public IActionResult OnPostFavoriteAsync(int itemId, string getData)
         {
-            return ChangeFavorite(itemId, true);
+            return ChangeFavorite(itemId, true, getData);
         }
-        public IActionResult OnPostUnFavoriteAsync(int itemId)
+        public IActionResult OnPostUnFavoriteAsync(int itemId, string getData)
         {
-            return ChangeFavorite(itemId, false);
+            return ChangeFavorite(itemId, false, getData);
         }
-        public IActionResult ChangeFavorite(int itemId, bool value)
+        public IActionResult ChangeFavorite(int itemId, bool value, string getData)
         {
             ApplicationUser user = GetUser();
             if (user == null)
-                return RedirectToPage(_NamePage);
+                return Reload(getData);
             Recipe recipe = GetRecipe(itemId);
 
             Favorite favorite = GetFavorite(recipe, user);
@@ -115,7 +117,7 @@ namespace Project_.NET.Models
                 _cont.Favorites.Update(favorite);
                 _cont.SaveChanges();
             }
-            return RedirectToPage(_NamePage);
+            return Reload(getData);
         }
         public void removeFoto(string imgname)
         {
@@ -126,9 +128,13 @@ namespace Project_.NET.Models
                 System.IO.File.Delete(filePath);
             }
         }
-        public string Letter(int Id)
+        public string RecipePage(int Id)
         {
             return "./Recipes?Id=" + Id.ToString();
+        }
+        public string UserPage(string username)
+        {
+            return "./User?username=" + username;
         }
         public ApplicationUser GetUser()
         {
@@ -193,7 +199,12 @@ namespace Project_.NET.Models
             }
             return new List<RecipeCategory>();
         }
-
+        public virtual IActionResult Reload(string getData)
+        {
+            if (HttpContext.Request.Path == "/")
+                return Redirect("/Index" + getData);
+            return Redirect(HttpContext.Request.Path + getData);
+        }
     }
 }
 

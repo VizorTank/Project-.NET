@@ -16,18 +16,17 @@ namespace Project_.NET.Pages
     public class UserModel : RecipesFun
     {
         public string Answer { get; set; }
-        public UserModel(ApplicationDbContext cont, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./UserAdded", webHostEnvironment)
-        { }
-        public void OnGet(string username)
+        public string Username { get; set; }
+        public UserModel(ApplicationDbContext cont, 
+            UserManager<ApplicationUser> userManager, 
+            IWebHostEnvironment webHostEnvironment) : base(cont, userManager, "./User", webHostEnvironment) { }
+        public void OnGet(string username = null)
         {
-            if (username == null || username == "")
-                Answer = "Nie znaleziono u¿ytkownika";
-            Answer = HttpContext.Request.Path;
-            ApplicationUser user = GetUserByName(username);
+            Username = username;
+            ApplicationUser user = GetUserByName(Username);
             var RPQuerry = (from Recipes in _cont.Recipes where Recipes.User==user orderby Recipes.date descending select Recipes).Include(u => u.User);
             Recipes = RPQuerry.ToList();
         }
     }
-
 }
 

@@ -8,6 +8,7 @@
 {
 <form method="post">
     <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
+    <button type="submit" class="btn btn-warning" asp-page="/AddCategory" asp-page-handler="Add">Edytuj</button>
     @item.Name
     @Html.Hidden("itemId", item.Name)
     <br />
