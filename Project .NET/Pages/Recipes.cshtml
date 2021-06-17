@@ -2,13 +2,15 @@
 @model Project_.NET.Pages.Shared.RecipesModel
 @{
     ViewData["Title"] = "Lista Przepisów";
+    Model.GetData = HttpContext.Request.QueryString;
     @foreach (var item in Model.Recipes)
     {
         <p>
         <p style="font-size:35px">@item.Name <br /></p>
         <p style="font-size:20px"> Autor: <a href=@Model.UserPage(item.User.UserName)> @item.User.UserName </a> <br /><br /> </p>
-        <img src="@item.Img" style="height:440px; width:440px"><br />
-        <p style="font-size:30px">Składniki:<br/> </p>    
+        <img src="@item.Img" style="height:440px; width:440px">
+        <br />
+        <p style="font-size:30px">Składniki:<br /> </p>
         <p style="font-size:20px">   @item.Ings <br /><br /> </p>
         <p style="font-size:30px">  Przygotowanie: <br /> </p>
         <p style="font-size:20px"> @item.Desc <br /><br /> </p>
@@ -20,6 +22,7 @@
         @if (item.User.Id == Model.GetUserId())
         {
             <form method="post">
+                <input name="getData" type="hidden" value="@Model.GetData" />
                 @Html.Hidden("itemId", item.Id)
                 @Html.Hidden("userId", item.User.Id)
                 <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
@@ -32,11 +35,13 @@
         }
         else
         {
-            @Html.Hidden("itemId", item.Id)
-            @Html.Hidden("userId", item.User.Id)
+
             if (Model.IsFavorite(item.Id) == false)
             {
                 <form method="post">
+                    @Html.Hidden("itemId", item.Id)
+                    @Html.Hidden("userId", item.User.Id)
+                    <input name="getData" type="hidden" value="@Model.GetData" />
                     <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
                     <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
                     @item.Votes
@@ -47,6 +52,9 @@
             else
             {
                 <form method="post">
+                    @Html.Hidden("itemId", item.Id)
+                    @Html.Hidden("userId", item.User.Id)
+                    <input name="getData" type="hidden" value="@Model.GetData" />
                     <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
                     <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
                     @item.Votes

@@ -10,7 +10,7 @@ using Project_.NET.Data;
 namespace Project_.NET.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210610095941_CategoryDescription")]
+    [Migration("20210617101708_CategoryDescription")]
     partial class CategoryDescription
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

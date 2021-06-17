@@ -10,6 +10,10 @@
   <ItemGroup>
     <Compile Remove="Migrations\20210520160231_Fav.cs" />
     <Compile Remove="Migrations\20210520160231_Fav.Designer.cs" />
+    <Compile Remove="Migrations\20210617100633_test.cs" />
+    <Compile Remove="Migrations\20210617100633_test.Designer.cs" />
+    <Compile Remove="Migrations\20210617101536_test.cs" />
+    <Compile Remove="Migrations\20210617101536_test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
