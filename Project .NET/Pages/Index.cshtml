@@ -5,6 +5,59 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <form>
+        <p>
+            Find receipe by typing name or author's e-mail adress
+            <input type="text" asp-for="searchString" />
+            <input type="submit" value="Search" />
+        </p>
+    </form>
+    <table class="table">
+
+        <tbody>
+            @foreach (var item in Model.Receipe)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User_Id)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <form>
+        <p>
+            Find author
+            <input type="text" asp-for="authorString" />
+            <input type="submit" value="Search" />
+        </p>
+    </form>
+
+    <table class="table">
+
+        <tbody>
+            @foreach (var item in Model.Receipe)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User_Id)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
+
