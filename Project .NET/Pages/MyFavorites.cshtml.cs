@@ -31,16 +31,16 @@ namespace Project_.NET.Pages
             Recipes = RPQuerry.ToList();
         }
 
-        public string GetUsername(int itemID)
-        {
-            Recipe RPDel = (from Recipes 
-                            in _cont.Recipes 
-                            where Recipes.Id == itemID 
-                            orderby Recipes.date descending
-                            select Recipes).Include(ru => ru.RecipeUsers).ThenInclude(i => i.User).FirstOrDefault();
-            // TODO: User list
-            return RPDel.RecipeUsers.FirstOrDefault().User.UserName;
-        }
+        //public string GetUsername(int itemID)
+        //{
+        //    Recipe RPDel = (from Recipes 
+        //                    in _cont.Recipes 
+        //                    where Recipes.Id == itemID 
+        //                    orderby Recipes.date descending
+        //                    select Recipes).Include(ru => ru.RecipeUsers).ThenInclude(i => i.User).FirstOrDefault();
+        //    // TODO: User list
+        //    return RPDel.RecipeUsers.FirstOrDefault().User.UserName;
+        //}
     }
 }
 

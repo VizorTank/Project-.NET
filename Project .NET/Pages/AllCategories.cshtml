@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Kategorie";
 }
+<form method="get">
+    <button type="submit" class="btn btn-success" asp-page="/AddCategory">Dodaj kategorie</button>
+</form>
+
 
 @foreach (var item in Model.Categories)
 {
