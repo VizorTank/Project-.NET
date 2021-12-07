@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Project_.NET.Data;
 using Project_.NET.Models;
 
@@ -19,7 +20,13 @@ namespace Project_.NET.Pages
         [BindProperty]
         public string CategoryName { get; set; }
         [BindProperty]
+        public string IngredientName { get; set; }
+        [BindProperty]
         public string RecipeName { get; set; }
+        [BindProperty]
+        public bool SortType { get; set; }
+        [BindProperty]
+        public bool SortOrder { get; set; }
         public string ToolTip { get; set; }
 
         public SearchModel(ApplicationDbContext cont, 
@@ -28,55 +35,53 @@ namespace Project_.NET.Pages
         { }
         public void OnGet()
         {
-            Recipes = (from Recipe 
+            var tmpRecipes = (from Recipe 
                        in _cont.Recipes 
                        orderby Recipe.date descending
-                       select Recipe).Include(r => r.RecipeUsers).ThenInclude(u => u.User).ToList();
+                       select Recipe).Include(r => r.RecipeUsers).ThenInclude(u => u.User).OrderBy(u => u.date);
+
+            if (!SortType)
+                Recipes = tmpRecipes.OrderBy(u => u.date).ToList();
+            else
+                Recipes = tmpRecipes.OrderBy(u => u.Likes).ToList();
         }
 
-        public void OnPostUserAsync()
+        public void OnPostSearchAsync()
         {
+            var querry = _cont.Recipes
+                .Include(r => r.RecipeCategories).ThenInclude(rc => rc.Category)
+                .Include(r => r.RecipeUsers).ThenInclude(u => u.User)
+                .Select(x => x);
             if (UserName != null)
             {
-                ToolTip = "Wyszukiwanie receptury po u¿ytkowniku \"" + UserName + "\"";
-                Recipes = _cont.RecipeUsers
-                    .Where(u => u.User.UserName == UserName)
-                    .Include(u => u.User)
-                    .Include(r => r.Recipe).ThenInclude( u => u.RecipeUsers).ThenInclude( u => u.User)
-                    .Select(r => r.Recipe).ToList();
+                querry = querry.Where(u => u.RecipeUsers.Any(k => k.User.UserName == UserName));
             }
-            else
-                OnGet();
-        }
-
-        public void OnPostRecipeAsync()
-        {
             if (RecipeName != null)
             {
-                ToolTip = "Wyszukiwanie receptury po nazwie \"" + RecipeName + "\"";
-                Recipes = (from Recipe 
-                           in _cont.Recipes
-                           where Recipe.Name.Contains(RecipeName)
-                           orderby Recipe.date descending
-                           select Recipe).Include(r => r.RecipeUsers).ThenInclude(u => u.User).ToList();
+                querry = querry.Where(r => r.Name.Contains(RecipeName));
             }
-            else
-                OnGet();
-    }
-
-        public void OnPostCategoryAsync()
-        {
             if (CategoryName != null)
             {
-                ToolTip = "Wyszukiwanie receptury po kategorii " + CategoryName;
-                Recipes = (from Recipe
-                           in _cont.Recipes
-                           where Recipe.RecipeCategories.Any(r => r.Category.Name == CategoryName)
-                           orderby Recipe.date descending
-                           select Recipe).Include(r => r.RecipeUsers).ThenInclude(u => u.User).Include(r => r.RecipeCategories).ThenInclude(u => u.Category).ToList();
+                querry = querry.Where(r => r.RecipeCategories.Any(r => r.Category.Name == CategoryName));
+            }
+            if (IngredientName != null)
+            {
+                querry = querry.Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Name == IngredientName));
+            }
+            if (!SortType)
+            {
+                if (SortOrder)
+                    Recipes = querry.OrderBy(r => r.date).ToList();
+                else
+                    Recipes = querry.OrderByDescending(r => r.date).ToList();
             }
             else
-                OnGet();
+            {
+                if (SortOrder)
+                    Recipes = querry.OrderBy(r => r.Votes).ToList();
+                else
+                    Recipes = querry.OrderByDescending(r => r.Votes).ToList();
+            }
         }
     }
 }

@@ -187,6 +187,13 @@ namespace Project_.NET.Models
                 return categories;
             return new List<Category>();
         }
+        public IList<Ingredient> GetIngredients()
+        {
+            IList<Ingredient> ingredients = (from Ingredient in _cont.Ingredients select Ingredient).ToList();
+            if (ingredients != null)
+                return ingredients;
+            return new List<Ingredient>();
+        }
         public IList<RecipeCategory> GetCategories(Recipe recipe)
         {
             if (recipe != null)

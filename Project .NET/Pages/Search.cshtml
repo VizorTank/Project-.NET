@@ -8,14 +8,12 @@
         <div class="form-group">
             <small> <span asp-validation-for="UserName" class="text-danger"></span></small>
             <label for="UserName">Nazwa Użytkownika:</label><br />
-            <input name="UserName" />
-            <button type="submit" class="btn btn-success" asp-page-handler="User">Szukaj</button>
+            <input name="UserName" value="@Model.UserName" />
         </div>
         <div class="form-group">
             <small> <span asp-validation-for="RecipeName" class="text-danger"></span></small>
             <label for="RecipeName">Nazwa Dania:</label><br />
-            <input name="RecipeName" />
-            <button type="submit" class="btn btn-success" asp-page-handler="Recipe">Szukaj</button>
+            <input name="RecipeName" value="@Model.RecipeName" />
         </div>
         <div class="form-group">
             <label asp-for="CategoryName">Category:</label>
@@ -23,11 +21,43 @@
                 <option></option>
                 @foreach (var item in Model.GetCategories())
                 {
-                    <option>@item.Name</option>
+                    if (item.Name == Model.CategoryName)
+                    {
+                        <option selected>@item.Name</option>
+                    }
+                    else
+                    {
+                        <option>@item.Name</option>
+                    }
                 }
             </select>
-            <button type="submit" class="btn btn-success" asp-page-handler="Category">Szukaj</button>
         </div>
+        <div class="form-group">
+            <label asp-for="IngredientName">Ingredient:</label>
+            <select class="form-control" name="IngredientName">
+                <option></option>
+                @foreach (var item in Model.GetIngredients())
+                {
+                    if (item.Name == Model.IngredientName)
+                    {
+                        <option selected>@item.Name</option>
+                    }
+                    else
+                    {
+                        <option>@item.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="SortType">Sortowanie po polubieniach: </label>
+            @Html.EditorFor(x => x.SortType)
+        </div>
+        <div class="form-group">
+            <label for="SortOrder">Sortowanie rosnące: </label>
+            @Html.EditorFor(x => x.SortOrder)
+        </div>
+        <button type="submit" class="btn btn-success" asp-page-handler="Search">Szukaj</button>
     </form>
 </div>
 @Model.ToolTip <br />
