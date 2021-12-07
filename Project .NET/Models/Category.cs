@@ -9,11 +9,10 @@ namespace Project_.NET.Models
 {
     public class Category
     {
-        [Key]
-        public int CategoriId { get; set; }
+        public int CategoryId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<RecipeCategory> RecipeCategories { get; set; }
+        public virtual ICollection<RecipeCategory> RecipeCategories { get; set; }
 
         public Category() { }
         public Category(string name)

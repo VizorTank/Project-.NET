@@ -24,7 +24,7 @@ namespace Project_.NET.Pages
         {
             IdentityUser user = GetUser();
             var RPQuerry = (from Favorites 
-                            in _cont.Favorites 
+                            in _cont.Favourites 
                             where Favorites.User == user 
                             && Favorites.value == true 
                             select Favorites).Include(r => r.Recipe).ThenInclude(ru => ru.RecipeUsers).ThenInclude(r => r.User).Select(f => f.Recipe);

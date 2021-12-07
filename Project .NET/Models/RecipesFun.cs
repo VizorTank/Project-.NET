@@ -102,17 +102,17 @@ namespace Project_.NET.Models
                 return Reload(getData);
             Recipe recipe = GetRecipe(itemId);
 
-            Favorite favorite = GetFavorite(recipe, user);
+            Favourite favorite = GetFavorite(recipe, user);
             if (favorite == null)
             {
-                Favorite favi = new Favorite(recipe, user, value);
-                _cont.Favorites.Add(favi);
+                Favourite favi = new Favourite(recipe, user, value);
+                _cont.Favourites.Add(favi);
                 _cont.SaveChanges();
             }
             else if (favorite.value != value)
             {
                 favorite.value = value;
-                _cont.Favorites.Update(favorite);
+                _cont.Favourites.Update(favorite);
                 _cont.SaveChanges();
             }
             return Reload(getData);
@@ -152,7 +152,7 @@ namespace Project_.NET.Models
         {
             ApplicationUser user = GetUser();
             Recipe recipe = GetRecipe(itemId);
-            Favorite favorite = GetFavorite(recipe, user);
+            Favourite favorite = GetFavorite(recipe, user);
             if (favorite == null)
                 return false;
             else 
@@ -173,10 +173,10 @@ namespace Project_.NET.Models
                     where Like.User == user && Like.Recipe == recipe 
                     select Like).FirstOrDefault();
         }
-        public Favorite GetFavorite(Recipe recipe, ApplicationUser user)
+        public Favourite GetFavorite(Recipe recipe, ApplicationUser user)
         {
             return (from Favorite 
-                    in _cont.Favorites 
+                    in _cont.Favourites 
                     where Favorite.User == user && Favorite.Recipe == recipe 
                     select Favorite).ToList().LastOrDefault();
         }

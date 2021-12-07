@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 
 namespace Project_.NET.Models
 {
-    public class Favorite
+    public class Favourite
     {
         public int RecipeId { get; set; }
         public string UserId { get; set; }
 
-        public Recipe Recipe { get; set; }
+        public virtual Recipe Recipe { get; set; }
         
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
         public bool value { get; set; }
 
-        public Favorite()
+        public Favourite()
         { }
-        public Favorite(Recipe _recipes, ApplicationUser _user, bool _value)
+        public Favourite(Recipe _recipes, ApplicationUser _user, bool _value)
         {
             Recipe = _recipes;
             User = _user;

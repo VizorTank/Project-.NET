@@ -24,12 +24,11 @@ namespace Project_.NET.Pages
         {
             Username = username;
             ApplicationUser user = GetUserByName(Username);
-            var RPQuerry = (from Recipes 
-                            in _cont.Recipes 
-                            // TODO: User search
-                            //where Recipes.User == user 
-                            orderby Recipes.date descending
-                            select Recipes).Include(r => r.RecipeUsers).ThenInclude(u => u.User);
+            var RPQuerry = _cont.RecipeUsers
+                    .Where(u => u.User.UserName == Username)
+                    .Include(u => u.User)
+                    .Include(r => r.Recipe).ThenInclude(u => u.RecipeUsers).ThenInclude(u => u.User)
+                    .Select(r => r.Recipe).ToList();
             Recipes = RPQuerry.ToList();
         }
     }

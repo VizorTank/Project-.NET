@@ -39,12 +39,11 @@ namespace Project_.NET.Pages
             if (UserName != null)
             {
                 ToolTip = "Wyszukiwanie receptury po u¿ytkowniku \"" + UserName + "\"";
-                Recipes = (from Recipe
-                           in _cont.Recipes
-                               // TODO: Load state from previously suspended application
-                               // where Recipe.User.UserName == UserName
-                           orderby Recipe.date descending
-                           select Recipe).Include(r => r.RecipeUsers).ThenInclude(u => u.User).ToList();
+                Recipes = _cont.RecipeUsers
+                    .Where(u => u.User.UserName == UserName)
+                    .Include(u => u.User)
+                    .Include(r => r.Recipe).ThenInclude( u => u.RecipeUsers).ThenInclude( u => u.User)
+                    .Select(r => r.Recipe).ToList();
             }
             else
                 OnGet();

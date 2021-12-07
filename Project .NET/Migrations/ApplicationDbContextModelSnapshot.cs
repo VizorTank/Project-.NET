@@ -221,7 +221,7 @@ namespace Project_.NET.Migrations
 
             modelBuilder.Entity("Project_.NET.Models.Category", b =>
                 {
-                    b.Property<int>("CategoriId")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -232,12 +232,12 @@ namespace Project_.NET.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CategoriId");
+                    b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Project_.NET.Models.Favorite", b =>
+            modelBuilder.Entity("Project_.NET.Models.Favourite", b =>
                 {
                     b.Property<int>("RecipeId")
                         .HasColumnType("int");
@@ -252,7 +252,57 @@ namespace Project_.NET.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Favorites");
+                    b.ToTable("Favourites");
+                });
+
+            modelBuilder.Entity("Project_.NET.Models.FavouriteAutor", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AutorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "AutorId");
+
+                    b.HasIndex("AutorId");
+
+                    b.ToTable("FavouriteAutors");
+                });
+
+            modelBuilder.Entity("Project_.NET.Models.Image", b =>
+                {
+                    b.Property<int>("ImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ImageId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("Project_.NET.Models.Ingredient", b =>
+                {
+                    b.Property<int>("IngredientId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("IngredientId");
+
+                    b.ToTable("Ingredients");
                 });
 
             modelBuilder.Entity("Project_.NET.Models.Like", b =>
@@ -316,6 +366,24 @@ namespace Project_.NET.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("RecipeCategories");
+                });
+
+            modelBuilder.Entity("Project_.NET.Models.RecipeIngredient", b =>
+                {
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Amount")
+                        .HasColumnType("real");
+
+                    b.HasKey("RecipeId", "IngredientId");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("RecipeIngredients");
                 });
 
             modelBuilder.Entity("Project_.NET.Models.RecipeUser", b =>
@@ -384,7 +452,7 @@ namespace Project_.NET.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project_.NET.Models.Favorite", b =>
+            modelBuilder.Entity("Project_.NET.Models.Favourite", b =>
                 {
                     b.HasOne("Project_.NET.Models.Recipe", "Recipe")
                         .WithMany("Favorites")
@@ -395,6 +463,30 @@ namespace Project_.NET.Migrations
                     b.HasOne("Project_.NET.Models.ApplicationUser", "User")
                         .WithMany("Favorites")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Project_.NET.Models.FavouriteAutor", b =>
+                {
+                    b.HasOne("Project_.NET.Models.ApplicationUser", "Autor")
+                        .WithMany("FavouritedByUsers")
+                        .HasForeignKey("AutorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Project_.NET.Models.ApplicationUser", "User")
+                        .WithMany("FavouriteAutors")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Project_.NET.Models.Image", b =>
+                {
+                    b.HasOne("Project_.NET.Models.Recipe", "Recipe")
+                        .WithMany("Images")
+                        .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -424,6 +516,21 @@ namespace Project_.NET.Migrations
 
                     b.HasOne("Project_.NET.Models.Recipe", "Recipe")
                         .WithMany("RecipeCategories")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Project_.NET.Models.RecipeIngredient", b =>
+                {
+                    b.HasOne("Project_.NET.Models.Ingredient", "Ingredient")
+                        .WithMany("RecipeIngredients")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project_.NET.Models.Recipe", "Recipe")
+                        .WithMany("RecipeIngredients")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

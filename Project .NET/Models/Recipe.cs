@@ -18,10 +18,12 @@ namespace Project_.NET.Models
         public int Votes { get; set; }
         public string date { get; set; }
         public string Img { get; set; }
-        public ICollection<Favorite> Favorites { get; set; }
-        public ICollection<Like> Likes { get; set;  }
-        public ICollection<RecipeCategory> RecipeCategories { get; set; }
-        public ICollection<RecipeUser> RecipeUsers { get; set; }
+        public virtual ICollection<Favourite> Favorites { get; set; }
+        public virtual ICollection<Like> Likes { get; set;  }
+        public virtual ICollection<RecipeCategory> RecipeCategories { get; set; }
+        public virtual ICollection<RecipeUser> RecipeUsers { get; set; }
+        public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; }
+        public virtual ICollection<Image> Images { get; set; }
 
         public Recipe()
         { }
