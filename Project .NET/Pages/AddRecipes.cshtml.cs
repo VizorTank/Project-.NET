@@ -37,6 +37,8 @@ namespace Project_.NET.Pages
         public IList<Category> Categories { get; set; }
         [BindProperty]
         public IList<string> ChosenCategories { get; set; }
+        [BindProperty]
+        public IList<string> ChosenUsers { get; set; }
         public int recipeId { get; set; }
 
         public void OnGet() { }
@@ -73,10 +75,17 @@ namespace Project_.NET.Pages
                     _cont.RecipeUsers.Add(recipeUser);
                     _cont.Recipes.Add(recipe);
                 }
+
+
+                foreach (string item in ChosenUsers)
+                 {
+                    AddRecipeUser(recipe, GetUser(item));
+                    
+                 }
                 foreach (string item in ChosenCategories)
-                {
-                    AddRecipeCategory(recipe, GetCategory(item));
-                }
+                 {
+                   AddRecipeCategory(recipe, GetCategory(item));
+                 }
                 _cont.SaveChanges();
                 return RedirectToPage("./AllRecipes");
             }
@@ -95,7 +104,17 @@ namespace Project_.NET.Pages
             return new List<Category>();
         }
 
-        public bool IsInSelectedCategory(Category category)
+        public IList<ApplicationUser> GetUsers()
+        {
+            IList<ApplicationUser> users = (from User in _cont.Users select User).ToList();
+            if (users != null)
+            {
+                users.Remove(GetUser());
+                return users;
+            }
+            return new List<ApplicationUser>();
+        }
+            public bool IsInSelectedCategory(Category category)
         {
             Recipe recipe = GetRecipe(recipeId);
             if (recipe != null)
@@ -110,6 +129,33 @@ namespace Project_.NET.Pages
             }
             
             return false;
+        }
+        public bool IsInAutors(ApplicationUser user)
+        {
+            Recipe recipe = GetRecipe(recipeId);
+            if(recipe!=null)
+            {
+                var querry = (from RecipeUser
+                              in _cont.RecipeUsers
+                              where RecipeUser.Recipe == recipe &&
+                              RecipeUser.User == user
+                              select RecipeUser).Count();
+                if (querry == 1)
+                    return true;
+            }
+
+            return false;
+        }
+        public IList<RecipeUser> GetUsers(Recipe recipe)
+        {
+            if(recipe!=null)
+            {
+                IList<RecipeUser> users = (from RecipeUser in _cont.RecipeUsers where RecipeUser.Recipe == recipe select RecipeUser).Include(c => c.User).ToList();
+                if (users != null)
+                    return users;
+
+            }
+            return new List<RecipeUser>();
         }
 
         public IList<RecipeCategory> GetCategories(Recipe recipe)
@@ -139,7 +185,10 @@ namespace Project_.NET.Pages
                     orderby Recipes.date
                     select Recipes).FirstOrDefault();
         }
-
+        public void AddRecipeUser(Recipe recipe, ApplicationUser User)
+        {
+            _cont.RecipeUsers.Add(new RecipeUser(User, recipe));
+        }
         public void AddRecipeCategory(Recipe recipe, Category category)
         {
             _cont.RecipeCategories.Add(new RecipeCategory(recipe, category));
@@ -158,6 +207,11 @@ namespace Project_.NET.Pages
         {
             Task<ApplicationUser> identityUser = _userManager.GetUserAsync(HttpContext.User);
             return identityUser.Result;
+        }
+        public ApplicationUser GetUser(string username)
+        {
+            ApplicationUser user = (from User in _cont.Users where User.UserName == username select User).FirstOrDefault();
+            return user;
         }
         private string PrecessFoto()
         {

@@ -10,7 +10,7 @@
         <div class="form-group">
             <small> <span asp-validation-for="AddName" class="text-danger"></span> <br /></small>
             <label for="AddName">Nazwa Dania:</label><br />
-            <input name="AddName" value="@Model.AddName"/><br />
+            <input name="AddName" value="@Model.AddName" /><br />
         </div>
         <div class="form-group">
             <small> <span asp-validation-for="AddIngs" class="text-danger"></span> <br /></small>
@@ -27,6 +27,22 @@
             <input name="AddImg" /><br />
             <small> <span asp-validation-for="Foto" class="text-danger"></span></small> <br />
             <input type="file" class="form-control-file" name="Foto">
+        </div>
+        <div class="form-group">
+            <label asp-for="ChosenUsers">Autorzy</label>
+            <select multiple class="form-control" name="ChosenUsers">
+                @foreach (var item in Model.GetUsers())
+                {
+                    @if (Model.IsInAutors(item))
+                    {
+                        <option selected>@item.UserName</option>
+                    }
+                    else
+                    {
+                        <option>@item.UserName</option>
+                    }
+                }
+            </select>
         </div>
         <div class="form-group">
             <label asp-for="ChosenCategories">Kategorie</label>
