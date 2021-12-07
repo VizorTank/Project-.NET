@@ -10,5 +10,6 @@ namespace Project_.NET.Models
     {
         public ICollection<Favorite> Favorites { get; set; }
         public ICollection<Like> Likes { get; set; }
+        public ICollection<RecipeUser> RecipeUsers { get; set; }
     }
 }

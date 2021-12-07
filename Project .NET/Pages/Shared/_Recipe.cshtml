@@ -1,21 +1,24 @@
-﻿
+﻿@using Project_.NET.Models;
 @foreach (var item in Model.Recipes)
 {
     <div class="card">
         <div class="card-body">
             <a href=@Model.RecipePage(item.Id)><div class="card-img" style="background-image: url('@item.Img');"></div></a>
             <p class="card-text">
-                Autor: <a href=@Model.UserPage(item.User.UserName)> @item.User.UserName </a><br />
+                @foreach (var item2 in item.RecipeUsers)
+                {
+                Autor:<a href=@Model.UserPage(item2.User.UserName)> @item2.User.UserName </a><br />
+                }
                 Nazwa: @item.Name<br />
                 Data: @item.date <br />
-</p>
+            </p>
             <form method="post">
                 <input name="itemId" type="hidden" value="@item.Id" />
                 <input name="getData" type="hidden" value="@Model.GetData" />
                 <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
                 @item.Votes
                 <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
-                @if (item.User.Id == Model.GetUserId())
+                @if (((ICollection<RecipeUser>)item.RecipeUsers).Where(i => i.UserId == Model.GetUserId()).FirstOrDefault() != null)
                 {
                     <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
                     <button type="submit" class="btn btn-primary" asp-page="AddRecipes" asp-page-handler="Edit">Edytuj</button>

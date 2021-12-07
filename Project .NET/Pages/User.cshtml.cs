@@ -26,9 +26,10 @@ namespace Project_.NET.Pages
             ApplicationUser user = GetUserByName(Username);
             var RPQuerry = (from Recipes 
                             in _cont.Recipes 
-                            where Recipes.User == user 
+                            // TODO: User search
+                            //where Recipes.User == user 
                             orderby Recipes.date descending
-                            select Recipes).Include(u => u.User);
+                            select Recipes).Include(r => r.RecipeUsers).ThenInclude(u => u.User);
             Recipes = RPQuerry.ToList();
         }
     }

@@ -7,7 +7,10 @@
     {
         <p>
         <p style="font-size:35px">@item.Name <br /></p>
-        <p style="font-size:20px"> Autor: <a href=@Model.UserPage(item.User.UserName)> @item.User.UserName </a> <br /><br /> </p>
+        @foreach (var item2 in item.RecipeUsers)
+        {
+            <p style="font-size:20px"> Autor: <a href=@Model.UserPage(item2.User.UserName)> @item2.User.UserName </a> <br /><br /> </p>
+        }
         <img src="@item.Img" style="height:440px; width:440px">
         <br />
         <p style="font-size:30px">Składniki:<br /> </p>
@@ -19,12 +22,12 @@
 
 
         </p>
-        @if (item.User.Id == Model.GetUserId())
+        @if ( item.RecipeUsers.Where(i => i.UserId == Model.GetUserId()).FirstOrDefault() != null) //item.User.Id == )
         {
             <form method="post">
                 <input name="getData" type="hidden" value="@Model.GetData" />
                 @Html.Hidden("itemId", item.Id)
-                @Html.Hidden("userId", item.User.Id)
+                @Html.Hidden("userId", item.RecipeUsers.Where(i => i.UserId == Model.GetUserId()).FirstOrDefault().User.Id)
                 <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
                 <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
                 @item.Votes
@@ -40,7 +43,6 @@
             {
                 <form method="post">
                     @Html.Hidden("itemId", item.Id)
-                    @Html.Hidden("userId", item.User.Id)
                     <input name="getData" type="hidden" value="@Model.GetData" />
                     <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
                     <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>
@@ -53,7 +55,7 @@
             {
                 <form method="post">
                     @Html.Hidden("itemId", item.Id)
-                    @Html.Hidden("userId", item.User.Id)
+                    
                     <input name="getData" type="hidden" value="@Model.GetData" />
                     <button type="submit" class="btn btn-success" asp-page-handler="Like">+</button>
                     <button type="submit" class="btn btn-danger" asp-page-handler="Hate">-</button>

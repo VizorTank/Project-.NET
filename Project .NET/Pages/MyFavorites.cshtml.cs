@@ -27,7 +27,7 @@ namespace Project_.NET.Pages
                             in _cont.Favorites 
                             where Favorites.User == user 
                             && Favorites.value == true 
-                            select Favorites).Include(r => r.Recipe).ThenInclude(r => r.User).Select(f => f.Recipe);
+                            select Favorites).Include(r => r.Recipe).ThenInclude(ru => ru.RecipeUsers).ThenInclude(r => r.User).Select(f => f.Recipe);
             Recipes = RPQuerry.ToList();
         }
 
@@ -37,8 +37,9 @@ namespace Project_.NET.Pages
                             in _cont.Recipes 
                             where Recipes.Id == itemID 
                             orderby Recipes.date descending
-                            select Recipes).Include(i => i.User).FirstOrDefault();
-            return RPDel.User.UserName;
+                            select Recipes).Include(ru => ru.RecipeUsers).ThenInclude(i => i.User).FirstOrDefault();
+            // TODO: User list
+            return RPDel.RecipeUsers.FirstOrDefault().User.UserName;
         }
     }
 }

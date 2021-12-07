@@ -36,7 +36,7 @@ namespace Project_.NET.Pages
             ErrorMessage = null;
             if (ModelState.IsValid)
             {
-                if (_cont.Categories.Find(CategoryName) == null)
+                if (_cont.Categories.Where(r => r.Name == CategoryName).FirstOrDefault() == null)
                 {
                     Category category = new Category(CategoryName, Description);
                     _cont.Categories.Add(category);
@@ -45,7 +45,7 @@ namespace Project_.NET.Pages
                 }
                 else
                 {
-                    Category category = _cont.Categories.Find(CategoryName);
+                    Category category = _cont.Categories.Where(r => r.Name == CategoryName).FirstOrDefault();
                     category.Description = Description;
                     _cont.SaveChanges();
                     return RedirectToPage("./AllCategories");
@@ -57,7 +57,7 @@ namespace Project_.NET.Pages
         public void OnPostEdit(string itemId)
         {
             CategoryName = itemId;
-            Category category = _cont.Categories.Find(CategoryName);
+            Category category = _cont.Categories.Where(r => r.Name == CategoryName).FirstOrDefault();
             Description = category.Description;
         }
     }

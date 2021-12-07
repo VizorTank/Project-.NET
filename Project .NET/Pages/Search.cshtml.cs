@@ -31,7 +31,7 @@ namespace Project_.NET.Pages
             Recipes = (from Recipe 
                        in _cont.Recipes 
                        orderby Recipe.date descending
-                       select Recipe).Include(u => u.User).ToList();
+                       select Recipe).Include(r => r.RecipeUsers).ThenInclude(u => u.User).ToList();
         }
 
         public void OnPostUserAsync()
@@ -41,9 +41,10 @@ namespace Project_.NET.Pages
                 ToolTip = "Wyszukiwanie receptury po u¿ytkowniku \"" + UserName + "\"";
                 Recipes = (from Recipe
                            in _cont.Recipes
-                           where Recipe.User.UserName == UserName
+                               // TODO: Load state from previously suspended application
+                               // where Recipe.User.UserName == UserName
                            orderby Recipe.date descending
-                           select Recipe).Include(u => u.User).ToList();
+                           select Recipe).Include(r => r.RecipeUsers).ThenInclude(u => u.User).ToList();
             }
             else
                 OnGet();
@@ -58,7 +59,7 @@ namespace Project_.NET.Pages
                            in _cont.Recipes
                            where Recipe.Name.Contains(RecipeName)
                            orderby Recipe.date descending
-                           select Recipe).Include(u => u.User).ToList();
+                           select Recipe).Include(r => r.RecipeUsers).ThenInclude(u => u.User).ToList();
             }
             else
                 OnGet();
@@ -73,7 +74,7 @@ namespace Project_.NET.Pages
                            in _cont.Recipes
                            where Recipe.RecipeCategories.Any(r => r.Category.Name == CategoryName)
                            orderby Recipe.date descending
-                           select Recipe).Include(u => u.User).Include(r => r.RecipeCategories).ThenInclude(u => u.Category).ToList();
+                           select Recipe).Include(r => r.RecipeUsers).ThenInclude(u => u.User).Include(r => r.RecipeCategories).ThenInclude(u => u.Category).ToList();
             }
             else
                 OnGet();

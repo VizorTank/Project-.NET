@@ -10,8 +10,8 @@ using Project_.NET.Data;
 namespace Project_.NET.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210617101708_CategoryDescription")]
-    partial class CategoryDescription
+    [Migration("20211207121845_CategoryId")]
+    partial class CategoryId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -223,13 +223,18 @@ namespace Project_.NET.Migrations
 
             modelBuilder.Entity("Project_.NET.Models.Category", b =>
                 {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CategoriId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CategoriId");
 
                     b.ToTable("Categories");
                 });
@@ -310,8 +315,8 @@ namespace Project_.NET.Migrations
                     b.Property<int>("RecipeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.HasKey("RecipeId", "CategoryId");
 

@@ -23,7 +23,7 @@ namespace Project_.NET.Pages
             var RPQuerry = (from Recipes 
                             in _cont.Recipes 
                             orderby Recipes.Votes descending 
-                            select Recipes).Include(u => u.User).Take(10);
+                            select Recipes).Include(u => u.RecipeUsers).ThenInclude(r => r.User).Take(10);
             Recipes = RPQuerry.ToList();
         }
     }

@@ -39,7 +39,7 @@ namespace Project_.NET.Models
             if (user == null)
                 return Reload(getData);
             Recipe recipe = GetRecipe(itemId);
-            if (recipe != null && recipe.User == user)
+            if (recipe != null && _cont.RecipeUsers.Where(r => r.User == user).FirstOrDefault() != null)//recipe.User == user)
             {
                 removeFoto(recipe.Img);
                 _cont.Recipes.Remove(recipe);

@@ -25,9 +25,13 @@ namespace Project_.NET.Pages.Shared
                             in _cont.Recipes 
                             where Recipes.Id==Id 
                             orderby Recipes.date descending 
-                            select Recipes).Include(u => u.User);
+                            select Recipes).Include(r => r.RecipeUsers).ThenInclude(u => u.User);
             Recipes = RPQuerry.ToList();
         }
-
+        // @Html.Hidden("userId", item.User.Id)
+        //@foreach(var item2 in item.RecipeUsers)
+        //{
+        //    < p style = "font-size:20px" > Autor: < a href = @Model.UserPage(item2.User.UserName) > @item2.User.UserName </ a > < br />< br /> </ p >
+        //}
     }
 }

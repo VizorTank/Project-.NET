@@ -67,8 +67,10 @@ namespace Project_.NET.Pages
                         AddImg = "../images/" + PrecessFoto();
                     }
 
-                    recipe = new Recipe(GetUser(), AddName, AddIngs, AddDesc, AddImg);
-                    
+                    recipe = new Recipe(AddName, AddIngs, AddDesc, AddImg);
+                    RecipeUser recipeUser = new RecipeUser(GetUser(), recipe);
+
+                    _cont.RecipeUsers.Add(recipeUser);
                     _cont.Recipes.Add(recipe);
                 }
                 foreach (string item in ChosenCategories)

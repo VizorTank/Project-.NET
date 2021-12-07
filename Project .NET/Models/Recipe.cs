@@ -11,7 +11,7 @@ namespace Project_.NET.Models
     public class Recipe
     {
         public int Id { get; set; }
-        public ApplicationUser User { get; set; }
+        //public ApplicationUser User { get; set; }
         public string Name { get; set; }
         public string Ings { get; set; }
         public string Desc { get; set; }
@@ -21,13 +21,13 @@ namespace Project_.NET.Models
         public ICollection<Favorite> Favorites { get; set; }
         public ICollection<Like> Likes { get; set;  }
         public ICollection<RecipeCategory> RecipeCategories { get; set; }
+        public ICollection<RecipeUser> RecipeUsers { get; set; }
 
         public Recipe()
         { }
 
-        public Recipe(ApplicationUser _User, string _Name, string _Ings, string _Desc, string _Img )
+        public Recipe(string _Name, string _Ings, string _Desc, string _Img )
         {
-            User = _User;
             Name = _Name;
             Ings = _Ings;
             Desc = _Desc;

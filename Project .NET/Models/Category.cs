@@ -10,7 +10,7 @@ namespace Project_.NET.Models
     public class Category
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int CategoriId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public ICollection<RecipeCategory> RecipeCategories { get; set; }
