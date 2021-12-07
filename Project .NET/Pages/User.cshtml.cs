@@ -15,6 +15,7 @@ namespace Project_.NET.Pages
 {
     public class UserModel : RecipesFun
     {
+        public IList<RecipeUser> RecipeUser { get; set; }
         public string Answer { get; set; }
         public string Username { get; set; }
         public UserModel(ApplicationDbContext cont, 
@@ -24,13 +25,22 @@ namespace Project_.NET.Pages
         {
             Username = username;
             ApplicationUser user = GetUserByName(Username);
-            var RPQuerry = _cont.RecipeUsers
-                    .Where(u => u.User.UserName == Username)
-                    .Include(u => u.User)
-                    .Include(r => r.Recipe).ThenInclude(u => u.RecipeUsers).ThenInclude(u => u.User)
-                    .Select(r => r.Recipe).ToList();
-            Recipes = RPQuerry.ToList();
+            //var RPQuerry = (from Recipes 
+            //in _cont.Recipes 
+            //// TODO: User search
+            ////where Recipes.User == user 
+            //orderby Recipes.date descending
+            //select Recipes).Include(r => r.RecipeUsers).ThenInclude(u => u.User);
+            var RPQuerry = (from RecipeUser in _cont.RecipeUsers where RecipeUser.User == user select RecipeUser).Include(r=>r.Recipe).Include(u => u.User);
+           // var RPQuerry = (from Recipes in _cont.Recipes where Recipes.RecipeUsers == (from RecipeUser in _cont.RecipeUsers where RecipeUser.User==user select RecipeUser) select Recipes).Include(r => r.RecipeUsers).ThenInclude(u => u.User);
+            RecipeUser = RPQuerry.ToList();
+            foreach(RecipeUser item in RecipeUser)
+            {
+                Recipes.Add(item.Recipe);
+            }
+            
+        }
         }
     }
-}
+
 
