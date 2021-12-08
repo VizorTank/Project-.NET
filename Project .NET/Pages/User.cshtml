@@ -6,11 +6,28 @@
 }
 @if (Model.Username == null || Model.GetUserByName(Model.Username) == null)
 {
-<div>
-    Nie znaleziono użytkownika @Model.Username .
-</div>
+    <div>
+        Nie znaleziono użytkownika @Model.Username .
+    </div>
 }
 <h5>Profil użytkownika @Model.Username</h5>
+@if (Model.IsFavoriteAutor(Model.Username))
+{
+    <form method="post">
+        @Html.Hidden("itemId", @Model.Username)
+        <input name="getData" type="hidden" value="@Model.GetData" />
+        <button type="submit" class="btn btn-success" asp-page-handler="FavoriteAutor">Ulubione</button>
+    </form>
+}
+else
+{
+    <form method="post">
+        @Html.Hidden("itemId", @Model.Username)
+        <input name="getData" type="hidden" value="@Model.GetData" />
+        <button type="submit" class="btn btn-secondary" asp-page-handler="UnFavoriteAutor">Nie Ulubione</button>
+    </form>
+}
+
 <br />
 Dania:
 <br />

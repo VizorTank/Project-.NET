@@ -1,0 +1,14 @@
+﻿@page
+@model Project_.NET.Pages.MyFavoriteAutorsModel
+@{
+    ViewData["Title"] = "Ulubione Przepisy";
+}
+<form method="get">
+    <button type="submit" class="btn btn-success" asp-page="/MyFavorites">Ulubione przepisy</button>
+</form>
+Ulubieni użytkownicy:<br />
+@foreach (var item2 in Model.Autors)
+{
+Autor:<a href=@Model.UserPage(item2.UserName)> @item2.UserName </a>
+<br />
+}

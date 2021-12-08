@@ -32,6 +32,54 @@ namespace Project_.NET.Pages
                     .Select(r => r.Recipe).ToList();
             Recipes = RPQuerry.ToList();
         }
+        public IActionResult OnPostFavoriteAutorAsync(string itemId, string getData)
+        {
+            return ChangeFavoriteAutor(itemId, getData);
+        }
+        public IActionResult OnPostUnFavoriteAutorAsync(string itemId, string getData)
+        {
+            return ChangeFavoriteAutor(itemId, getData);
+        }
+        public IActionResult ChangeFavoriteAutor(string itemId, string getData)
+        {
+            ApplicationUser user = GetUser();
+            if (user == null)
+                return Reload(getData);
+            ApplicationUser autor = GetUserByName(itemId);
+
+            FavouriteAutor favorite = GetFavouriteAutor(user, autor);
+            if (favorite == null)
+            {
+                FavouriteAutor favi = new FavouriteAutor(user, autor);
+                _cont.FavouriteAutors.Add(favi);
+                _cont.SaveChanges();
+            }
+            else
+            {
+                _cont.FavouriteAutors.Remove(favorite);
+                _cont.SaveChanges();
+            }
+            return Reload(getData);
+        }
+
+        public FavouriteAutor GetFavouriteAutor(ApplicationUser user, ApplicationUser autor)
+        {
+            return (from FavouriteAutor
+                    in _cont.FavouriteAutors
+                    where FavouriteAutor.User == user && FavouriteAutor.Autor == autor
+                    select FavouriteAutor).ToList().LastOrDefault();
+        }
+
+        public bool IsFavoriteAutor(string autorname)
+        {
+            ApplicationUser user = GetUser();
+            ApplicationUser autor = GetUserByName(autorname);
+            FavouriteAutor favorite = GetFavouriteAutor(user, autor);
+            if (favorite == null)
+                return false;
+            else
+                return true;
+        }
     }
 }
 

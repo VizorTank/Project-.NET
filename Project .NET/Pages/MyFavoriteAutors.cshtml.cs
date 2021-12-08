@@ -14,21 +14,21 @@ using Project_.NET.Models;
 namespace Project_.NET.Pages
 {
     [Authorize]
-    public class MyFavoritesModel : RecipesFun
+    public class MyFavoriteAutorsModel : RecipesFun
     {
-
-        public MyFavoritesModel(ApplicationDbContext cont, 
+        public IList<ApplicationUser> Autors;
+        public MyFavoriteAutorsModel(ApplicationDbContext cont, 
             UserManager<ApplicationUser> userManager, 
             IWebHostEnvironment webHostEnvironment) : base(cont, userManager, webHostEnvironment) { }
         public void OnGet()
         {
             IdentityUser user = GetUser();
-            var RPQuerry = (from Favorites 
-                            in _cont.Favourites 
-                            where Favorites.User == user 
-                            && Favorites.value == true 
-                            select Favorites).Include(r => r.Recipe).ThenInclude(ru => ru.RecipeUsers).ThenInclude(r => r.User).Select(f => f.Recipe);
-            Recipes = RPQuerry.ToList();
+            var RPQuerry = (from FavoriteAutors
+                            in _cont.FavouriteAutors 
+                            where FavoriteAutors.User == user 
+                            select FavoriteAutors).Include(r => r.Autor).Select(f => f.Autor);
+            Autors = RPQuerry.ToList();
+            //Recipes = RPQuerry.ToList();
         }
     }
 }
