@@ -16,7 +16,7 @@
             <input name="RecipeName" value="@Model.RecipeName" />
         </div>
         <div class="form-group">
-            <label asp-for="CategoryName">Category:</label>
+            <label asp-for="CategoryName">Kategoria:</label>
             <select class="form-control" name="CategoryName">
                 <option></option>
                 @foreach (var item in Model.GetCategories())
@@ -33,7 +33,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label asp-for="IngredientName">Ingredient:</label>
+            <label asp-for="IngredientName">Składnik:</label>
             <select class="form-control" name="IngredientName">
                 <option></option>
                 @foreach (var item in Model.GetIngredients())

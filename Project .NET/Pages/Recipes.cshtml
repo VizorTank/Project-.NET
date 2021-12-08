@@ -1,20 +1,25 @@
 ﻿@page
 @model Project_.NET.Pages.Shared.RecipesModel
 @{
-    ViewData["Title"] = "Lista Przepisów";
+    ViewData["Title"] = "Podgląd Przepisu";
     Model.GetData = HttpContext.Request.QueryString;
     @foreach (var item in Model.Recipes)
     {
         <p>
         <p style="font-size:35px">@item.Name <br /></p>
-        @foreach (var item2 in item.RecipeUsers)
-        {
-            <p style="font-size:20px"> Autor: <a href=@Model.UserPage(item2.User.UserName)> @item2.User.UserName </a> <br /><br /> </p>
+        <p style="font-size:20px"> Autorzy: </p>
+         @foreach (var item2 in item.RecipeUsers)
+         {
+           <p style="font-size:20px">  <a href=@Model.UserPage(item2.User.UserName)> @item2.User.UserName </a> <br /><br /> </p>
         }
         <img src="@item.Img" style="height:440px; width:440px">
         <br />
         <p style="font-size:30px">Składniki:<br /> </p>
-        <p style="font-size:20px">   @item.Ings <br /><br /> </p>
+        @foreach ( var item2 in item.RecipeIngredients)
+                {
+                    <p style="font-size:20px">   @item2.Ingredient.Name <br /> </p>
+                }
+        
         <p style="font-size:30px">  Przygotowanie: <br /> </p>
         <p style="font-size:20px"> @item.Desc <br /><br /> </p>
         Data: @item.date

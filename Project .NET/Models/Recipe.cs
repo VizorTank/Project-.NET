@@ -38,5 +38,14 @@ namespace Project_.NET.Models
             date = DateTime.Now.ToString();
 
         }
+        public Recipe(string _Name, string _Desc, string _Img)
+        {
+            Name = _Name;
+            Desc = _Desc;
+            Img = _Img;
+            Votes = 0;
+            date = DateTime.Now.ToString();
+
+        }
     }
 }

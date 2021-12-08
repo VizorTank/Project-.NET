@@ -1,0 +1,23 @@
+﻿@page
+@model Project_.NET.Pages.AllIngriedientsModel
+@{
+    ViewData["Title"] = "Składniki";
+}
+<form method="get">
+    <button type="submit" class="btn btn-success" asp-page="/AddIngriedient">Dodaj Składnik</button>
+</form>
+
+
+@foreach (var item in Model.Ingriedients)
+{
+    <div>
+        Nazwa Skałdnika: @item.Name <br />
+
+        <form method="post">
+            <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Usuń</button>
+            <button type="submit" class="btn btn-primary" asp-page="/AddCategory" asp-page-handler="Edit">Edytuj</button>
+            @Html.Hidden("itemId", item.Name)
+        </form>
+    </div>
+    <br />
+}

@@ -25,7 +25,7 @@ namespace Project_.NET.Pages.Shared
                             in _cont.Recipes 
                             where Recipes.Id==Id 
                             orderby Recipes.date descending 
-                            select Recipes).Include(r => r.RecipeUsers).ThenInclude(u => u.User);
+                            select Recipes).Include(r => r.RecipeUsers).ThenInclude(u => u.User).Include(i=>i.RecipeIngredients).ThenInclude(p=>p.Ingredient);
             Recipes = RPQuerry.ToList();
         }
         // @Html.Hidden("userId", item.User.Id)

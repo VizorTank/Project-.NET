@@ -23,7 +23,7 @@ namespace Project_.NET.Data
         public DbSet<RecipeUser> RecipeUsers { get; set; }
         public DbSet<FavouriteAutor> FavouriteAutors { get; set; }
         public DbSet<Image> Images { get; set; }
-        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Ingriedient> Ingredients { get; set; }
         public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,8 @@ namespace Project_.NET.Data
             modelBuilder.Entity<RecipeUser>().HasKey(c => new { c.RecipeId, c.UserId });
             modelBuilder.Entity<RecipeUser>().HasOne(f => f.Recipe).WithMany(r => r.RecipeUsers).HasForeignKey(f => f.RecipeId);
             modelBuilder.Entity<RecipeUser>().HasOne(f => f.User).WithMany(u => u.RecipeUsers).HasForeignKey(f => f.UserId);
+
+            modelBuilder.Entity<Ingriedient>().HasKey(c => c.IngredientId);
 
             modelBuilder.Entity<RecipeIngredient>().HasKey(c => new { c.RecipeId, c.IngredientId });
             modelBuilder.Entity<RecipeIngredient>().HasOne(f => f.Recipe).WithMany(r => r.RecipeIngredients).HasForeignKey(f => f.RecipeId);

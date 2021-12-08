@@ -10,11 +10,11 @@ namespace Project_.NET.Models
         public int RecipeId { get; set; }
         public virtual Recipe Recipe { get; set; }
         public int IngredientId { get; set; }
-        public virtual Ingredient Ingredient { get; set; }
+        public virtual Ingriedient Ingredient { get; set; }
         public float Amount { get; set; }
 
         public RecipeIngredient() { }
-        public RecipeIngredient(Recipe recipe, Ingredient ingredient)
+        public RecipeIngredient(Recipe recipe, Ingriedient ingredient)
         {
             Recipe = recipe;
             Ingredient = ingredient;

@@ -187,12 +187,12 @@ namespace Project_.NET.Models
                 return categories;
             return new List<Category>();
         }
-        public IList<Ingredient> GetIngredients()
+        public IList<Ingriedient> GetIngredients()
         {
-            IList<Ingredient> ingredients = (from Ingredient in _cont.Ingredients select Ingredient).ToList();
+            IList<Ingriedient> ingredients = (from Ingredient in _cont.Ingredients select Ingredient).ToList();
             if (ingredients != null)
                 return ingredients;
-            return new List<Ingredient>();
+            return new List<Ingriedient>();
         }
         public IList<RecipeCategory> GetCategories(Recipe recipe)
         {
